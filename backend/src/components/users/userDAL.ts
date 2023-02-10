@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import { UserContext } from './user';
+import { UserLoginContext, UserRegisterContext } from './user';
 const prisma = new PrismaClient()
 
-const getUserData = async (userContext: UserContext) => {
+const getUserData = async (userContext: UserLoginContext) => {
     const query = await prisma.user.findUnique({
         where: {
             email: userContext.email,

@@ -14,7 +14,7 @@ const app = express()
 const client = createClient()
 const RedisStore = connectRedis(session)
 
-app.use(bodyParser.json()) // for parsing application/json
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(helmet())
 app.use(cors())
@@ -32,6 +32,6 @@ app.use(session({
 }))
 
 // Routes
-app.get('/login', loginUser)
+app.post('/login', loginUser)
 
 export default app
