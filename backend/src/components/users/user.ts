@@ -4,8 +4,8 @@ interface UserLoginContext {
 }
 
 interface UserRegisterContext {
-    fname: string;
-    lname: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
 }

@@ -7,8 +7,15 @@ const getUserData = async (userContext: UserLoginContext) => {
         where: {
             email: userContext.email,
         }
-    })
-    return query
+    });
+    return query;
 }
 
-export { getUserData }
+const createNewUser = async (userContext: UserRegisterContext) => {
+    const query = await prisma.user.create({
+        data: userContext,
+    });
+    return query;
+}
+
+export { getUserData, createNewUser }
