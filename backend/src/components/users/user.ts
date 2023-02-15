@@ -1,3 +1,5 @@
+import { User } from "@prisma/client";
+
 interface UserLoginContext {
     email: string;
     password: string;
@@ -10,4 +12,14 @@ interface UserRegisterContext {
     password: string;
 }
 
-export { UserLoginContext, UserRegisterContext }
+interface UserIdContext {
+    id: string;
+}
+
+interface UserReturnContext {
+    status: number;
+    data?: User;
+    message: string;
+}
+
+export { UserLoginContext, UserRegisterContext, UserIdContext, UserReturnContext }

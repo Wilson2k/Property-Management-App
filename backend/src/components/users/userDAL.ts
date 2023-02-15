@@ -1,8 +1,18 @@
 import { PrismaClient } from '@prisma/client'
-import { UserLoginContext, UserRegisterContext } from './user';
+import { UserLoginContext, UserRegisterContext, UserIdContext } from './user';
 const prisma = new PrismaClient()
 
-const getUserData = async (userContext: UserLoginContext) => {
+const getUserById = async (userContext: UserIdContext) => {
+    const userId = +userContext.id;
+    const query = await prisma.user.findUnique({
+        where: {
+            id: userId,
+        }
+    });
+    return query;
+}
+
+const getUserByEmail = async (userContext: UserLoginContext | UserRegisterContext) => {
     const query = await prisma.user.findUnique({
         where: {
             email: userContext.email,
@@ -18,4 +28,22 @@ const createNewUser = async (userContext: UserRegisterContext) => {
     return query;
 }
 
-export { getUserData, createNewUser }
+const deleteUser = async (userContext: UserIdContext) => {
+    const userId = +userContext.id;
+    // Delete user with id, only pass email and name data back
+    const query = await prisma.user.delete({
+        where: {
+            id: userId,
+        },
+        select: {
+            email: true,
+            firstName: true,
+            lastName: true,
+        }
+    });
+    return query;
+}
+
+
+
+export { getUserById, createNewUser, getUserByEmail, deleteUser }

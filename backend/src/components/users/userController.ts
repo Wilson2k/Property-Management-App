@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { loginUserService, registerUserService } from './userService';
-import { UserLoginContext, UserRegisterContext } from './user';
+import { loginUserService, registerUserService, getUserService, deleteUserService } from './userService';
+import { UserIdContext, UserLoginContext, UserRegisterContext } from './user';
 
 // Getting all users
 const getUsers = async (req: Request, res: Response) => {
@@ -9,29 +9,16 @@ const getUsers = async (req: Request, res: Response) => {
 
 // Get a single user
 const getUser = async (req: Request, res: Response) => {
-
-};
-
-// Register user
-const registerUser = async (req: Request, res: Response) => {
     // Create new user context from req object here
-    const userContext: UserRegisterContext = {
-        firstName: req.body.fname,
-        lastName: req.body.lname,
-        email: req.body.email,
-        password: req.body.password
-    }
-    const newUser = await registerUserService(userContext);
-    if(newUser !== null){
-        res.status(200).send(newUser);
+    const userContext: UserIdContext = {
+        id: req.body.id,
+    };
+    const userData = await getUserService(userContext);
+    if(userData.status === 200 && userData.data){
+        res.status(userData.status).send(userData.data);
     } else {
-        res.status(400).send('User already exists');
+        res.status(userData.status).send(userData.message);
     }
-};
-
-// Delete user
-const deleteUser = async (req: Request, res: Response) => {
-
 };
 
 // Login user
@@ -40,19 +27,53 @@ const loginUser = async (req: Request, res: Response) => {
     const userContext: UserLoginContext = {
         email: req.body.email,
         password: req.body.password
-    }
-    const user = await loginUserService(userContext);
-    if(user !== null){
-        req.session.id = user.email;
-        res.status(200).send(user);
+    };
+    const userData = await loginUserService(userContext);
+    if(userData.status === 200 && userData.data){
+        req.session.id = userData.data.email;
+        res.status(userData.status).send(userData.data);
     } else {
-        res.status(404).send('User not found');
+        res.status(userData.status).send(userData.message);
+    }
+};
+
+// Register user
+const registerUser = async (req: Request, res: Response) => {
+    // Create new user context from req object here
+    const userContext: UserRegisterContext = {  
+        firstName: req.body.fname,
+        lastName: req.body.lname,
+        email: req.body.email,
+        password: req.body.password
+    };
+    const newUser = await registerUserService(userContext);
+    if(newUser.status === 200 && newUser.data){
+        res.status(newUser.status).send(newUser.data);
+    } else {
+        res.status(newUser.status).send(newUser.message);
+    }
+};
+
+// Delete user
+const deleteUser = async (req: Request, res: Response) => {
+    // Create new user context from req object here
+    const userContext: UserIdContext = {
+        id: req.body.id,
+    };
+    const deletedUser = await deleteUserService(userContext);
+    if(deletedUser.status === 200 && deletedUser.data){
+        res.status(deletedUser.status).send(deletedUser.data);
+    } else {
+        res.status(deletedUser.status).send(deletedUser.message);
     }
 };
 
 // Logout user
 const logoutUser = async (req: Request, res: Response) => {
-
+    req.session.destroy((err) => {
+        res.status(200);
+        res.redirect('/');
+    });
 };
 
-export { loginUser }
+export { loginUser, registerUser, getUser, logoutUser }
