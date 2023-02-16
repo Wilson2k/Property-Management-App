@@ -33,7 +33,7 @@ app.use(session({
 
 // Routes
 app.post('/login', loginUser)
-app.put('/register', registerUser)
+app.post('/register', registerUser)
 app.get('/profile', getUser)
 app.post('/logout', logoutUser)
 app.delete('/delete', deleteUser)
