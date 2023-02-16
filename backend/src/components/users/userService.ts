@@ -1,13 +1,13 @@
-import { getUserById, getUserByEmail, createNewUser, deleteUser, getAllUsers } from "./userDAL";
-import { UserLoginContext, UserRegisterContext, UserIdContext, UserReturnContext, MultUsersReturnContext } from './user';
+import * as UserDAL from "./userDAL";
+import * as UserContexts from './user';
 import { hash, compare } from "bcrypt";
 
-const loginUserService = async (userContext: UserLoginContext) => {
-    const userReturn: UserReturnContext = {
+const loginUserService = async (userContext: UserContexts.UserLoginContext) => {
+    const userReturn: UserContexts.UserReturnContext = {
         message: 'Error getting user',
         status: 404,
     }
-    const findUser = await getUserByEmail(userContext);
+    const findUser = await UserDAL.getUserByEmail(userContext);
     if (findUser !== null){
         compare(userContext.password, findUser.password).then((res) => {
             if(res){
@@ -23,16 +23,16 @@ const loginUserService = async (userContext: UserLoginContext) => {
     return userReturn;
 }
 
-const registerUserService = async (userContext: UserRegisterContext) => {
-    const userReturn: UserReturnContext = {
+const registerUserService = async (userContext: UserContexts.UserRegisterContext) => {
+    const userReturn: UserContexts.UserReturnContext = {
         message: 'Error registering user',
         status: 400,
     }
-    const findUser = await getUserByEmail(userContext);
+    const findUser = await UserDAL.getUserByEmail(userContext);
     if (findUser === null){
         hash(userContext.password, 12).then(async (hash) => {
             userContext.password = hash;
-            const newUser = await createNewUser(userContext);
+            const newUser = await UserDAL.createNewUser(userContext);
             userReturn.data = newUser;
             userReturn.status = 200;
             userReturn.message = 'Register Success';
@@ -44,8 +44,8 @@ const registerUserService = async (userContext: UserRegisterContext) => {
     return userReturn;
 }
 
-const getUserService = async (userContext: UserIdContext) => {
-    const userReturn: UserReturnContext = {
+const getUserService = async (userContext: UserContexts.UserIdContext) => {
+    const userReturn: UserContexts.UserReturnContext = {
         message: 'Error getting user',
         status: 404,
     }
@@ -56,7 +56,7 @@ const getUserService = async (userContext: UserIdContext) => {
         userReturn.status = 422;
         return userReturn;
     }
-    const findUser = await getUserById(userContext);
+    const findUser = await UserDAL.getUserById(userContext);
     if(findUser !== null){
         userReturn.message = 'User found';
         userReturn.data = findUser;
@@ -66,11 +66,11 @@ const getUserService = async (userContext: UserIdContext) => {
 }
 
 const getAllUserService = async () => {
-    const userReturn: MultUsersReturnContext = {
+    const userReturn: UserContexts.MultUsersReturnContext = {
         message: 'Error getting users',
         status: 400,
     }
-    const users = await getAllUsers();
+    const users = await UserDAL.getAllUsers();
     if(users.length !== 0){
         userReturn.message = 'Retrieved users';
         userReturn.data = users;
@@ -82,8 +82,8 @@ const getAllUserService = async () => {
     return userReturn;
 }
 
-const deleteUserService = async (userContext: UserIdContext) => {
-    const userReturn: UserReturnContext = {
+const deleteUserService = async (userContext: UserContexts.UserIdContext) => {
+    const userReturn: UserContexts.UserReturnContext = {
         message: 'Error deleting user',
         status: 400,
     }
@@ -94,7 +94,7 @@ const deleteUserService = async (userContext: UserIdContext) => {
         userReturn.status = 422;
         return userReturn;
     }
-    const findUser = await deleteUser(userContext);
+    const findUser = await UserDAL.deleteUser(userContext);
     if(findUser !== null){
         userReturn.message = 'User found';
         userReturn.data = {

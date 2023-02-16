@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { loginUserService, registerUserService, getUserService, deleteUserService, getAllUserService } from './userService';
+import * as UserServices from './userService';
 import { UserIdContext, UserLoginContext, UserRegisterContext } from './user';
 
 // Getting all users
 const getAllUsers = async (req: Request, res: Response) => {
-    const allUserData = await getAllUserService();
+    const allUserData = await UserServices.getAllUserService();
     if(allUserData.status === 200 && allUserData.data === undefined){
         res.status(allUserData.status).send(allUserData.data);
     } else {
@@ -18,7 +18,7 @@ const getUser = async (req: Request, res: Response) => {
     const userContext: UserIdContext = {
         id: req.body.id,
     };
-    const userData = await getUserService(userContext);
+    const userData = await UserServices.getUserService(userContext);
     if(userData.status === 200 && userData.data !== undefined){
         res.status(userData.status).send(userData.data);
     } else {
@@ -31,9 +31,9 @@ const loginUser = async (req: Request, res: Response) => {
     // Create new user context from req object here
     const userContext: UserLoginContext = {
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
     };
-    const userData = await loginUserService(userContext);
+    const userData = await UserServices.loginUserService(userContext);
     if(userData.status === 200 && userData.data !== undefined){
         req.session.id = userData.data.email;
         res.status(userData.status).send(userData.data);
@@ -49,9 +49,9 @@ const registerUser = async (req: Request, res: Response) => {
         firstName: req.body.fname,
         lastName: req.body.lname,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
     };
-    const newUser = await registerUserService(userContext);
+    const newUser = await UserServices.registerUserService(userContext);
     if(newUser.status === 200 && newUser.data !== undefined){
         res.status(newUser.status).send(newUser.data);
     } else {
@@ -65,7 +65,7 @@ const deleteUser = async (req: Request, res: Response) => {
     const userContext: UserIdContext = {
         id: req.body.id,
     };
-    const deletedUser = await deleteUserService(userContext);
+    const deletedUser = await UserServices.deleteUserService(userContext);
     if(deletedUser.status === 200 && deletedUser.data !== undefined){
         res.status(deletedUser.status).send(deletedUser.data);
     } else {
