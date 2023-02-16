@@ -29,8 +29,8 @@ const registerUserService = async (userContext: UserContexts.UserRegisterContext
         status: 400,
     }
     const findUser = await UserDAL.getUserByEmail(userContext);
-    if (findUser === null){
-        hash(userContext.password, 12).then(async (hash) => {
+    if (findUser == null){
+        await hash(userContext.password, 12).then(async (hash) => {
             userContext.password = hash;
             const newUser = await UserDAL.createNewUser(userContext);
             userReturn.data = newUser;

@@ -8,7 +8,7 @@ describe('Register User', () => {
         const smokeyBear: UserRegisterContext = {  
             firstName: "Smokey",
             lastName: "A Bear",
-            email: "smokeynoreply@smokey.com",
+            email: "mmm@mssdsdsadaasasam",
             password: "Nofires",
         };
         const newUser = await UserServices.registerUserService(smokeyBear);
