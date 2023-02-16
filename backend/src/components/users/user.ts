@@ -22,4 +22,10 @@ interface UserReturnContext {
     message: string;
 }
 
-export { UserLoginContext, UserRegisterContext, UserIdContext, UserReturnContext }
+interface MultUsersReturnContext {
+    status: number;
+    data?: User[];
+    message: string;
+}
+
+export { UserLoginContext, UserRegisterContext, UserIdContext, UserReturnContext, MultUsersReturnContext }

@@ -1,5 +1,5 @@
-import { getUserById, getUserByEmail, createNewUser, deleteUser } from "./userDAL";
-import { UserLoginContext, UserRegisterContext, UserIdContext, UserReturnContext } from './user';
+import { getUserById, getUserByEmail, createNewUser, deleteUser, getAllUsers } from "./userDAL";
+import { UserLoginContext, UserRegisterContext, UserIdContext, UserReturnContext, MultUsersReturnContext } from './user';
 import { hash, compare } from "bcrypt";
 
 const loginUserService = async (userContext: UserLoginContext) => {
@@ -65,6 +65,23 @@ const getUserService = async (userContext: UserIdContext) => {
     return userReturn;
 }
 
+const getAllUserService = async () => {
+    const userReturn: MultUsersReturnContext = {
+        message: 'Error getting users',
+        status: 400,
+    }
+    const users = await getAllUsers();
+    if(users.length !== 0){
+        userReturn.message = 'Retrieved users';
+        userReturn.data = users;
+        userReturn.status = 200;
+    } else {
+        userReturn.message = 'No Users found';
+        userReturn.status = 404;
+    }
+    return userReturn;
+}
+
 const deleteUserService = async (userContext: UserIdContext) => {
     const userReturn: UserReturnContext = {
         message: 'Error deleting user',
@@ -92,4 +109,4 @@ const deleteUserService = async (userContext: UserIdContext) => {
     return userReturn;
 }
 
-export { loginUserService, registerUserService, getUserService, deleteUserService }
+export { loginUserService, registerUserService, getUserService, deleteUserService, getAllUserService }

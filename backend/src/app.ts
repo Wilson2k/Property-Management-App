@@ -6,7 +6,7 @@ import connectRedis from 'connect-redis';
 import bodyParser from 'body-parser';
 import { createClient } from 'redis';
 import session from 'express-session'
-import { loginUser } from './components/users/userController'
+import { loginUser, registerUser, getUser, logoutUser, deleteUser, getAllUsers } from './components/users/userController'
 
 dotenv.config();
 
@@ -33,5 +33,9 @@ app.use(session({
 
 // Routes
 app.post('/login', loginUser)
+app.put('/register', registerUser)
+app.get('/profile', getUser)
+app.post('/logout', logoutUser)
+app.delete('/delete', deleteUser)
 
 export default app

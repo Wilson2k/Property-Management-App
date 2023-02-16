@@ -21,6 +21,11 @@ const getUserByEmail = async (userContext: UserLoginContext | UserRegisterContex
     return query;
 }
 
+const getAllUsers = async () => {
+    const query = await prisma.user.findMany();
+    return query;
+}
+
 const createNewUser = async (userContext: UserRegisterContext) => {
     const query = await prisma.user.create({
         data: userContext,
@@ -46,4 +51,4 @@ const deleteUser = async (userContext: UserIdContext) => {
 
 
 
-export { getUserById, createNewUser, getUserByEmail, deleteUser }
+export { getUserById, createNewUser, getUserByEmail, deleteUser, getAllUsers }
