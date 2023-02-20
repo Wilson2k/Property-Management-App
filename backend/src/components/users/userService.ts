@@ -8,7 +8,7 @@ const loginUserService = async (userContext: UserContexts.UserLoginContext) => {
         status: 404,
     }
     const findUser = await UserDAL.getUserByEmail(userContext);
-    if (findUser !== null){
+    if (findUser != null){
         compare(userContext.password, findUser.password).then((res) => {
             if(res){
                 userReturn.data = findUser;
@@ -109,4 +109,10 @@ const deleteUserService = async (userContext: UserContexts.UserIdContext) => {
     return userReturn;
 }
 
-export { loginUserService, registerUserService, getUserService, deleteUserService, getAllUserService }
+// Returns number of deleted users
+const deleteAllUserService = async () => {
+    const deletedCount = await UserDAL.deleteAllUsers();
+    return deletedCount.count;
+}
+
+export { loginUserService, registerUserService, getUserService, deleteUserService, getAllUserService, deleteAllUserService }

@@ -49,6 +49,11 @@ const deleteUser = async (userContext: UserIdContext) => {
     return query;
 }
 
+const deleteAllUsers = async () => {
+    const query = await prisma.user.deleteMany({});
+    return query;
+}
 
 
-export { getUserById, createNewUser, getUserByEmail, deleteUser, getAllUsers }
+
+export { getUserById, createNewUser, getUserByEmail, deleteUser, getAllUsers, deleteAllUsers }
