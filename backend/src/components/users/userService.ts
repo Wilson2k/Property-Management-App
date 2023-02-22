@@ -9,7 +9,7 @@ const loginUserService = async (userContext: UserContexts.UserLoginContext) => {
     }
     const findUser = await UserDAL.getUserByEmail(userContext);
     if (findUser != null){
-        compare(userContext.password, findUser.password).then((res) => {
+        await compare(userContext.password, findUser.password).then((res) => {
             if(res){
                 userReturn.data = findUser;
                 userReturn.message = 'Login Success';
