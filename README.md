@@ -20,8 +20,8 @@ First make an .env file to configure your local PostgreSQL database.
 In your .env file, configure your [Prisma connection URL](https://www.prisma.io/docs/reference/database-reference/connection-urls) to your liking or leave as is.
 
 ```bash
-DB_USER=postgre
-DB_PASSWORD=postgrepw
+DB_USER=postgres
+DB_PASSWORD=postgrespw
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=testdb
