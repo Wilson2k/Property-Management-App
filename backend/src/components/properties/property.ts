@@ -1,4 +1,4 @@
-import { Property } from "@prisma/client";
+import { Property } from '@prisma/client';
 
 interface PropertyIdContext {
     id: string;
@@ -6,6 +6,10 @@ interface PropertyIdContext {
 
 interface PropertyAddressContext {
     address: string;
+}
+
+interface PropertyOwnerIdContext {
+    ownerId: string;
 }
 
 interface PropertyReturnContext {
@@ -20,4 +24,4 @@ interface MultPropertiesReturnContext {
     message: string;
 }
 
-export { PropertyIdContext, PropertyAddressContext ,PropertyReturnContext }
+export { PropertyIdContext, PropertyAddressContext, PropertyReturnContext, PropertyOwnerIdContext }

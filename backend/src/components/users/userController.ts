@@ -35,7 +35,7 @@ const loginUser = async (req: Request, res: Response) => {
     };
     const userData = await UserServices.loginUserService(userContext);
     if(userData.status === 200 && userData.data !== undefined){
-        req.session.id = userData.data.email;
+        req.session.id = userData.data.id.toString();
         res.status(userData.status).send(userData.data);
     } else {
         res.status(userData.status).send(userData.message);

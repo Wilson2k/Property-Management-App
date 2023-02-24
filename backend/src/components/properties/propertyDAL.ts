@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { PropertyIdContext, PropertyAddressContext } from './property';
+import { PropertyIdContext, PropertyAddressContext, PropertyOwnerIdContext } from './property';
 const prisma = new PrismaClient()
 
 const getPropertyById = async (propertyContext: PropertyIdContext) => {
@@ -20,3 +20,30 @@ const getPropertyByAddress = async (propertyContext: PropertyAddressContext) => 
     });
     return query;
 }
+
+const getAllUserProperties = async (PropertyOwnerIdContext: PropertyOwnerIdContext) => {
+    const userId = +PropertyOwnerIdContext.ownerId;
+    const query = await prisma.property.findMany({
+        where: {
+            ownerId: userId,
+        }
+    });
+    return query;
+}
+
+const getUserOpenTicketProperties = async (PropertyOwnerIdContext: PropertyOwnerIdContext) => {
+    const userId = +PropertyOwnerIdContext.ownerId;
+    const query = await prisma.property.findMany({
+        where: {
+            ownerId: userId,
+            tickets: {
+                some: {
+                    open: true,
+                }
+            },
+        }
+    });
+    return query;
+}
+
+export { getPropertyById, getPropertyByAddress, getAllUserProperties, getUserOpenTicketProperties }

@@ -1,6 +1,6 @@
-import * as UserDAL from "./userDAL";
+import * as UserDAL from './userDAL';
 import * as UserContexts from './user';
-import { hash, compare } from "bcrypt";
+import { hash, compare } from 'bcrypt';
 
 const loginUserService = async (userContext: UserContexts.UserLoginContext) => {
     const userReturn: UserContexts.UserReturnContext = {

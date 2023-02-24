@@ -1,6 +1,6 @@
 // Jest unit testing user routes
 import * as UserServices from '../userService';
-import { describe, expect, test, afterAll, beforeAll } from '@jest/globals';
+import { describe, expect, test, beforeAll } from '@jest/globals';
 import { UserIdContext, UserLoginContext, UserRegisterContext } from '../user';
 
 beforeAll(async () => {

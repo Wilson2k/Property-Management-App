@@ -32,7 +32,7 @@ model Tenant {
 model Ticket {
   id         Int      @id @default(autoincrement())
   type       String   @db.Text
-  status     String   @db.Text
+  open       Boolean  @default(true)
   details    String   @db.Text
   openDate   String   @db.Text
   closeDate  String?  @db.Text
