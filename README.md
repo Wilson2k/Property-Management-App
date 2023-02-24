@@ -3,12 +3,12 @@
 
 Website for property owners to manage properties and tenants.
 
-Frontend built with React TypeScript. Backend built with Node.js using Express sessions. Data persisted in a PostgreSQL database and managed using Prisma.
+Frontend built with React TypeScript. Backend built with Node.js using Express sessions. Sessions are stored in memory using Redis. Data persisted in a PostgreSQL database and managed using Prisma.
 
 
 ## Backend Installation
 
-To run backebnd locally, make sure you have [Docker](https://www.docker.com/) installed and running on your machine.
+To run backend locally, make sure you have [Docker](https://www.docker.com/) installed and running on your machine.
 
 First make an .env file to configure your local PostgreSQL database.
 
