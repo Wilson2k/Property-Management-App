@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as PropertyServices from './propertyService';
-import { PropertyIdContext, PropertyAddressContext, PropertyOwnerIdContext } from './property';
+import { PropertyIdContext, PropertyLocationContext, PropertyOwnerIdContext } from './property';
 
 // Get all properties
 const getAllProperties = async (req: Request, res: Response) => {
@@ -27,8 +27,8 @@ const getPropertyById = async (req: Request, res: Response) => {
 
 // Get property address
 const getPropertyByAddress = async (req: Request, res: Response) => {
-    const propertyContext: PropertyAddressContext = {
-        address: req.body.address,
+    const propertyContext: PropertyLocationContext = {
+        location: req.body.address,
     };
     const propertyData = await PropertyServices.getPropertyByAddressService(propertyContext);
     if(propertyData.status === 200 && propertyData.data !== undefined){
@@ -43,6 +43,25 @@ const getAllUserProperties = async(req: Request, res: Response) => {
     const propertyContext: PropertyOwnerIdContext = {
         ownerId: req.body.ownerId,
     };
+    const propertyData = await PropertyServices.getUserPropertiesService(propertyContext);
+    if(propertyData.status === 200 && propertyData.data !== undefined){
+        res.status(propertyData.status).send(propertyData.data);
+    } else {
+        res.status(propertyData.status).send(propertyData.message);
+    }
+};
+
+// Get all properties owned by user with open tickets
+const getAllUserOpenTicketProperties = async(req: Request, res: Response) => {
+    const propertyContext: PropertyOwnerIdContext = {
+        ownerId: req.body.ownerId,
+    };
+    const propertyData = await PropertyServices.getUserOpenTicketProperties(propertyContext);
+    if(propertyData.status === 200 && propertyData.data !== undefined){
+        res.status(propertyData.status).send(propertyData.data);
+    } else {
+        res.status(propertyData.status).send(propertyData.message);
+    }
 };
 
 // Get all properties owned by user in specific city
@@ -58,9 +77,4 @@ const getUserPropertiesByState = async (req: Request, res: Response) => {
 // Get all properties owned by user of specific type
 const getUserPropertiesByType = async (req: Request, res: Response) => {
 
-};
-
-// Get all properties owned by user with open tickets
-const getAllOpenTicketProperties = async(req: Request, res: Response) => {
-    
 };

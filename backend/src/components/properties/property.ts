@@ -4,8 +4,8 @@ interface PropertyIdContext {
     id: string;
 }
 
-interface PropertyAddressContext {
-    address: string;
+interface PropertyLocationContext {
+    location: string;
 }
 
 interface PropertyOwnerIdContext {
@@ -24,4 +24,4 @@ interface MultPropertiesReturnContext {
     message: string;
 }
 
-export { PropertyIdContext, PropertyAddressContext, PropertyReturnContext, PropertyOwnerIdContext, MultPropertiesReturnContext }
+export { PropertyIdContext, PropertyReturnContext, PropertyLocationContext, PropertyOwnerIdContext, MultPropertiesReturnContext }

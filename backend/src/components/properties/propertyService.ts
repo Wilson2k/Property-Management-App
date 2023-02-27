@@ -16,7 +16,7 @@ const getAllPropertiesService = async () => {
         proppertyReturn.status = 404;
     }
     return proppertyReturn;
-}
+};
 
 const getPropertyByIdService = async (propertyContext: PropertyContexts.PropertyIdContext) => {
     const propertyReturn: PropertyContexts.PropertyReturnContext = {
@@ -37,14 +37,14 @@ const getPropertyByIdService = async (propertyContext: PropertyContexts.Property
         propertyReturn.status = 200;
     }
     return propertyReturn;
-}
+};
 
-const getPropertyByAddressService = async (propertyContext: PropertyContexts.PropertyAddressContext) => {
+const getPropertyByAddressService = async (propertyContext: PropertyContexts.PropertyLocationContext) => {
     const propertyReturn: PropertyContexts.PropertyReturnContext = {
         message: 'Error getting property',
         status: 404,
     }
-    if(!propertyContext.address) {
+    if(!propertyContext.location) {
         propertyReturn.message = 'Bad property address';
         propertyReturn.status = 422;
         return propertyReturn;
@@ -56,6 +56,72 @@ const getPropertyByAddressService = async (propertyContext: PropertyContexts.Pro
         propertyReturn.status = 200;
     }
     return propertyReturn;
-}
+};
 
-export { getAllPropertiesService, getPropertyByIdService, getPropertyByAddressService }
+// Get all properties owned by a specific user
+const getUserPropertiesService = async ( ownerContext: PropertyContexts.PropertyOwnerIdContext) => {
+    const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
+        message: 'Error getting properties',
+        status: 404,
+    }
+    // Check that ownerId string is numeric
+    const propertyId = +ownerContext.ownerId;
+    if(isNaN(propertyId)) {
+        propertyReturn.message = 'Bad owner ID';
+        propertyReturn.status = 422;
+        return propertyReturn;
+    }
+    const findProperties = await PropertyDAL.getAllUserProperties(ownerContext);
+    if(findProperties !== null){
+        propertyReturn.message = 'Owner Properties found';
+        propertyReturn.data = findProperties;
+        propertyReturn.status = 200;
+    }
+    return propertyReturn;
+};
+
+// Get all properties owned by a specific user in a city
+const getUserPropertiesByCityService = async (ownerContext: PropertyContexts.PropertyOwnerIdContext, propertyContext: PropertyContexts.PropertyLocationContext) => {
+    const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
+        message: 'Error getting properties',
+        status: 404,
+    }
+    // Check that ownerId string is numeric
+    const propertyId = +ownerContext.ownerId;
+    if(isNaN(propertyId)) {
+        propertyReturn.message = 'Bad owner ID';
+        propertyReturn.status = 422;
+        return propertyReturn;
+    }
+    const findProperties = await PropertyDAL.getUserPropertiesByCity(ownerContext, propertyContext);
+    if(findProperties !== null){
+        propertyReturn.message = 'Owner Properties found';
+        propertyReturn.data = findProperties;
+        propertyReturn.status = 200;
+    }
+    return propertyReturn;
+};
+
+// Get all properties owned by a specific user with open tickets
+const getUserOpenTicketProperties = async ( ownerContext: PropertyContexts.PropertyOwnerIdContext) => {
+    const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
+        message: 'Error getting properties',
+        status: 404,
+    }
+    // Check that ownerId string is numeric
+    const propertyId = +ownerContext.ownerId;
+    if(isNaN(propertyId)) {
+        propertyReturn.message = 'Bad owner ID';
+        propertyReturn.status = 422;
+        return propertyReturn;
+    }
+    const findProperties = await PropertyDAL.getUserOpenTicketProperties(ownerContext);
+    if(findProperties !== null){
+        propertyReturn.message = 'Owner Properties found';
+        propertyReturn.data = findProperties;
+        propertyReturn.status = 200;
+    }
+    return propertyReturn;
+};
+
+export { getAllPropertiesService, getPropertyByIdService, getPropertyByAddressService, getUserPropertiesService, getUserOpenTicketProperties }
