@@ -21,6 +21,11 @@ const getPropertyByAddress = async (propertyContext: PropertyAddressContext) => 
     return query;
 }
 
+const getAllProperties = async () => {
+    const query = await prisma.property.findMany();
+    return query;
+}
+
 const getAllUserProperties = async (PropertyOwnerIdContext: PropertyOwnerIdContext) => {
     const userId = +PropertyOwnerIdContext.ownerId;
     const query = await prisma.property.findMany({
@@ -46,4 +51,4 @@ const getUserOpenTicketProperties = async (PropertyOwnerIdContext: PropertyOwner
     return query;
 }
 
-export { getPropertyById, getPropertyByAddress, getAllUserProperties, getUserOpenTicketProperties }
+export { getPropertyById, getPropertyByAddress, getAllUserProperties, getUserOpenTicketProperties, getAllProperties }

@@ -76,7 +76,7 @@ const getAllUserService = async () => {
         userReturn.data = users;
         userReturn.status = 200;
     } else {
-        userReturn.message = 'No Users found';
+        userReturn.message = 'No users found';
         userReturn.status = 404;
     }
     return userReturn;

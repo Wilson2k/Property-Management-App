@@ -24,4 +24,4 @@ interface MultPropertiesReturnContext {
     message: string;
 }
 
-export { PropertyIdContext, PropertyAddressContext, PropertyReturnContext, PropertyOwnerIdContext }
+export { PropertyIdContext, PropertyAddressContext, PropertyReturnContext, PropertyOwnerIdContext, MultPropertiesReturnContext }
