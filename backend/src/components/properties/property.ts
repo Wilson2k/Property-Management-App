@@ -1,15 +1,13 @@
 import { Property } from '@prisma/client';
 
-interface PropertyIdContext {
-    id: string;
-}
-
-interface PropertyLocationContext {
-    location: string;
-}
-
-interface PropertyOwnerIdContext {
-    ownerId: string;
+interface PropertyContext {
+    id?: string,
+    address?: string,
+    city?: string,
+    state?: string,
+    type?: string,
+    size?: string,
+    ownerId?: number,
 }
 
 interface PropertyReturnContext {
@@ -24,4 +22,4 @@ interface MultPropertiesReturnContext {
     message: string;
 }
 
-export { PropertyIdContext, PropertyReturnContext, PropertyLocationContext, PropertyOwnerIdContext, MultPropertiesReturnContext }
+export { PropertyContext, PropertyReturnContext, MultPropertiesReturnContext }

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { PropertyIdContext, PropertyOwnerIdContext, PropertyLocationContext } from './property';
+import { PropertyContext } from './property';
 const prisma = new PrismaClient()
 
 const getAllProperties = async () => {
@@ -7,8 +7,7 @@ const getAllProperties = async () => {
     return query;
 };
 
-const getPropertyById = async (propertyContext: PropertyIdContext) => {
-    const propertyId = +propertyContext.id;
+const getPropertyById = async (propertyId: number) => {
     const query = await prisma.property.findUnique({
         where: {
             id: propertyId,
@@ -17,54 +16,52 @@ const getPropertyById = async (propertyContext: PropertyIdContext) => {
     return query;
 };
 
-const getPropertyByAddress = async (propertyContext: PropertyLocationContext) => {
+const getPropertyByAddress = async (propertyAddress: string) => {
     const query = await prisma.property.findUnique({
         where: {
-            address: propertyContext.location,
+            address: propertyAddress,
         }
     });
     return query;
 };
 
-const getUserPropertiesByCity = async (ownerContext: PropertyOwnerIdContext, propertyContext: PropertyLocationContext) => {
-    const userId = +ownerContext.ownerId;
+const getUserPropertiesByCity = async (ownerId: number, propertyCity: string) => {
     const query = await prisma.property.findMany({
         where: {
-            ownerId: userId,
-            city: propertyContext.location,
+            ownerId: ownerId,
+            city: propertyCity,
         }
     });
     return query;
 };
 
-const getUserPropertiesByState = async (propertyContext: PropertyLocationContext) => {
+const getUserPropertiesByState = async (ownerId: number, propertyState: string) => {
     const query = await prisma.property.findMany({
         where: {
-            state: propertyContext.location,
+            ownerId: ownerId,
+            state: propertyState,
         }
     });
     return query;
 };
 
-const getUserPropertiesByType = async (propertyContext: PropertyLocationContext) => {
+const getUserPropertiesByType = async (propertyContext: PropertyContext) => {
 
 };
 
-const getAllUserProperties = async ( ownerContext: PropertyOwnerIdContext) => {
-    const userId = +ownerContext.ownerId;
+const getAllUserProperties = async ( ownerId: number ) => {
     const query = await prisma.property.findMany({
         where: {
-            ownerId: userId,
+            ownerId: ownerId,
         }
     });
     return query;
 };
 
-const getUserOpenTicketProperties = async ( ownerContext: PropertyOwnerIdContext) => {
-    const userId = +ownerContext.ownerId;
+const getUserOpenTicketProperties = async ( ownerId: number) => {
     const query = await prisma.property.findMany({
         where: {
-            ownerId: userId,
+            ownerId: ownerId,
             tickets: {
                 some: {
                     open: true,
@@ -75,4 +72,4 @@ const getUserOpenTicketProperties = async ( ownerContext: PropertyOwnerIdContext
     return query;
 };
 
-export { getPropertyById, getPropertyByAddress, getAllUserProperties, getUserPropertiesByCity, getUserOpenTicketProperties, getAllProperties }
+export { getPropertyById, getPropertyByAddress, getAllUserProperties, getUserPropertiesByCity, getUserPropertiesByState, getUserOpenTicketProperties, getAllProperties }
