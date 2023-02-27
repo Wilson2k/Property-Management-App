@@ -45,8 +45,14 @@ const getUserPropertiesByState = async (ownerId: number, propertyState: string) 
     return query;
 };
 
-const getUserPropertiesByType = async (propertyContext: PropertyContext) => {
-
+const getUserPropertiesByType = async (ownerId: number, PropertyType: string) => {
+    const query = await prisma.property.findMany({
+        where: {
+            ownerId: ownerId,
+            state: PropertyType,
+        }
+    });
+    return query;
 };
 
 const getAllUserProperties = async ( ownerId: number ) => {

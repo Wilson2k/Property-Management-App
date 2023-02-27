@@ -94,5 +94,14 @@ const getUserPropertiesByState = async (req: Request, res: Response) => {
 
 // Get all properties owned by user of specific type
 const getUserPropertiesByType = async (req: Request, res: Response) => {
-
+    const propertyContext: PropertyContext = {
+        type: req.body.type,
+        ownerId: req.body.ownerId,
+    };
+    const propertyData = await PropertyServices.getUserPropertiesByTypeService(propertyContext);
+    if(propertyData.status === 200 && propertyData.data !== undefined){
+        res.status(propertyData.status).send(propertyData.data);
+    } else {
+        res.status(propertyData.status).send(propertyData.message);
+    }
 };

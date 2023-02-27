@@ -99,7 +99,7 @@ const getUserPropertiesByCityService = async ( propertyContext: PropertyContexts
             return propertyReturn;
         }
         if(!propertyContext.city) {
-            propertyReturn.message = 'Bad property location';
+            propertyReturn.message = 'Bad property city';
             propertyReturn.status = 422;
             return propertyReturn;
         }
@@ -128,11 +128,40 @@ const getUserPropertiesByStateService = async (propertyContext: PropertyContexts
             return propertyReturn;
         }
         if(!propertyContext.state) {
-            propertyReturn.message = 'Bad property location';
+            propertyReturn.message = 'Bad property state';
             propertyReturn.status = 422;
             return propertyReturn;
         }
         const findProperties = await PropertyDAL.getUserPropertiesByState(ownerId, propertyContext.state);
+        if(findProperties !== null){
+            propertyReturn.message = 'Owner Properties found';
+            propertyReturn.data = findProperties;
+            propertyReturn.status = 200;
+        }
+    }
+    return propertyReturn;
+};
+
+// Get all properties owned by a specific user by type
+const getUserPropertiesByTypeService = async (propertyContext: PropertyContexts.PropertyContext) => {
+    const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
+        message: 'Error getting properties',
+        status: 404,
+    }
+    if(propertyContext.ownerId){
+        // Check that ownerId string is numeric
+        const ownerId = +propertyContext.ownerId;
+        if(isNaN(ownerId)) {
+            propertyReturn.message = 'Bad owner ID';
+            propertyReturn.status = 422;
+            return propertyReturn;
+        }
+        if(!propertyContext.type) {
+            propertyReturn.message = 'Bad property type';
+            propertyReturn.status = 422;
+            return propertyReturn;
+        }
+        const findProperties = await PropertyDAL.getUserPropertiesByState(ownerId, propertyContext.type);
         if(findProperties !== null){
             propertyReturn.message = 'Owner Properties found';
             propertyReturn.data = findProperties;
@@ -166,4 +195,4 @@ const getUserOpenTicketProperties = async ( propertyContext: PropertyContexts.Pr
     return propertyReturn;
 };
 
-export { getAllPropertiesService, getPropertyByIdService, getPropertyByAddressService, getUserPropertiesByCityService, getUserPropertiesByStateService, getUserPropertiesService, getUserOpenTicketProperties }
+export { getAllPropertiesService, getPropertyByIdService, getPropertyByAddressService, getUserPropertiesByCityService, getUserPropertiesByStateService, getUserPropertiesByTypeService, getUserPropertiesService, getUserOpenTicketProperties }
