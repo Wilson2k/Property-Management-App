@@ -1,9 +1,18 @@
 import { PrismaClient } from '@prisma/client'
-import { UserLoginContext, UserRegisterContext, UserIdContext } from './user';
+import { UserContext, UserRegisterContext, UserUpdateInput } from './user';
 const prisma = new PrismaClient()
 
-const getUserById = async (userContext: UserIdContext) => {
-    const userId = +userContext.id;
+const getAllUsers = async () => {
+    const query = await prisma.user.findMany();
+    return query;
+}
+
+const deleteAllUsers = async () => {
+    const query = await prisma.user.deleteMany({});
+    return query;
+}
+
+const getUserById = async (userId: number) => {
     const query = await prisma.user.findUnique({
         where: {
             id: userId,
@@ -12,17 +21,12 @@ const getUserById = async (userContext: UserIdContext) => {
     return query;
 }
 
-const getUserByEmail = async (userContext: UserLoginContext | UserRegisterContext) => {
+const getUserByEmail = async (userEmail: string) => {
     const query = await prisma.user.findUnique({
         where: {
-            email: userContext.email,
+            email: userEmail,
         }
     });
-    return query;
-}
-
-const getAllUsers = async () => {
-    const query = await prisma.user.findMany();
     return query;
 }
 
@@ -33,8 +37,15 @@ const createNewUser = async (userContext: UserRegisterContext) => {
     return query;
 }
 
-const deleteUser = async (userContext: UserIdContext) => {
-    const userId = +userContext.id;
+const updateUser = async (userId: number, userContext: UserUpdateInput) => {
+    const query = await prisma.user.update({
+        where: { id: userId },
+        data: userContext,
+    });
+    return query;
+}
+
+const deleteUser = async (userId: number) => {
     // Delete user with id, only pass email and name data back
     const query = await prisma.user.delete({
         where: {
@@ -49,11 +60,6 @@ const deleteUser = async (userContext: UserIdContext) => {
     return query;
 }
 
-const deleteAllUsers = async () => {
-    const query = await prisma.user.deleteMany({});
-    return query;
-}
 
 
-
-export { getUserById, createNewUser, getUserByEmail, deleteUser, getAllUsers, deleteAllUsers }
+export { getUserById, createNewUser, getUserByEmail, deleteUser, getAllUsers, updateUser, deleteAllUsers }

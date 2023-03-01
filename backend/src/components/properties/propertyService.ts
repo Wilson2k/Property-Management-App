@@ -3,7 +3,7 @@ import * as PropertyContexts from './property';
 
 const getAllPropertiesService = async () => {
     const proppertyReturn: PropertyContexts.MultPropertiesReturnContext = {
-        message: 'Error getting properties',
+        message: 'Error getting all properties',
         status: 400,
     }
     const properties = await PropertyDAL.getAllProperties();
@@ -63,7 +63,7 @@ const getPropertyByAddressService = async (propertyContext: PropertyContexts.Pro
 // Get all properties owned by a specific user
 const getUserPropertiesService = async ( propertyContext: PropertyContexts.PropertyContext) => {
     const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
-        message: 'Error getting properties',
+        message: 'Error getting user properties',
         status: 404,
     }
     if(propertyContext.ownerId){
@@ -87,7 +87,7 @@ const getUserPropertiesService = async ( propertyContext: PropertyContexts.Prope
 // Get all properties owned by a specific user in a city
 const getUserPropertiesByCityService = async ( propertyContext: PropertyContexts.PropertyContext) => {
     const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
-        message: 'Error getting properties',
+        message: 'Error getting properties by city',
         status: 404,
     }
     if(propertyContext.ownerId){
@@ -116,7 +116,7 @@ const getUserPropertiesByCityService = async ( propertyContext: PropertyContexts
 // Get all properties owned by a specific user in a state
 const getUserPropertiesByStateService = async (propertyContext: PropertyContexts.PropertyContext) => {
     const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
-        message: 'Error getting properties',
+        message: 'Error getting properties by state',
         status: 404,
     }
     if(propertyContext.ownerId){
@@ -145,7 +145,7 @@ const getUserPropertiesByStateService = async (propertyContext: PropertyContexts
 // Get all properties owned by a specific user by type
 const getUserPropertiesByTypeService = async (propertyContext: PropertyContexts.PropertyContext) => {
     const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
-        message: 'Error getting properties',
+        message: 'Error getting properties by type',
         status: 404,
     }
     if(propertyContext.ownerId){
@@ -161,7 +161,7 @@ const getUserPropertiesByTypeService = async (propertyContext: PropertyContexts.
             propertyReturn.status = 422;
             return propertyReturn;
         }
-        const findProperties = await PropertyDAL.getUserPropertiesByState(ownerId, propertyContext.type);
+        const findProperties = await PropertyDAL.getUserPropertiesByType(ownerId, propertyContext.type);
         if(findProperties !== null){
             propertyReturn.message = 'Owner Properties found';
             propertyReturn.data = findProperties;
@@ -174,7 +174,7 @@ const getUserPropertiesByTypeService = async (propertyContext: PropertyContexts.
 // Get all properties owned by a specific user with open tickets
 const getUserOpenTicketProperties = async ( propertyContext: PropertyContexts.PropertyContext ) => {
     const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
-        message: 'Error getting properties',
+        message: 'Error getting properties with open tickets',
         status: 404,
     }
     if(propertyContext.ownerId){

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as UserServices from './userService';
-import { UserIdContext, UserLoginContext, UserRegisterContext } from './user';
+import { UserContext, UserLoginContext, UserRegisterContext } from './user';
 
 // Getting all users
 const getAllUsers = async (req: Request, res: Response) => {
@@ -15,10 +15,28 @@ const getAllUsers = async (req: Request, res: Response) => {
 // Get a single user
 const getUser = async (req: Request, res: Response) => {
     // Create new user context from req object here
-    const userContext: UserIdContext = {
+    const userContext: UserContext = {
         id: req.body.id,
     };
     const userData = await UserServices.getUserService(userContext);
+    if(userData.status === 200 && userData.data !== undefined){
+        res.status(userData.status).send(userData.data);
+    } else {
+        res.status(userData.status).send(userData.message);
+    }
+};
+
+// Update a user's info
+const updateUser = async (req: Request, res: Response) => {
+    // Create new user context from req object here
+    const userContext: UserContext = {
+        id: req.body.id,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: req.body.password,
+    };
+    const userData = await UserServices.updateUserService(userContext);
     if(userData.status === 200 && userData.data !== undefined){
         res.status(userData.status).send(userData.data);
     } else {
@@ -62,7 +80,7 @@ const registerUser = async (req: Request, res: Response) => {
 // Delete user
 const deleteUser = async (req: Request, res: Response) => {
     // Create new user context from req object here
-    const userContext: UserIdContext = {
+    const userContext: UserContext = {
         id: req.body.id,
     };
     const deletedUser = await UserServices.deleteUserService(userContext);
@@ -81,4 +99,4 @@ const logoutUser = async (req: Request, res: Response) => {
     });
 };
 
-export { loginUser, registerUser, getUser, logoutUser, deleteUser, getAllUsers }
+export { loginUser, registerUser, getUser, logoutUser, deleteUser, getAllUsers, updateUser }

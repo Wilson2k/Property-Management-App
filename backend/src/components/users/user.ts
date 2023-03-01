@@ -1,5 +1,6 @@
 import { User } from '@prisma/client';
 
+// Require certain fields for user login and register
 interface UserLoginContext {
     email: string;
     password: string;
@@ -12,8 +13,19 @@ interface UserRegisterContext {
     password: string;
 }
 
-interface UserIdContext {
-    id: string;
+interface UserContext {
+    id?: string,
+    firstName?: string,
+    lastName?: string,
+    email?: string,
+    password?: string,
+}
+
+interface UserUpdateInput {
+    firstName?: string,
+    lastName?: string,
+    email?: string,
+    password?: string,
 }
 
 interface UserReturnContext {
@@ -28,4 +40,4 @@ interface MultUsersReturnContext {
     message: string;
 }
 
-export { UserLoginContext, UserRegisterContext, UserIdContext, UserReturnContext, MultUsersReturnContext }
+export { UserLoginContext, UserRegisterContext, UserContext, UserUpdateInput, UserReturnContext, MultUsersReturnContext }

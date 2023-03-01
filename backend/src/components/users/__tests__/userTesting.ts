@@ -1,7 +1,7 @@
 // Jest unit testing user routes
 import * as UserServices from '../userService';
 import { describe, expect, test, beforeAll } from '@jest/globals';
-import { UserIdContext, UserLoginContext, UserRegisterContext } from '../user';
+import { UserContext, UserLoginContext, UserRegisterContext } from '../user';
 
 beforeAll(async () => {
     // Seed database with users
@@ -73,7 +73,7 @@ describe('Register User, then delete user', () => {
     });
 
     test('Delete newly registered user', async () => {
-        const userIdContext: UserIdContext = {  
+        const userIdContext: UserContext = {  
             id: userId.toString(),
         };
         const deletedUser = await UserServices.deleteUserService(userIdContext);
@@ -105,7 +105,7 @@ describe('Login User, get logged in user', () => {
     });
 
     test('Get logged in user', async () => {
-        const user: UserIdContext = {  
+        const user: UserContext = {  
             id: userId.toString(),
         };
         const newUser = await UserServices.getUserService(user);
@@ -122,6 +122,6 @@ describe('Delete all users', () => {
         await UserServices.deleteAllUserService();
         const allUsers = await UserServices.getAllUserService();
         expect(allUsers.status).toBe(404);
-        expect(allUsers.message).toBe('No Users found');
+        expect(allUsers.message).toBe('No users found');
     });
 });
