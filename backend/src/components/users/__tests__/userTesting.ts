@@ -117,6 +117,48 @@ describe('Login User, get logged in user', () => {
     });
 });
 
+describe('Register then update a new user', () => {
+    let userId = 0
+    const user: UserRegisterContext = {  
+        firstName: 'Big',
+        lastName: 'Duckbear',
+        email: 'duckbear@ducky.com',
+        password: 'honkhonk',
+    };
+    test('Register a new user', async () => {
+        const newUser = await UserServices.registerUserService(user);
+        expect(newUser.status).toBe(200);
+        expect(newUser.data?.email).toBe(user.email);
+        expect(newUser.data?.firstName).toBe(user.firstName);
+        expect(newUser.data?.lastName).toBe(user.lastName);
+        if(newUser.data?.id){
+            userId = newUser.data?.id;
+        }
+    });
+
+    test('Update newly registered user', async () => {
+        const userContext: UserContext = {  
+            id: userId.toString(),
+            firstName: 'Perry',
+            lastName: 'Plat',
+        };
+        const updatedUser = await UserServices.updateUserService(userContext);
+        expect(updatedUser.status).toBe(200);
+        expect(updatedUser.data?.firstName).toBe('Perry');
+        expect(updatedUser.data?.lastName).toBe('Plat');
+    });
+
+    test('Get updated user data', async () => {
+        const userContext: UserContext = {  
+            id: userId.toString(),
+        };
+        const updatedUser = await UserServices.getUserService(userContext);
+        expect(updatedUser.status).toBe(200);
+        expect(updatedUser.data?.firstName).toBe('Perry');
+        expect(updatedUser.data?.lastName).toBe('Plat');
+    });
+});
+
 describe('Delete all users', () => {
     test('Delete all registered users', async () => {
         await UserServices.deleteAllUserService();

@@ -86,7 +86,7 @@ const updateUserService = async (userContext: UserContexts.UserContext) => {
         }
         // Check that updated data is there
         if(typeof(userContext.email) !== 'undefined' || typeof(userContext.firstName) !== 'undefined' || typeof(userContext.lastName) !== 'undefined' || typeof(userContext.password) !== 'undefined'){
-            const updateData = userContext || {}
+            const {id, ...updateData} = userContext || {};
             const updatedUser = await UserDAL.updateUser(userId, updateData);
             if(updatedUser != null){
                 userReturn.message = 'User updated';
