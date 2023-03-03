@@ -32,7 +32,7 @@ const registerUserService = async (userContext: UserContexts.UserRegisterContext
     }
     if (userContext.email != null) {
         const findUser = await UserDAL.getUserByEmail(userContext.email);
-        if (findUser == null){
+        if (findUser === null){
             await hash(userContext.password, 12).then(async (hash) => {
                 userContext.password = hash;
                 const newUser = await UserDAL.createNewUser(userContext);

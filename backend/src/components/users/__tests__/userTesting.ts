@@ -17,9 +17,9 @@ beforeAll(async () => {
         email: 'manbear@nosmokey.com',
         password: 'pigbear',
     };
-    let users = [];
+    const users = [];
     users.push(user1, user2);
-    for(let user of users){
+    for(const user of users){
         await UserServices.registerUserService(user);
     }
 });

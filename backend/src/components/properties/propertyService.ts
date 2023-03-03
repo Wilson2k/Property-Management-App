@@ -6,7 +6,10 @@ const createPropertyService = async (propertyContext: PropertyContexts.PropertyC
         message: 'Error creating property',
         status: 400,
     };
-    
+    const findProperty = await PropertyDAL.getPropertyByAddress(propertyContext.address);
+    if (findProperty === null) {
+        
+    }
 };
 
 const getAllPropertiesService = async () => {
