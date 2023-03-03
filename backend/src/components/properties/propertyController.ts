@@ -56,7 +56,7 @@ const getAllUserOpenTicketProperties = async(req: Request, res: Response) => {
     const ownerContext: PropertyContext = {
         ownerId: req.body.ownerId,
     };
-    const propertyData = await PropertyServices.getUserOpenTicketProperties(ownerContext);
+    const propertyData = await PropertyServices.getUserOpenTicketPropertiesService(ownerContext);
     if(propertyData.status === 200 && propertyData.data !== undefined){
         res.status(propertyData.status).send(propertyData.data);
     } else {
@@ -99,6 +99,21 @@ const getUserPropertiesByType = async (req: Request, res: Response) => {
         ownerId: req.body.ownerId,
     };
     const propertyData = await PropertyServices.getUserPropertiesByTypeService(propertyContext);
+    if(propertyData.status === 200 && propertyData.data !== undefined){
+        res.status(propertyData.status).send(propertyData.data);
+    } else {
+        res.status(propertyData.status).send(propertyData.message);
+    }
+};
+
+// Get all properties owned by user of specific type
+const getUserPropertiesByTenant = async (req: Request, res: Response) => {
+    const propertyContext: PropertyContext = {
+        type: req.body.type,
+        ownerId: req.body.ownerId,
+        tenant: req.body.tenantName,
+    };
+    const propertyData = await PropertyServices.getUserPropertiesByTenantService(propertyContext);
     if(propertyData.status === 200 && propertyData.data !== undefined){
         res.status(propertyData.status).send(propertyData.data);
     } else {

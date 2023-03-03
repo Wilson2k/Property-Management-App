@@ -54,6 +54,21 @@ const getUserPropertiesByType = async (ownerId: number, propertyType: string) =>
     return query;
 };
 
+const getUserPropertiesByTenant = async ( ownerId: number, tenantFname: string, tenantLname: string) => {
+    const query = await prisma.property.findMany({
+        where: {
+            ownerId: ownerId,
+            tenants: {
+                some: {
+                    firstName: tenantFname,
+                    lastName: tenantLname,
+                }
+            },
+        }
+    });
+    return query;
+};
+
 const getAllUserProperties = async ( ownerId: number ) => {
     const query = await prisma.property.findMany({
         where: {
@@ -77,4 +92,5 @@ const getUserOpenTicketProperties = async ( ownerId: number) => {
     return query;
 };
 
-export { getAllProperties, getPropertyById, getPropertyByAddress, getAllUserProperties, getUserPropertiesByCity, getUserPropertiesByState, getUserPropertiesByType, getUserOpenTicketProperties }
+
+export { getAllProperties, getPropertyById, getPropertyByAddress, getAllUserProperties, getUserPropertiesByCity, getUserPropertiesByState, getUserPropertiesByType, getUserPropertiesByTenant, getUserOpenTicketProperties }

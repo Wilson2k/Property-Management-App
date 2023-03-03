@@ -1,6 +1,14 @@
 import * as PropertyDAL from './propertyDAL';
 import * as PropertyContexts from './property';
 
+const createPropertyService = async (propertyContext: PropertyContexts.PropertyCreateContext) => {
+    const propertyReturn: PropertyContexts.PropertyReturnContext = {
+        message: 'Error creating property',
+        status: 400,
+    };
+    
+};
+
 const getAllPropertiesService = async () => {
     const proppertyReturn: PropertyContexts.MultPropertiesReturnContext = {
         message: 'Error getting all properties',
@@ -23,7 +31,7 @@ const getPropertyByIdService = async (propertyContext: PropertyContexts.Property
         message: 'Error getting property',
         status: 404,
     }
-    if(propertyContext.id){
+    if(propertyContext.id != null){
         // Check that input string is numeric
         const propertyId = +propertyContext.id;
         if(isNaN(propertyId)) {
@@ -46,7 +54,7 @@ const getPropertyByAddressService = async (propertyContext: PropertyContexts.Pro
         message: 'Error getting property',
         status: 404,
     }
-    if(!propertyContext.address) {
+    if(propertyContext.address == null) {
         propertyReturn.message = 'Bad property address';
         propertyReturn.status = 422;
         return propertyReturn;
@@ -66,7 +74,7 @@ const getUserPropertiesService = async ( propertyContext: PropertyContexts.Prope
         message: 'Error getting user properties',
         status: 404,
     }
-    if(propertyContext.ownerId){
+    if(propertyContext.ownerId != null){
         // Check that ownerId string is numeric
         const ownerId = +propertyContext.ownerId;
         if(isNaN(ownerId)) {
@@ -90,7 +98,7 @@ const getUserPropertiesByCityService = async ( propertyContext: PropertyContexts
         message: 'Error getting properties by city',
         status: 404,
     }
-    if(propertyContext.ownerId){
+    if(propertyContext.ownerId != null){
         // Check that ownerId string is numeric
         const ownerId = +propertyContext.ownerId;
         if(isNaN(ownerId)) {
@@ -119,7 +127,7 @@ const getUserPropertiesByStateService = async (propertyContext: PropertyContexts
         message: 'Error getting properties by state',
         status: 404,
     }
-    if(propertyContext.ownerId){
+    if(propertyContext.ownerId != null){
         // Check that ownerId string is numeric
         const ownerId = +propertyContext.ownerId;
         if(isNaN(ownerId)) {
@@ -148,7 +156,7 @@ const getUserPropertiesByTypeService = async (propertyContext: PropertyContexts.
         message: 'Error getting properties by type',
         status: 404,
     }
-    if(propertyContext.ownerId){
+    if(propertyContext.ownerId != null){
         // Check that ownerId string is numeric
         const ownerId = +propertyContext.ownerId;
         if(isNaN(ownerId)) {
@@ -172,12 +180,12 @@ const getUserPropertiesByTypeService = async (propertyContext: PropertyContexts.
 };
 
 // Get all properties owned by a specific user with open tickets
-const getUserOpenTicketProperties = async ( propertyContext: PropertyContexts.PropertyContext ) => {
+const getUserOpenTicketPropertiesService = async ( propertyContext: PropertyContexts.PropertyContext ) => {
     const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
         message: 'Error getting properties with open tickets',
         status: 404,
     }
-    if(propertyContext.ownerId){
+    if(propertyContext.ownerId != null){
         // Check that ownerId string is numeric
         const ownerId = +propertyContext.ownerId;
         if(isNaN(ownerId)) {
@@ -195,4 +203,36 @@ const getUserOpenTicketProperties = async ( propertyContext: PropertyContexts.Pr
     return propertyReturn;
 };
 
-export { getAllPropertiesService, getPropertyByIdService, getPropertyByAddressService, getUserPropertiesByCityService, getUserPropertiesByStateService, getUserPropertiesByTypeService, getUserPropertiesService, getUserOpenTicketProperties }
+// Get all properties owned by a specific user with a specific tenant
+const getUserPropertiesByTenantService = async ( propertyContext: PropertyContexts.PropertyContext ) => {
+    const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
+        message: 'Error getting properties with open tickets',
+        status: 404,
+    }
+    if(propertyContext.ownerId != null && propertyContext.tenant != null){
+        // Check that ownerId string is numeric
+        const ownerId = +propertyContext.ownerId;
+        if(isNaN(ownerId)) {
+            propertyReturn.message = 'Bad owner ID';
+            propertyReturn.status = 422;
+            return propertyReturn;
+        }
+        const tenantName = propertyContext.tenant.split(" ", 1);
+        if(tenantName.length !== 2){
+            propertyReturn.message = 'Bad tenant name';
+            propertyReturn.status = 422;
+            return propertyReturn;
+        }
+        const tenantFname = tenantName[0];
+        const tenantLname = tenantName[1];
+        const findProperties = await PropertyDAL.getUserPropertiesByTenant(ownerId, tenantFname, tenantLname);
+        if(findProperties !== null){
+            propertyReturn.message = 'Owner Properties found';
+            propertyReturn.data = findProperties;
+            propertyReturn.status = 200;
+        }
+    }
+    return propertyReturn;
+};
+
+export { getAllPropertiesService, getPropertyByIdService, getPropertyByAddressService, getUserPropertiesByCityService, getUserPropertiesByStateService, getUserPropertiesByTypeService, getUserPropertiesByTenantService, getUserPropertiesService, getUserOpenTicketPropertiesService }

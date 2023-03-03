@@ -7,7 +7,7 @@ const loginUserService = async (userContext: UserContexts.UserLoginContext) => {
         message: 'Error getting user',
         status: 404,
     }
-    if(typeof(userContext.email) !== 'undefined'){
+    if(userContext.email != null){
         const findUser = await UserDAL.getUserByEmail(userContext.email);
         if (findUser != null){
             await compare(userContext.password, findUser.password).then((res) => {
@@ -30,7 +30,7 @@ const registerUserService = async (userContext: UserContexts.UserRegisterContext
         message: 'Error registering user',
         status: 400,
     }
-    if (typeof(userContext.email) !== 'undefined') {
+    if (userContext.email != null) {
         const findUser = await UserDAL.getUserByEmail(userContext.email);
         if (findUser == null){
             await hash(userContext.password, 12).then(async (hash) => {
@@ -53,7 +53,7 @@ const getUserService = async (userContext: UserContexts.UserContext) => {
         message: 'Error getting user',
         status: 404,
     }
-    if(typeof(userContext.id) !== 'undefined'){
+    if(userContext.id != null){
         // Check that input string is numeric
         const userId = +userContext.id;
         if(isNaN(userId)) {
@@ -76,7 +76,7 @@ const updateUserService = async (userContext: UserContexts.UserContext) => {
         message: 'Error getting user',
         status: 404,
     }
-    if(typeof(userContext.id) !== 'undefined'){
+    if(userContext.id != null){
         // Check that input string is numeric
         const userId = +userContext.id;
         if(isNaN(userId)) {
@@ -85,7 +85,7 @@ const updateUserService = async (userContext: UserContexts.UserContext) => {
             return userReturn;
         }
         // Check that updated data is there
-        if(typeof(userContext.email) !== 'undefined' || typeof(userContext.firstName) !== 'undefined' || typeof(userContext.lastName) !== 'undefined' || typeof(userContext.password) !== 'undefined'){
+        if(userContext.email != null || userContext.firstName != null || userContext.lastName != null || userContext.password != null){
             const {id, ...updateData} = userContext || {};
             const updatedUser = await UserDAL.updateUser(userId, updateData);
             if(updatedUser != null){
@@ -123,7 +123,7 @@ const deleteUserService = async (userContext: UserContexts.UserContext) => {
         message: 'Error deleting user',
         status: 400,
     }
-    if(typeof(userContext.id) !== 'undefined'){
+    if(userContext.id != null){
         // Check that input string is numeric
         const userId = +userContext.id;
         if(isNaN(userId)) {
