@@ -2,6 +2,10 @@ import { Request, Response } from 'express';
 import * as PropertyServices from './propertyService';
 import { PropertyContext } from './property';
 
+interface CustomRequest<T> extends Request {
+    body: T
+}
+
 // Get all properties
 const getAllProperties = async (req: Request, res: Response) => {
     const allPropertyData = await PropertyServices.getAllPropertiesService();

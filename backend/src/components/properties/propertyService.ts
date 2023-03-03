@@ -7,9 +7,10 @@ const createPropertyService = async (propertyContext: PropertyContexts.PropertyC
         status: 400,
     };
     const findProperty = await PropertyDAL.getPropertyByAddress(propertyContext.address);
-    if (findProperty === null) {
-        
+    if(findProperty === null){
+
     }
+    return propertyReturn;
 };
 
 const getAllPropertiesService = async () => {

@@ -1,12 +1,12 @@
-import cors from 'cors'
-import dotenv from 'dotenv'
-import express from 'express'
-import helmet from 'helmet'
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import helmet from 'helmet';
 import connectRedis from 'connect-redis';
 import bodyParser from 'body-parser';
 import { createClient } from 'redis';
 import session from 'express-session'
-import { loginUser, registerUser, getUser, logoutUser, deleteUser, getAllUsers } from './components/users/userController'
+import * as UserRoutes from './components/users/userController'
 
 dotenv.config();
 
@@ -31,11 +31,13 @@ app.use(session({
     secret: 'secret'
 }))
 
-// Routes
-app.post('/login', loginUser)
-app.post('/register', registerUser)
-app.get('/profile', getUser)
-app.post('/logout', logoutUser)
-app.delete('/delete', deleteUser)
+// User Routes
+app.post('/login', UserRoutes.loginUser)
+app.post('/register', UserRoutes.registerUser)
+app.get('/profile', UserRoutes.getUser)
+app.post('/logout', UserRoutes.logoutUser)
+app.delete('/user/delete', UserRoutes.deleteUser)
+// Property routes
+
 
 export default app

@@ -2,6 +2,10 @@ import { Request, Response } from 'express';
 import * as UserServices from './userService';
 import { UserContext, UserLoginContext, UserRegisterContext } from './user';
 
+interface CustomRequest<T> extends Request {
+    body: T
+}
+
 // Getting all users
 const getAllUsers = async (req: Request, res: Response) => {
     const allUserData = await UserServices.getAllUserService();
@@ -13,7 +17,7 @@ const getAllUsers = async (req: Request, res: Response) => {
 };
 
 // Get a single user
-const getUser = async (req: Request, res: Response) => {
+const getUser = async (req: CustomRequest<UserContext>, res: Response) => {
     // Create new user context from req object here
     const userContext: UserContext = {
         id: req.body.id,
@@ -27,7 +31,7 @@ const getUser = async (req: Request, res: Response) => {
 };
 
 // Update a user's info
-const updateUser = async (req: Request, res: Response) => {
+const updateUser = async (req: CustomRequest<UserContext>, res: Response) => {
     // Create new user context from req object here
     const userContext: UserContext = {
         id: req.body.id,
@@ -45,7 +49,7 @@ const updateUser = async (req: Request, res: Response) => {
 };
 
 // Login user
-const loginUser = async (req: Request, res: Response) => {
+const loginUser = async (req: CustomRequest<UserLoginContext>, res: Response) => {
     // Create new user context from req object here
     const userContext: UserLoginContext = {
         email: req.body.email,
@@ -61,11 +65,11 @@ const loginUser = async (req: Request, res: Response) => {
 };
 
 // Register user
-const registerUser = async (req: Request, res: Response) => {
+const registerUser = async (req: CustomRequest<UserRegisterContext>, res: Response) => {
     // Create new user context from req object here
     const userContext: UserRegisterContext = {  
-        firstName: req.body.fname,
-        lastName: req.body.lname,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
         email: req.body.email,
         password: req.body.password,
     };
@@ -78,7 +82,7 @@ const registerUser = async (req: Request, res: Response) => {
 };
 
 // Delete user
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = async (req: CustomRequest<UserContext>, res: Response) => {
     // Create new user context from req object here
     const userContext: UserContext = {
         id: req.body.id,
@@ -93,7 +97,7 @@ const deleteUser = async (req: Request, res: Response) => {
 
 // Logout user
 const logoutUser = async (req: Request, res: Response) => {
-    req.session.destroy((err) => {
+    await req.session.destroy((err) => {
         res.status(200);
         res.redirect('/');
     });
