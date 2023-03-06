@@ -2,9 +2,11 @@ import { PrismaClient } from '@prisma/client'
 import { PropertyCreateContext } from './property';
 const prisma = new PrismaClient()
 
-const createNewProperty = async (propertyContext: PropertyCreateContext) => {
+const createNewProperty = async (userId: number, propertyContext: PropertyCreateContext) => {
+    const userInfo = { ownerId: userId }
+    const propertyData = { ...propertyContext, ...userInfo};
     const query = await prisma.property.create({
-        data: propertyContext,
+        data: propertyData,
     });
     return query;
 };

@@ -1,7 +1,7 @@
 import { Property, Tenant } from '@prisma/client';
 
 interface PropertyCreateContext {
-    ownerId: number,
+    ownerId: string,
     address: string,
     city: string,
     state: string,

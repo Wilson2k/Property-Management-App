@@ -10,7 +10,7 @@ interface CustomRequest<T> extends Request {
 const createNewUserProperty = (req: CustomRequest<PropertyCreateContext>, res: Response) => {
     (async () => {
         const propertyContext: PropertyCreateContext = {
-            ownerId: +req.session.id,
+            ownerId: req.session.id,
             address: req.body.address,
             city: req.body.city,
             state: req.body.state,

@@ -6,14 +6,15 @@ const createPropertyService = async (propertyContext: PropertyContexts.PropertyC
         message: 'Error creating property',
         status: 400,
     };
-    if (isNaN(propertyContext.ownerId)) {
+    const userId = +propertyContext.ownerId;
+    if (isNaN(userId)) {
         propertyReturn.message = 'Invalid user id';
         propertyReturn.status = 422;
         return propertyReturn;
     }
     const findProperty = await PropertyDAL.getPropertyByAddress(propertyContext.address);
     if (findProperty === null) {
-        const newProperty = await PropertyDAL.createNewProperty(propertyContext);
+        const newProperty = await PropertyDAL.createNewProperty(userId, propertyContext);
         propertyReturn.data = newProperty;
         propertyReturn.status = 200;
         propertyReturn.message = 'Property successfully created';
