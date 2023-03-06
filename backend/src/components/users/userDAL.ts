@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { UserContext, UserRegisterContext, UserUpdateInput } from './user';
+import { UserRegisterContext, UserUpdateInput } from './user';
 const prisma = new PrismaClient()
 
 const getAllUsers = async () => {

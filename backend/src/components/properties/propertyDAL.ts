@@ -1,5 +1,13 @@
 import { PrismaClient } from '@prisma/client'
+import { PropertyCreateContext } from './property';
 const prisma = new PrismaClient()
+
+const createNewProperty = async (propertyContext: PropertyCreateContext) => {
+    const query = await prisma.property.create({
+        data: propertyContext,
+    });
+    return query;
+};
 
 const getAllProperties = async () => {
     const query = await prisma.property.findMany();
@@ -54,7 +62,7 @@ const getUserPropertiesByType = async (ownerId: number, propertyType: string) =>
     return query;
 };
 
-const getUserPropertiesByTenant = async ( ownerId: number, tenantFname: string, tenantLname: string) => {
+const getUserPropertiesByTenant = async (ownerId: number, tenantFname: string, tenantLname: string) => {
     const query = await prisma.property.findMany({
         where: {
             ownerId: ownerId,
@@ -69,7 +77,7 @@ const getUserPropertiesByTenant = async ( ownerId: number, tenantFname: string, 
     return query;
 };
 
-const getAllUserProperties = async ( ownerId: number ) => {
+const getAllUserProperties = async (ownerId: number) => {
     const query = await prisma.property.findMany({
         where: {
             ownerId: ownerId,
@@ -78,7 +86,7 @@ const getAllUserProperties = async ( ownerId: number ) => {
     return query;
 };
 
-const getUserOpenTicketProperties = async ( ownerId: number) => {
+const getUserOpenTicketProperties = async (ownerId: number) => {
     const query = await prisma.property.findMany({
         where: {
             ownerId: ownerId,
@@ -93,4 +101,9 @@ const getUserOpenTicketProperties = async ( ownerId: number) => {
 };
 
 
-export { getAllProperties, getPropertyById, getPropertyByAddress, getAllUserProperties, getUserPropertiesByCity, getUserPropertiesByState, getUserPropertiesByType, getUserPropertiesByTenant, getUserOpenTicketProperties }
+export {
+    getAllProperties, getPropertyById, getPropertyByAddress,
+    getAllUserProperties, getUserPropertiesByCity, getUserPropertiesByState,
+    getUserPropertiesByType, getUserPropertiesByTenant, getUserOpenTicketProperties,
+    createNewProperty,
+}

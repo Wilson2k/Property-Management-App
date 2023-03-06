@@ -28,6 +28,7 @@ interface UserUpdateInput {
     password?: string,
 }
 
+// Contexts for user services
 interface UserReturnContext {
     status: number;
     data?: User;
@@ -40,4 +41,7 @@ interface MultUsersReturnContext {
     message: string;
 }
 
-export { UserLoginContext, UserRegisterContext, UserContext, UserUpdateInput, UserReturnContext, MultUsersReturnContext }
+export {
+    UserLoginContext, UserRegisterContext, UserContext, UserUpdateInput,
+    UserReturnContext, MultUsersReturnContext
+}

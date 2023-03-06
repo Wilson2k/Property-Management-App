@@ -6,9 +6,20 @@ const createPropertyService = async (propertyContext: PropertyContexts.PropertyC
         message: 'Error creating property',
         status: 400,
     };
+    if (isNaN(propertyContext.ownerId)) {
+        propertyReturn.message = 'Invalid user id';
+        propertyReturn.status = 422;
+        return propertyReturn;
+    }
     const findProperty = await PropertyDAL.getPropertyByAddress(propertyContext.address);
-    if(findProperty === null){
-
+    if (findProperty === null) {
+        const newProperty = await PropertyDAL.createNewProperty(propertyContext);
+        propertyReturn.data = newProperty;
+        propertyReturn.status = 200;
+        propertyReturn.message = 'Property successfully created';
+    } else {
+        propertyReturn.message = 'Property already exists';
+        propertyReturn.status = 409;
     }
     return propertyReturn;
 };
@@ -19,7 +30,7 @@ const getAllPropertiesService = async () => {
         status: 400,
     }
     const properties = await PropertyDAL.getAllProperties();
-    if(properties.length !== 0){
+    if (properties.length !== 0) {
         proppertyReturn.message = 'Retrieved properties';
         proppertyReturn.data = properties;
         proppertyReturn.status = 200;
@@ -35,16 +46,16 @@ const getPropertyByIdService = async (propertyContext: PropertyContexts.Property
         message: 'Error getting property',
         status: 404,
     }
-    if(propertyContext.id != null){
+    if (propertyContext.id != null) {
         // Check that input string is numeric
         const propertyId = +propertyContext.id;
-        if(isNaN(propertyId)) {
+        if (isNaN(propertyId)) {
             propertyReturn.message = 'Bad property id';
             propertyReturn.status = 422;
             return propertyReturn;
         }
         const findProperty = await PropertyDAL.getPropertyById(propertyId);
-        if(findProperty !== null){
+        if (findProperty !== null) {
             propertyReturn.message = 'Property found';
             propertyReturn.data = findProperty;
             propertyReturn.status = 200;
@@ -58,13 +69,13 @@ const getPropertyByAddressService = async (propertyContext: PropertyContexts.Pro
         message: 'Error getting property',
         status: 404,
     }
-    if(propertyContext.address == null) {
+    if (propertyContext.address == null) {
         propertyReturn.message = 'Bad property address';
         propertyReturn.status = 422;
         return propertyReturn;
     }
     const findProperty = await PropertyDAL.getPropertyByAddress(propertyContext.address);
-    if(findProperty !== null){
+    if (findProperty !== null) {
         propertyReturn.message = 'Property found';
         propertyReturn.data = findProperty;
         propertyReturn.status = 200;
@@ -73,21 +84,21 @@ const getPropertyByAddressService = async (propertyContext: PropertyContexts.Pro
 };
 
 // Get all properties owned by a specific user
-const getUserPropertiesService = async ( propertyContext: PropertyContexts.PropertyContext) => {
+const getUserPropertiesService = async (propertyContext: PropertyContexts.PropertyContext) => {
     const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
         message: 'Error getting user properties',
         status: 404,
     }
-    if(propertyContext.ownerId != null){
+    if (propertyContext.ownerId != null) {
         // Check that ownerId string is numeric
         const ownerId = +propertyContext.ownerId;
-        if(isNaN(ownerId)) {
+        if (isNaN(ownerId)) {
             propertyReturn.message = 'Bad owner ID';
             propertyReturn.status = 422;
             return propertyReturn;
         }
         const findProperties = await PropertyDAL.getAllUserProperties(ownerId);
-        if(findProperties !== null){
+        if (findProperties !== null) {
             propertyReturn.message = 'Owner Properties found';
             propertyReturn.data = findProperties;
             propertyReturn.status = 200;
@@ -97,26 +108,26 @@ const getUserPropertiesService = async ( propertyContext: PropertyContexts.Prope
 };
 
 // Get all properties owned by a specific user in a city
-const getUserPropertiesByCityService = async ( propertyContext: PropertyContexts.PropertyContext) => {
+const getUserPropertiesByCityService = async (propertyContext: PropertyContexts.PropertyContext) => {
     const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
         message: 'Error getting properties by city',
         status: 404,
     }
-    if(propertyContext.ownerId != null){
+    if (propertyContext.ownerId != null) {
         // Check that ownerId string is numeric
         const ownerId = +propertyContext.ownerId;
-        if(isNaN(ownerId)) {
+        if (isNaN(ownerId)) {
             propertyReturn.message = 'Bad owner ID';
             propertyReturn.status = 422;
             return propertyReturn;
         }
-        if(!propertyContext.city) {
+        if (!propertyContext.city) {
             propertyReturn.message = 'Bad property city';
             propertyReturn.status = 422;
             return propertyReturn;
         }
         const findProperties = await PropertyDAL.getUserPropertiesByCity(ownerId, propertyContext.city);
-        if(findProperties !== null){
+        if (findProperties !== null) {
             propertyReturn.message = 'Owner Properties found';
             propertyReturn.data = findProperties;
             propertyReturn.status = 200;
@@ -131,21 +142,21 @@ const getUserPropertiesByStateService = async (propertyContext: PropertyContexts
         message: 'Error getting properties by state',
         status: 404,
     }
-    if(propertyContext.ownerId != null){
+    if (propertyContext.ownerId != null) {
         // Check that ownerId string is numeric
         const ownerId = +propertyContext.ownerId;
-        if(isNaN(ownerId)) {
+        if (isNaN(ownerId)) {
             propertyReturn.message = 'Bad owner ID';
             propertyReturn.status = 422;
             return propertyReturn;
         }
-        if(!propertyContext.state) {
+        if (!propertyContext.state) {
             propertyReturn.message = 'Bad property state';
             propertyReturn.status = 422;
             return propertyReturn;
         }
         const findProperties = await PropertyDAL.getUserPropertiesByState(ownerId, propertyContext.state);
-        if(findProperties !== null){
+        if (findProperties !== null) {
             propertyReturn.message = 'Owner Properties found';
             propertyReturn.data = findProperties;
             propertyReturn.status = 200;
@@ -160,21 +171,21 @@ const getUserPropertiesByTypeService = async (propertyContext: PropertyContexts.
         message: 'Error getting properties by type',
         status: 404,
     }
-    if(propertyContext.ownerId != null){
+    if (propertyContext.ownerId != null) {
         // Check that ownerId string is numeric
         const ownerId = +propertyContext.ownerId;
-        if(isNaN(ownerId)) {
+        if (isNaN(ownerId)) {
             propertyReturn.message = 'Bad owner ID';
             propertyReturn.status = 422;
             return propertyReturn;
         }
-        if(!propertyContext.type) {
+        if (!propertyContext.type) {
             propertyReturn.message = 'Bad property type';
             propertyReturn.status = 422;
             return propertyReturn;
         }
         const findProperties = await PropertyDAL.getUserPropertiesByType(ownerId, propertyContext.type);
-        if(findProperties !== null){
+        if (findProperties !== null) {
             propertyReturn.message = 'Owner Properties found';
             propertyReturn.data = findProperties;
             propertyReturn.status = 200;
@@ -184,21 +195,21 @@ const getUserPropertiesByTypeService = async (propertyContext: PropertyContexts.
 };
 
 // Get all properties owned by a specific user with open tickets
-const getUserOpenTicketPropertiesService = async ( propertyContext: PropertyContexts.PropertyContext ) => {
+const getUserOpenTicketPropertiesService = async (propertyContext: PropertyContexts.PropertyContext) => {
     const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
         message: 'Error getting properties with open tickets',
         status: 404,
     }
-    if(propertyContext.ownerId != null){
+    if (propertyContext.ownerId != null) {
         // Check that ownerId string is numeric
         const ownerId = +propertyContext.ownerId;
-        if(isNaN(ownerId)) {
+        if (isNaN(ownerId)) {
             propertyReturn.message = 'Bad owner ID';
             propertyReturn.status = 422;
             return propertyReturn;
         }
         const findProperties = await PropertyDAL.getUserOpenTicketProperties(ownerId);
-        if(findProperties !== null){
+        if (findProperties !== null) {
             propertyReturn.message = 'Owner Properties found';
             propertyReturn.data = findProperties;
             propertyReturn.status = 200;
@@ -208,21 +219,21 @@ const getUserOpenTicketPropertiesService = async ( propertyContext: PropertyCont
 };
 
 // Get all properties owned by a specific user with a specific tenant
-const getUserPropertiesByTenantService = async ( propertyContext: PropertyContexts.PropertyContext ) => {
+const getUserPropertiesByTenantService = async (propertyContext: PropertyContexts.PropertyContext) => {
     const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
         message: 'Error getting properties with open tickets',
         status: 404,
     }
-    if(propertyContext.ownerId != null && propertyContext.tenant != null){
+    if (propertyContext.ownerId != null && propertyContext.tenant != null) {
         // Check that ownerId string is numeric
         const ownerId = +propertyContext.ownerId;
-        if(isNaN(ownerId)) {
+        if (isNaN(ownerId)) {
             propertyReturn.message = 'Bad owner ID';
             propertyReturn.status = 422;
             return propertyReturn;
         }
         const tenantName = propertyContext.tenant.split(" ", 1);
-        if(tenantName.length !== 2){
+        if (tenantName.length !== 2) {
             propertyReturn.message = 'Bad tenant name';
             propertyReturn.status = 422;
             return propertyReturn;
@@ -230,7 +241,7 @@ const getUserPropertiesByTenantService = async ( propertyContext: PropertyContex
         const tenantFname = tenantName[0];
         const tenantLname = tenantName[1];
         const findProperties = await PropertyDAL.getUserPropertiesByTenant(ownerId, tenantFname, tenantLname);
-        if(findProperties !== null){
+        if (findProperties !== null) {
             propertyReturn.message = 'Owner Properties found';
             propertyReturn.data = findProperties;
             propertyReturn.status = 200;
@@ -239,4 +250,9 @@ const getUserPropertiesByTenantService = async ( propertyContext: PropertyContex
     return propertyReturn;
 };
 
-export { getAllPropertiesService, getPropertyByIdService, getPropertyByAddressService, getUserPropertiesByCityService, getUserPropertiesByStateService, getUserPropertiesByTypeService, getUserPropertiesByTenantService, getUserPropertiesService, getUserOpenTicketPropertiesService }
+export {
+    getAllPropertiesService, getPropertyByIdService, getPropertyByAddressService,
+    getUserPropertiesByCityService, getUserPropertiesByStateService, getUserPropertiesByTypeService,
+    getUserPropertiesByTenantService, getUserPropertiesService, getUserOpenTicketPropertiesService,
+    createPropertyService,
+}

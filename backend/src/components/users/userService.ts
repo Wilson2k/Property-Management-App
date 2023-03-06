@@ -7,11 +7,11 @@ const loginUserService = async (userContext: UserContexts.UserLoginContext) => {
         message: 'Error getting user',
         status: 404,
     }
-    if(userContext.email != null){
+    if (userContext.email != null) {
         const findUser = await UserDAL.getUserByEmail(userContext.email);
-        if (findUser != null){
+        if (findUser != null) {
             await compare(userContext.password, findUser.password).then((res) => {
-                if(res){
+                if (res) {
                     userReturn.data = findUser;
                     userReturn.message = 'Login Success';
                     userReturn.status = 200;
@@ -32,7 +32,7 @@ const registerUserService = async (userContext: UserContexts.UserRegisterContext
     }
     if (userContext.email != null) {
         const findUser = await UserDAL.getUserByEmail(userContext.email);
-        if (findUser === null){
+        if (findUser === null) {
             await hash(userContext.password, 12).then(async (hash) => {
                 userContext.password = hash;
                 const newUser = await UserDAL.createNewUser(userContext);
@@ -53,16 +53,16 @@ const getUserService = async (userContext: UserContexts.UserContext) => {
         message: 'Error getting user',
         status: 404,
     }
-    if(userContext.id != null){
+    if (userContext.id != null) {
         // Check that input string is numeric
         const userId = +userContext.id;
-        if(isNaN(userId)) {
+        if (isNaN(userId)) {
             userReturn.message = 'Bad user id';
             userReturn.status = 422;
             return userReturn;
         }
         const findUser = await UserDAL.getUserById(userId);
-        if(findUser != null){
+        if (findUser != null) {
             userReturn.message = 'User found';
             userReturn.data = findUser;
             userReturn.status = 200;
@@ -76,19 +76,19 @@ const updateUserService = async (userContext: UserContexts.UserContext) => {
         message: 'Error getting user',
         status: 404,
     }
-    if(userContext.id != null){
+    if (userContext.id != null) {
         // Check that input string is numeric
-        const userId = +userContext.id;
-        if(isNaN(userId)) {
+        const { id, ...updateData } = userContext;
+        const userId = +id;
+        if (isNaN(userId)) {
             userReturn.message = 'Bad user id';
             userReturn.status = 422;
             return userReturn;
         }
         // Check that updated data is there
-        if(userContext.email != null || userContext.firstName != null || userContext.lastName != null || userContext.password != null){
-            const {id, ...updateData} = userContext || {};
+        if (updateData.email != null || updateData.firstName != null || updateData.lastName != null || updateData.password != null) {
             const updatedUser = await UserDAL.updateUser(userId, updateData);
-            if(updatedUser != null){
+            if (updatedUser != null) {
                 userReturn.message = 'User updated';
                 userReturn.data = updatedUser;
                 userReturn.status = 200;
@@ -107,7 +107,7 @@ const getAllUserService = async () => {
         status: 400,
     }
     const users = await UserDAL.getAllUsers();
-    if(users.length !== 0){
+    if (users.length !== 0) {
         userReturn.message = 'Retrieved users';
         userReturn.data = users;
         userReturn.status = 200;
@@ -123,16 +123,16 @@ const deleteUserService = async (userContext: UserContexts.UserContext) => {
         message: 'Error deleting user',
         status: 400,
     }
-    if(userContext.id != null){
+    if (userContext.id != null) {
         // Check that input string is numeric
         const userId = +userContext.id;
-        if(isNaN(userId)) {
+        if (isNaN(userId)) {
             userReturn.message = 'Bad Input';
             userReturn.status = 422;
             return userReturn;
         }
         const findUser = await UserDAL.deleteUser(userId);
-        if(findUser != null){
+        if (findUser != null) {
             userReturn.message = 'User found';
             userReturn.data = {
                 firstName: findUser.firstName,
@@ -153,4 +153,7 @@ const deleteAllUserService = async () => {
     return deletedCount.count;
 }
 
-export { loginUserService, registerUserService, getUserService, deleteUserService, updateUserService, getAllUserService, deleteAllUserService }
+export {
+    loginUserService, registerUserService, getUserService, deleteUserService,
+    updateUserService, getAllUserService, deleteAllUserService
+}

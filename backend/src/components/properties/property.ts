@@ -1,12 +1,12 @@
 import { Property, Tenant } from '@prisma/client';
 
 interface PropertyCreateContext {
+    ownerId: number,
     address: string,
     city: string,
     state: string,
     type: string,
     size: string,
-    tenants?: Tenant[],
 }
 
 interface PropertyContext {
@@ -20,6 +20,7 @@ interface PropertyContext {
     tenant?: string,
 }
 
+// Contexts for property services
 interface PropertyReturnContext {
     status: number,
     data?: Property,
@@ -32,4 +33,7 @@ interface MultPropertiesReturnContext {
     message: string,
 }
 
-export { PropertyContext, PropertyReturnContext, PropertyCreateContext, MultPropertiesReturnContext }
+export {
+    PropertyContext, PropertyReturnContext, PropertyCreateContext,
+    MultPropertiesReturnContext
+}
