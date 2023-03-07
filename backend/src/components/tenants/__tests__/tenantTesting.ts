@@ -1,7 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 
 describe('Test', () => {
-  test('Test', async () => {
+  test('Test', () => {
     expect(true).toBe(true);
   });
 });

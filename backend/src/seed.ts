@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 // Seed function returns array of ids of users
 export async function seed() {
+  // Seed first user with one property with one tenant
   const hash1 = bcrypt.hashSync('nofires', 12);
   const user1 = await prisma.user.upsert({
     where: { email: 'smokey@bear.com' },
@@ -14,16 +15,40 @@ export async function seed() {
       email: 'smokey@bear.com',
       password: hash1,
       properties: {
-        create: {
-          address: '123 Fake Street, San Franciso, CA',
-          city: 'San Francisco',
-          state: 'CA',
-          type: 'Single Family',
-          size: '200 sqft',
-        },
+        create: [
+          {
+            address: '123 Fake Street, San Franciso, CA',
+            city: 'San Francisco',
+            state: 'CA',
+            type: 'Single Family',
+            size: '200 sqft',
+          },
+        ],
       },
     },
   });
+  const prop1 = await prisma.property.findUnique({
+    where: { address: '123 Fake Street, San Franciso, CA' },
+  });
+  if (prop1) {
+    await prisma.tenant.upsert({
+      where: { email: 'bob@tenant.com' },
+      update: {},
+      create: {
+        firstName: 'bob',
+        lastName: 'bill',
+        email: 'bob@tenant.com',
+        phone: '999-999-9999',
+        userId: user1.id,
+        properties: {
+          connect: {
+            id: prop1.id,
+          },
+        },
+      },
+    });
+  }
+  // Seed second user with two properties and no tenants
   const hash2 = bcrypt.hashSync('NoBears', 12);
   const user2 = await prisma.user.upsert({
     where: { email: 'wilson@nosmokey.com' },
