@@ -19,6 +19,17 @@ beforeAll(async () => {
     });
 });
 
+describe('Get User by ID', () => {
+    test('Get seeded user by ID', async () => {
+        const user: UserContexts.UserContext = {
+            id: userIds[0].toString(),
+        };
+        const userData = await UserServices.getUserService(user);
+        expect(userData.status).toBe(200);
+        expect(userData.data?.email).toBe('smokey@bear.com');
+    });
+});
+
 describe('Register User, test duplicate', () => {
     test('Register a new user', async () => {
         const user: UserContexts.UserRegisterContext = {
