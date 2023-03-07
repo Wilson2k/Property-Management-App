@@ -1,32 +1,25 @@
 // Jest unit testing user routes
+import { PrismaClient } from '@prisma/client'
 import * as UserServices from '../userService';
 import { describe, expect, test, beforeAll } from '@jest/globals';
-import { UserContext, UserLoginContext, UserRegisterContext } from '../user';
+import * as UserContexts from '../user';
+import { seed } from '../../../seed';
+
+const prisma = new PrismaClient()
 
 beforeAll(async () => {
-    // Seed database with users
-    const user1: UserRegisterContext = {
-        firstName: 'Wilson',
-        lastName: 'Human',
-        email: 'wilson@nosmokey.com',
-        password: 'NoBears',
-    };
-    const user2: UserRegisterContext = {
-        firstName: 'Man',
-        lastName: 'Bear',
-        email: 'manbear@nosmokey.com',
-        password: 'pigbear',
-    };
-    const users = [];
-    users.push(user1, user2);
-    for (const user of users) {
-        await UserServices.registerUserService(user);
-    }
+    seed().then(async () => {
+        await prisma.$disconnect()
+    }).catch(async (e) => {
+        console.error(e)
+        await prisma.$disconnect()
+        process.exit(1)
+    });
 });
 
 describe('Register User, test duplicate', () => {
     test('Register a new user', async () => {
-        const user: UserRegisterContext = {
+        const user: UserContexts.UserRegisterContext = {
             firstName: 'Smokey',
             lastName: 'A Bear',
             email: 'smokeynoreply@nosmokey.com',
@@ -42,7 +35,7 @@ describe('Register User, test duplicate', () => {
     test('Register existing user', async () => {
         const userEmail = 'smokeynoreply@nosmokey.com'
         const userPass = 'arsonist'
-        const testBear: UserRegisterContext = {
+        const testBear: UserContexts.UserRegisterContext = {
             firstName: 'Testy',
             lastName: 'A Bear',
             email: userEmail,
@@ -55,7 +48,7 @@ describe('Register User, test duplicate', () => {
 
 describe('Register User, then delete user', () => {
     let userId = 0
-    const user: UserRegisterContext = {
+    const user: UserContexts.UserRegisterContext = {
         firstName: 'Rubber',
         lastName: 'Ducky',
         email: 'rubber@ducky.com',
@@ -73,7 +66,7 @@ describe('Register User, then delete user', () => {
     });
 
     test('Delete newly registered user', async () => {
-        const userIdContext: UserContext = {
+        const userIdContext: UserContexts.UserContext = {
             id: userId.toString(),
         };
         const deletedUser = await UserServices.deleteUserService(userIdContext);
@@ -89,7 +82,7 @@ describe('Register User, then delete user', () => {
 describe('Login User, get logged in user', () => {
     let userId = 0
     test('Login a registered user', async () => {
-        const user: UserLoginContext = {
+        const user: UserContexts.UserLoginContext = {
             email: 'wilson@nosmokey.com',
             password: 'NoBears',
         };
@@ -105,7 +98,7 @@ describe('Login User, get logged in user', () => {
     });
 
     test('Get logged in user', async () => {
-        const user: UserContext = {
+        const user: UserContexts.UserContext = {
             id: userId.toString(),
         };
         const newUser = await UserServices.getUserService(user);
@@ -119,7 +112,7 @@ describe('Login User, get logged in user', () => {
 
 describe('Register then update a new user', () => {
     let userId = 0
-    const user: UserRegisterContext = {
+    const user: UserContexts.UserRegisterContext = {
         firstName: 'Big',
         lastName: 'Duckbear',
         email: 'duckbear@ducky.com',
@@ -137,7 +130,7 @@ describe('Register then update a new user', () => {
     });
 
     test('Update newly registered user', async () => {
-        const userContext: UserContext = {
+        const userContext: UserContexts.UserContext = {
             id: userId.toString(),
             firstName: 'Perry',
             lastName: 'Plat',
@@ -149,7 +142,7 @@ describe('Register then update a new user', () => {
     });
 
     test('Get updated user data', async () => {
-        const userContext: UserContext = {
+        const userContext: UserContexts.UserContext = {
             id: userId.toString(),
         };
         const updatedUser = await UserServices.getUserService(userContext);

@@ -4,7 +4,7 @@ import { hash, compare } from 'bcrypt';
 
 const loginUserService = async (userContext: UserContexts.UserLoginContext) => {
     const userReturn: UserContexts.UserReturnContext = {
-        message: 'Error getting user',
+        message: 'Error logging user in',
         status: 404,
     }
     if (userContext.email != null) {
@@ -73,7 +73,7 @@ const getUserService = async (userContext: UserContexts.UserContext) => {
 
 const updateUserService = async (userContext: UserContexts.UserContext) => {
     const userReturn: UserContexts.UserReturnContext = {
-        message: 'Error getting user',
+        message: 'Error updating user',
         status: 404,
     }
     if (userContext.id != null) {
