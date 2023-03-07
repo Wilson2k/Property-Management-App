@@ -4,7 +4,7 @@
   "description": "",
   "main": "ts-node src/server.ts",
   "scripts": {
-    "test": "jest userTesting.ts",
+    "test": "jest --runInBand",
     "migrate-dev": "npx prisma generate && docker compose up -d && npx prisma migrate dev",
     "dev": "nodemon src/server.ts"
   },

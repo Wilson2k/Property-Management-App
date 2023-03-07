@@ -10,7 +10,7 @@ const prisma = new PrismaClient()
 let userIds: number[];
 beforeAll(async () => {
     await seed().then(async (ids) => {
-        userIds=[...ids];
+        userIds = [...ids];
         await prisma.$disconnect()
     }).catch(async (e) => {
         console.error(e)
@@ -27,6 +27,8 @@ describe('Get User by ID', () => {
         const userData = await UserServices.getUserService(user);
         expect(userData.status).toBe(200);
         expect(userData.data?.email).toBe('smokey@bear.com');
+        expect(userData.data?.firstName).toBe('Smokey');
+        expect(userData.data?.lastName).toBe('BearDude');
     });
 });
 
