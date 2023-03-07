@@ -2,8 +2,9 @@ import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt';
 const prisma = new PrismaClient()
 
+// Seed function returns array of ids of users
 export async function seed() {
-    const hash1 = await bcrypt.hashSync('nofires', 12);
+    const hash1 = bcrypt.hashSync('nofires', 12);
     const user1 = await prisma.user.upsert({
         where: { email: 'smokey@bear.com' },
         update: {},
@@ -23,7 +24,7 @@ export async function seed() {
             },
         },
     });
-    const hash2 = await bcrypt.hashSync('NoBears', 12);
+    const hash2 = bcrypt.hashSync('NoBears', 12);
     const user2 = await prisma.user.upsert({
         where: { email: 'wilson@nosmokey.com' },
         update: {},
@@ -52,5 +53,5 @@ export async function seed() {
             },
         },
     });
-    console.log(user1, user2);
-};
+    return [user1.id, user2.id];
+}

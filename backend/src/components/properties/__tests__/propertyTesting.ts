@@ -8,14 +8,14 @@ import { seed } from '../../../seed';
 
 const prisma = new PrismaClient()
 
+let userIds: number[];
 beforeAll(async () => {
-    seed()
-        .then(async () => {
-            await prisma.$disconnect()
-        })
-        .catch(async (e) => {
-            console.error(e)
-            await prisma.$disconnect()
-            process.exit(1)
-        })
+    await seed().then(async (ids) => {
+        userIds=[...ids];
+        await prisma.$disconnect()
+    }).catch(async (e) => {
+        console.error(e)
+        await prisma.$disconnect()
+        process.exit(1)
+    });
 });
