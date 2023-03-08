@@ -47,7 +47,7 @@ model Ticket {
 
 model Property {
   id      Int      @id @default(autoincrement())
-  address String   @unique @db.Text
+  address String   @db.Text
   city    String   @db.Text
   state   String   @db.Text
   type    String   @db.Text
@@ -57,4 +57,6 @@ model Property {
   ownerId Int
   tenants Tenant[]
   tickets Ticket[]
+
+  @@unique([address,city,state])
 }

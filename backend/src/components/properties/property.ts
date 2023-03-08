@@ -10,7 +10,7 @@ interface PropertyCreateContext {
 }
 
 interface PropertyContext {
-  id?: string;
+  id?: number;
   address?: string;
   city?: string;
   state?: string;

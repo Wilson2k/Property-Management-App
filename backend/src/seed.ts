@@ -17,7 +17,7 @@ export async function seed() {
       properties: {
         create: [
           {
-            address: '123 Fake Street, San Franciso, CA',
+            address: '123 Fake Street',
             city: 'San Francisco',
             state: 'CA',
             type: 'Single Family',
@@ -27,8 +27,12 @@ export async function seed() {
       },
     },
   });
-  const prop1 = await prisma.property.findUnique({
-    where: { address: '123 Fake Street, San Franciso, CA' },
+  const prop1 = await prisma.property.findFirst({
+    where: {
+      address: '123 Fake Street',
+      city: 'San Francisco',
+      state: 'CA',
+    },
   });
   if (prop1) {
     await prisma.tenant.upsert({
@@ -61,14 +65,15 @@ export async function seed() {
       properties: {
         create: [
           {
-            address: '123 Dog Street, San Franciso, CA',
+            address: '123 Dog Street',
             city: 'San Francisco',
             state: 'CA',
             type: 'Triplex',
             size: '800 sqft',
           },
           {
-            address: '123 Mouse Street, San Jose, CA',
+            id: 2000,
+            address: '123 Mouse Street',
             city: 'San Jose',
             state: 'CA',
             type: 'Single Family',

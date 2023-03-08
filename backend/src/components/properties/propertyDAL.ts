@@ -46,10 +46,16 @@ const getPropertyById = async (propertyId: number) => {
   return query;
 };
 
-const getPropertyByAddress = async (propertyAddress: string) => {
-  const query = await prisma.property.findUnique({
+const getPropertyByAddress = async (
+  propertyAddress: string,
+  propertyCity: string,
+  propertyState: string
+) => {
+  const query = await prisma.property.findFirst({
     where: {
       address: propertyAddress,
+      city: propertyCity,
+      state: propertyState,
     },
   });
   return query;

@@ -15,7 +15,9 @@ const createPropertyService = async (
     return propertyReturn;
   }
   const findProperty = await PropertyDAL.getPropertyByAddress(
-    propertyContext.address
+    propertyContext.address,
+    propertyContext.city,
+    propertyContext.state
   );
   if (findProperty === null) {
     const newProperty = await PropertyDAL.createNewProperty(userId, propertyContext);
@@ -53,9 +55,15 @@ const updatePropertyService = async (
       return propertyReturn;
     }
     // Check for duplicate info if updating address
-    if (updateData.address != null) {
+    if (
+      updateData.address != null &&
+      updateData.city != null &&
+      updateData.state != null
+    ) {
       const propertyDuplicate = await PropertyDAL.getPropertyByAddress(
-        updateData.address
+        updateData.address,
+        updateData.city,
+        updateData.state
       );
       if (propertyDuplicate != null) {
         propertyReturn.message = 'Address already exists';
@@ -168,13 +176,19 @@ const getPropertyByAddressService = async (
     message: 'Error getting property',
     status: 404,
   };
-  if (propertyContext.address == null) {
+  if (
+    propertyContext.address == null ||
+    propertyContext.city == null ||
+    propertyContext.state == null
+  ) {
     propertyReturn.message = 'Bad property address';
     propertyReturn.status = 422;
     return propertyReturn;
   }
   const findProperty = await PropertyDAL.getPropertyByAddress(
-    propertyContext.address
+    propertyContext.address,
+    propertyContext.city,
+    propertyContext.state
   );
   if (findProperty !== null) {
     propertyReturn.message = 'Property found';
@@ -195,14 +209,17 @@ const getUserPropertiesService = async (
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
     const ownerId = +propertyContext.ownerId;
-    if (isNaN(ownerId)) {
+    if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
       return propertyReturn;
     }
     const findProperties = await PropertyDAL.getAllUserProperties(ownerId);
     if (findProperties !== null) {
-      propertyReturn.message = 'Owner Properties found';
+      propertyReturn.message =
+        findProperties.length == 0
+          ? 'No properties uploaded'
+          : 'Owner properties found';
       propertyReturn.data = findProperties;
       propertyReturn.status = 200;
     }

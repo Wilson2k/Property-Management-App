@@ -28,6 +28,56 @@ describe('Get User Properties', () => {
     const propertyData = await PropertServices.getUserPropertiesService(properties);
     expect(propertyData.status).toBe(200);
     expect(propertyData.data?.length).toBe(1);
-    expect(propertyData.data?.[0].address).toBe('123 Fake Street, San Franciso, CA');
+    expect(propertyData.data?.[0].address).toBe('123 Fake Street');
+    expect(propertyData.data?.[0].size).toBe('200 sqft');
+    expect(propertyData.data?.[0].ownerId).toBe(userIds[0]);
+  });
+
+  test('Get property by address', async () => {
+    const property: PropertyContexts.PropertyContext = {
+      address: '123 Dog Street',
+      city: 'San Francisco',
+      state: 'CA',
+    };
+    const propertyData = await PropertServices.getPropertyByAddressService(property);
+    expect(propertyData.status).toBe(200);
+    expect(propertyData.data?.size).toBe('800 sqft');
+    expect(propertyData.data?.type).toBe('Triplex');
+    expect(propertyData.data?.ownerId).toBe(userIds[1]);
+  });
+
+  test('Get property by id', async () => {
+    const property: PropertyContexts.PropertyContext = {
+      id: 2000,
+    };
+    const propertyData = await PropertServices.getPropertyByIdService(property);
+    expect(propertyData.status).toBe(200);
+    expect(propertyData.data?.address).toBe('123 Mouse Street');
+    expect(propertyData.data?.size).toBe('500 sqft');
+    expect(propertyData.data?.type).toBe('Single Family');
+    expect(propertyData.data?.ownerId).toBe(userIds[1]);
+  });
+
+  test('Get user properties by city', async () => {
+    const properties: PropertyContexts.PropertyContext = {
+      ownerId: userIds[1],
+      city: 'San Jose',
+    };
+    const propertyData = await PropertServices.getUserPropertiesByCityService(
+      properties
+    );
+    expect(propertyData.status).toBe(200);
+    expect(propertyData.data?.length).toBe(1);
+    expect(propertyData.data?.[0].address).toBe('123 Mouse Street');
+  });
+});
+
+describe('Get User Properties bad input', () => {
+  test('Get seeded user properties', async () => {
+    const properties: PropertyContexts.PropertyContext = {
+      ownerId: -1,
+    };
+    const propertyData = await PropertServices.getUserPropertiesService(properties);
+    expect(propertyData.status).toBe(422);
   });
 });
