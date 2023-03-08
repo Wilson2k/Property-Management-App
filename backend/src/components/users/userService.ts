@@ -25,9 +25,7 @@ const loginUserService = async (userContext: UserContexts.UserLoginContext) => {
   return userReturn;
 };
 
-const registerUserService = async (
-  userContext: UserContexts.UserRegisterContext
-) => {
+const registerUserService = async (userContext: UserContexts.UserRegisterContext) => {
   const userReturn: UserContexts.UserReturnContext = {
     message: 'Error registering user',
     status: 400,

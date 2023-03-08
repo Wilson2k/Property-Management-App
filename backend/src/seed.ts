@@ -52,7 +52,7 @@ export async function seed() {
       },
     });
   }
-  // Seed second user with two properties and no tenants
+  // Seed second user with three properties and no tenants
   const hash2 = bcrypt.hashSync('NoBears', 12);
   const user2 = await prisma.user.upsert({
     where: { email: 'wilson@nosmokey.com' },
@@ -70,6 +70,13 @@ export async function seed() {
             state: 'CA',
             type: 'Triplex',
             size: '800 sqft',
+          },
+          {
+            address: '123 Cat Street',
+            city: 'San Francisco',
+            state: 'CA',
+            type: 'Apartment',
+            size: '1600 sqft',
           },
           {
             id: 2000,

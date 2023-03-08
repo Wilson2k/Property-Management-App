@@ -85,10 +85,7 @@ const updatePropertyService = async (
       updateData.type != null ||
       updateData.size != null
     ) {
-      const updatedProperty = await PropertyDAL.updateProperty(
-        propertyId,
-        updateData
-      );
+      const updatedProperty = await PropertyDAL.updateProperty(propertyId, updateData);
       if (updatedProperty != null) {
         propertyReturn.message = 'Property updated';
         propertyReturn.data = updatedProperty;
@@ -217,9 +214,7 @@ const getUserPropertiesService = async (
     const findProperties = await PropertyDAL.getAllUserProperties(ownerId);
     if (findProperties !== null) {
       propertyReturn.message =
-        findProperties.length == 0
-          ? 'No properties uploaded'
-          : 'Owner properties found';
+        findProperties.length == 0 ? 'No properties uploaded' : 'Owner properties found';
       propertyReturn.data = findProperties;
       propertyReturn.status = 200;
     }
@@ -366,12 +361,12 @@ const getUserPropertiesByTenantService = async (
   if (propertyContext.ownerId != null && propertyContext.tenant != null) {
     // Check that ownerId string is numeric
     const ownerId = +propertyContext.ownerId;
-    if (isNaN(ownerId)) {
+    if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
       return propertyReturn;
     }
-    const tenantName = propertyContext.tenant.split(' ', 1);
+    const tenantName = propertyContext.tenant.split(' ', 2);
     if (tenantName.length !== 2) {
       propertyReturn.message = 'Bad tenant name';
       propertyReturn.status = 422;
@@ -385,7 +380,8 @@ const getUserPropertiesByTenantService = async (
       tenantLname
     );
     if (findProperties !== null) {
-      propertyReturn.message = 'Owner Properties found';
+      propertyReturn.message =
+        findProperties.length == 0 ? 'Tenant not found' : 'Owner Properties found';
       propertyReturn.data = findProperties;
       propertyReturn.status = 200;
     }

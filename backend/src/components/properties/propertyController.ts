@@ -24,9 +24,7 @@ const createNewUserProperty = (
       type: req.body.type,
       size: req.body.size,
     };
-    const propertyData = await PropertyServices.createPropertyService(
-      propertyContext
-    );
+    const propertyData = await PropertyServices.createPropertyService(propertyContext);
     if (propertyData.status === 200 && propertyData.data !== undefined) {
       res.status(propertyData.status).send(propertyData.data);
     } else {
@@ -46,9 +44,7 @@ const updateProperty = (req: CustomRequest<PropertyContext>, res: Response) => {
       type: req.body.type,
       size: req.body.size,
     };
-    const propertyData = await PropertyServices.updatePropertyService(
-      propertyContext
-    );
+    const propertyData = await PropertyServices.updatePropertyService(propertyContext);
     if (propertyData.status === 200 && propertyData.data !== undefined) {
       res.status(propertyData.status).send(propertyData.data);
     } else {
@@ -63,9 +59,7 @@ const deleteUser = (req: CustomRequest<PropertyContext>, res: Response) => {
     const propertyContext: PropertyContext = {
       id: req.body.id,
     };
-    const deletedProperty = await PropertyServices.deletePropertyService(
-      propertyContext
-    );
+    const deletedProperty = await PropertyServices.deletePropertyService(propertyContext);
     if (deletedProperty.status === 200 && deletedProperty.data !== undefined) {
       res.status(deletedProperty.status).send(deletedProperty.data);
     } else {
@@ -92,9 +86,7 @@ const getPropertyById = (req: CustomRequest<PropertyContext>, res: Response) => 
     const propertyContext: PropertyContext = {
       id: req.body.id,
     };
-    const propertyData = await PropertyServices.getPropertyByIdService(
-      propertyContext
-    );
+    const propertyData = await PropertyServices.getPropertyByIdService(propertyContext);
     if (propertyData.status === 200 && propertyData.data !== undefined) {
       res.status(propertyData.status).send(propertyData.data);
     } else {
@@ -104,10 +96,7 @@ const getPropertyById = (req: CustomRequest<PropertyContext>, res: Response) => 
 };
 
 // Get property address
-const getPropertyByAddress = (
-  req: CustomRequest<PropertyContext>,
-  res: Response
-) => {
+const getPropertyByAddress = (req: CustomRequest<PropertyContext>, res: Response) => {
   async () => {
     const propertyContext: PropertyContext = {
       address: req.body.address,
@@ -124,17 +113,12 @@ const getPropertyByAddress = (
 };
 
 // Get all properties owned by user
-const getAllUserProperties = (
-  req: CustomRequest<PropertyContext>,
-  res: Response
-) => {
+const getAllUserProperties = (req: CustomRequest<PropertyContext>, res: Response) => {
   async () => {
     const ownerContext: PropertyContext = {
       ownerId: req.body.ownerId,
     };
-    const propertyData = await PropertyServices.getUserPropertiesService(
-      ownerContext
-    );
+    const propertyData = await PropertyServices.getUserPropertiesService(ownerContext);
     if (propertyData.status === 200 && propertyData.data !== undefined) {
       res.status(propertyData.status).send(propertyData.data);
     } else {
@@ -164,10 +148,7 @@ const getAllUserOpenTicketProperties = (
 };
 
 // Get all properties owned by user in specific city
-const getUserPropertiesByCity = (
-  req: CustomRequest<PropertyContext>,
-  res: Response
-) => {
+const getUserPropertiesByCity = (req: CustomRequest<PropertyContext>, res: Response) => {
   async () => {
     const propertyContext: PropertyContext = {
       city: req.body.city,
@@ -185,10 +166,7 @@ const getUserPropertiesByCity = (
 };
 
 // Get all properties owned by user in specific state
-const getUserPropertiesByState = (
-  req: CustomRequest<PropertyContext>,
-  res: Response
-) => {
+const getUserPropertiesByState = (req: CustomRequest<PropertyContext>, res: Response) => {
   async () => {
     const propertyContext: PropertyContext = {
       state: req.body.state,
@@ -206,10 +184,7 @@ const getUserPropertiesByState = (
 };
 
 // Get all properties owned by user of specific type
-const getUserPropertiesByType = (
-  req: CustomRequest<PropertyContext>,
-  res: Response
-) => {
+const getUserPropertiesByType = (req: CustomRequest<PropertyContext>, res: Response) => {
   async () => {
     const propertyContext: PropertyContext = {
       type: req.body.type,

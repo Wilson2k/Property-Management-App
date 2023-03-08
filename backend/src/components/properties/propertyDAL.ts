@@ -67,6 +67,9 @@ const getUserPropertiesByCity = async (ownerId: number, propertyCity: string) =>
       ownerId: ownerId,
       city: propertyCity,
     },
+    orderBy: {
+      address: 'asc',
+    },
   });
   return query;
 };
@@ -77,6 +80,9 @@ const getUserPropertiesByState = async (ownerId: number, propertyState: string) 
       ownerId: ownerId,
       state: propertyState,
     },
+    orderBy: {
+      address: 'asc',
+    },
   });
   return query;
 };
@@ -86,6 +92,9 @@ const getUserPropertiesByType = async (ownerId: number, propertyType: string) =>
     where: {
       ownerId: ownerId,
       type: propertyType,
+    },
+    orderBy: {
+      address: 'asc',
     },
   });
   return query;
@@ -106,6 +115,9 @@ const getUserPropertiesByTenant = async (
         },
       },
     },
+    orderBy: {
+      address: 'asc',
+    },
   });
   return query;
 };
@@ -114,6 +126,9 @@ const getAllUserProperties = async (ownerId: number) => {
   const query = await prisma.property.findMany({
     where: {
       ownerId: ownerId,
+    },
+    orderBy: {
+      address: 'asc',
     },
   });
   return query;
@@ -128,6 +143,9 @@ const getUserOpenTicketProperties = async (ownerId: number) => {
           open: true,
         },
       },
+    },
+    orderBy: {
+      address: 'asc',
     },
   });
   return query;

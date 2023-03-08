@@ -61,23 +61,46 @@ describe('Get User Properties', () => {
   test('Get user properties by city', async () => {
     const properties: PropertyContexts.PropertyContext = {
       ownerId: userIds[1],
-      city: 'San Jose',
+      city: 'San Francisco',
     };
-    const propertyData = await PropertServices.getUserPropertiesByCityService(
+    const propertyData = await PropertServices.getUserPropertiesByCityService(properties);
+    expect(propertyData.status).toBe(200);
+    expect(propertyData.data?.length).toBe(2);
+    expect(propertyData.data?.[0].address).toBe('123 Cat Street');
+  });
+
+  test('Get user properties by tenant', async () => {
+    const properties: PropertyContexts.PropertyTenantContext = {
+      ownerId: userIds[0],
+      tenant: 'bob bill',
+    };
+    const propertyData = await PropertServices.getUserPropertiesByTenantService(
       properties
     );
     expect(propertyData.status).toBe(200);
     expect(propertyData.data?.length).toBe(1);
-    expect(propertyData.data?.[0].address).toBe('123 Mouse Street');
+    expect(propertyData.data?.[0].address).toBe('123 Fake Street');
   });
 });
 
 describe('Get User Properties bad input', () => {
-  test('Get seeded user properties', async () => {
+  test('Get user properties bad id', async () => {
     const properties: PropertyContexts.PropertyContext = {
       ownerId: -1,
     };
     const propertyData = await PropertServices.getUserPropertiesService(properties);
     expect(propertyData.status).toBe(422);
+  });
+
+  test('Get user properties bad tenant name', async () => {
+    const properties: PropertyContexts.PropertyTenantContext = {
+      ownerId: userIds[1],
+      tenant: 'foobar',
+    };
+    const propertyData = await PropertServices.getUserPropertiesByTenantService(
+      properties
+    );
+    expect(propertyData.status).toBe(422);
+    expect(propertyData.message).toBe('Bad tenant name');
   });
 });
