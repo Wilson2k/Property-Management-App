@@ -201,6 +201,48 @@ const getUserPropertiesByType = (req: CustomRequest<PropertyContext>, res: Respo
   };
 };
 
+// Get all properties owned by user larger than a certain size
+const getUserPropertiesByMinSize = (
+  req: CustomRequest<PropertyContext>,
+  res: Response
+) => {
+  async () => {
+    const propertyContext: PropertyContext = {
+      type: req.body.type,
+      size: req.body.size,
+    };
+    const propertyData = await PropertyServices.getUserPropertiesByMinSizeService(
+      propertyContext
+    );
+    if (propertyData.status === 200 && propertyData.data !== undefined) {
+      res.status(propertyData.status).send(propertyData.data);
+    } else {
+      res.status(propertyData.status).send(propertyData.message);
+    }
+  };
+};
+
+// Get all properties owned by user smaller than a certain size
+const getUserPropertiesByMaxSize = (
+  req: CustomRequest<PropertyContext>,
+  res: Response
+) => {
+  async () => {
+    const propertyContext: PropertyContext = {
+      type: req.body.type,
+      size: req.body.size,
+    };
+    const propertyData = await PropertyServices.getUserPropertiesByMaxSizeService(
+      propertyContext
+    );
+    if (propertyData.status === 200 && propertyData.data !== undefined) {
+      res.status(propertyData.status).send(propertyData.data);
+    } else {
+      res.status(propertyData.status).send(propertyData.message);
+    }
+  };
+};
+
 // Get all properties owned by user of specific type
 const getUserPropertiesByTenant = (
   req: CustomRequest<PropertyTenantContext>,
@@ -232,6 +274,8 @@ export {
   getUserPropertiesByState,
   getUserPropertiesByTenant,
   getUserPropertiesByType,
+  getUserPropertiesByMinSize,
+  getUserPropertiesByMaxSize,
   createNewUserProperty,
   updateProperty,
   deleteUser,

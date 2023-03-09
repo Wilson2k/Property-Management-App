@@ -325,6 +325,74 @@ const getUserPropertiesByTypeService = async (
   return propertyReturn;
 };
 
+// Get all properties owned by a specific user that are larger than a certain size
+const getUserPropertiesByMinSizeService = async (
+  propertyContext: PropertyContexts.PropertyContext
+) => {
+  const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
+    message: 'Error getting properties by type',
+    status: 404,
+  };
+  if (propertyContext.ownerId != null) {
+    // Check that ownerId string is numeric
+    const ownerId = +propertyContext.ownerId;
+    if (isNaN(ownerId)) {
+      propertyReturn.message = 'Bad owner ID';
+      propertyReturn.status = 422;
+      return propertyReturn;
+    }
+    if (!propertyContext.size) {
+      propertyReturn.message = 'Bad property size';
+      propertyReturn.status = 422;
+      return propertyReturn;
+    }
+    const findProperties = await PropertyDAL.getUserPropertiesByMinSize(
+      ownerId,
+      propertyContext.size
+    );
+    if (findProperties !== null) {
+      propertyReturn.message = 'Owner Properties found';
+      propertyReturn.data = findProperties;
+      propertyReturn.status = 200;
+    }
+  }
+  return propertyReturn;
+};
+
+// Get all properties owned by a specific user that are smaller than a certain size
+const getUserPropertiesByMaxSizeService = async (
+  propertyContext: PropertyContexts.PropertyContext
+) => {
+  const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
+    message: 'Error getting properties by type',
+    status: 404,
+  };
+  if (propertyContext.ownerId != null) {
+    // Check that ownerId string is numeric
+    const ownerId = +propertyContext.ownerId;
+    if (isNaN(ownerId)) {
+      propertyReturn.message = 'Bad owner ID';
+      propertyReturn.status = 422;
+      return propertyReturn;
+    }
+    if (!propertyContext.size) {
+      propertyReturn.message = 'Bad property size';
+      propertyReturn.status = 422;
+      return propertyReturn;
+    }
+    const findProperties = await PropertyDAL.getUserPropertiesByMaxSize(
+      ownerId,
+      propertyContext.size
+    );
+    if (findProperties !== null) {
+      propertyReturn.message = 'Owner Properties found';
+      propertyReturn.data = findProperties;
+      propertyReturn.status = 200;
+    }
+  }
+  return propertyReturn;
+};
+
 // Get all properties owned by a specific user with open tickets
 const getUserOpenTicketPropertiesService = async (
   propertyContext: PropertyContexts.PropertyContext
@@ -400,6 +468,8 @@ export {
   getUserPropertiesByTypeService,
   getUserPropertiesByTenantService,
   getUserOpenTicketPropertiesService,
+  getUserPropertiesByMinSizeService,
+  getUserPropertiesByMaxSizeService,
   createPropertyService,
   updatePropertyService,
   deletePropertyService,

@@ -100,6 +100,36 @@ const getUserPropertiesByType = async (ownerId: number, propertyType: string) =>
   return query;
 };
 
+const getUserPropertiesByMinSize = async (ownerId: number, minSize: number) => {
+  const query = await prisma.property.findMany({
+    where: {
+      ownerId: ownerId,
+      size: {
+        gte: minSize,
+      },
+    },
+    orderBy: {
+      size: 'asc',
+    },
+  });
+  return query;
+};
+
+const getUserPropertiesByMaxSize = async (ownerId: number, maxSize: number) => {
+  const query = await prisma.property.findMany({
+    where: {
+      ownerId: ownerId,
+      size: {
+        lte: maxSize,
+      },
+    },
+    orderBy: {
+      size: 'asc',
+    },
+  });
+  return query;
+};
+
 const getUserPropertiesByTenant = async (
   ownerId: number,
   tenantFname: string,
@@ -162,6 +192,8 @@ export {
   getUserPropertiesByTenant,
   getUserOpenTicketProperties,
   createNewProperty,
+  getUserPropertiesByMaxSize,
+  getUserPropertiesByMinSize,
   updateProperty,
   deleteProperty,
 };
