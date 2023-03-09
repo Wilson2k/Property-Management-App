@@ -6,7 +6,7 @@ interface PropertyCreateContext {
   city: string;
   state: string;
   type: string;
-  size: string;
+  size: number;
 }
 
 interface PropertyContext {
@@ -15,7 +15,7 @@ interface PropertyContext {
   city?: string;
   state?: string;
   type?: string;
-  size?: string;
+  size?: number;
   ownerId?: number;
 }
 
@@ -29,7 +29,7 @@ interface PropertyUpdateInput {
   city?: string;
   state?: string;
   type?: string;
-  size?: string;
+  size?: number;
 }
 
 // Contexts for property services

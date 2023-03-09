@@ -65,6 +65,7 @@ const updatePropertyService = async (
         updateData.city,
         updateData.state
       );
+      console.log(propertyDuplicate);
       if (propertyDuplicate != null) {
         propertyReturn.message = 'Address already exists';
         propertyReturn.status = 409;
@@ -393,11 +394,11 @@ export {
   getAllPropertiesService,
   getPropertyByIdService,
   getPropertyByAddressService,
+  getUserPropertiesService,
   getUserPropertiesByCityService,
   getUserPropertiesByStateService,
   getUserPropertiesByTypeService,
   getUserPropertiesByTenantService,
-  getUserPropertiesService,
   getUserOpenTicketPropertiesService,
   createPropertyService,
   updatePropertyService,

@@ -35,7 +35,7 @@ describe('Get User by ID', () => {
 });
 
 describe('Register User, test duplicate', () => {
-  test('Register a new user', async () => {
+  test('Register a new user, try registering duplicate', async () => {
     const user: UserContexts.UserRegisterContext = {
       firstName: 'Smokey',
       lastName: 'A Bear',
@@ -47,19 +47,10 @@ describe('Register User, test duplicate', () => {
     expect(newUser.data?.email).toBe(user.email);
     expect(newUser.data?.firstName).toBe(user.firstName);
     expect(newUser.data?.lastName).toBe(user.lastName);
-  });
 
-  test('Register existing user', async () => {
-    const userEmail = 'smokeynoreply@nosmokey.com';
-    const userPass = 'arsonist';
-    const testBear: UserContexts.UserRegisterContext = {
-      firstName: 'Testy',
-      lastName: 'A Bear',
-      email: userEmail,
-      password: userPass,
-    };
-    const newUser = await UserServices.registerUserService(testBear);
-    expect(newUser.status).toBe(409);
+    const duplicate = await UserServices.registerUserService(user);
+    expect(duplicate.status).toBe(409);
+    expect(duplicate.message).toBe('User already exists');
   });
 });
 

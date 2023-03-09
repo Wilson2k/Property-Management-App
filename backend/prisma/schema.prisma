@@ -33,15 +33,15 @@ model Tenant {
 }
 
 model Ticket {
-  id         Int      @id @default(autoincrement())
-  type       String   @db.Text
-  open       Boolean  @default(true)
-  details    String   @db.Text
-  openDate   String   @db.Text
-  closeDate  String?  @db.Text
-  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id         Int       @id @default(autoincrement())
+  type       String    @db.Text
+  open       Boolean   @default(true)
+  details    String    @db.Text
+  openDate   DateTime  @db.Date
+  closeDate  DateTime? @db.Date
+  tenant     Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   tenantId   Int
-  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   propertyId Int
 }
 
@@ -51,12 +51,12 @@ model Property {
   city    String   @db.Text
   state   String   @db.Text
   type    String   @db.Text
-  size    String   @db.Text
+  size    Int
   images  String[] @db.Text
   owner   User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId Int
   tenants Tenant[]
   tickets Ticket[]
 
-  @@unique([address,city,state])
+  @@unique([address, city, state])
 }
