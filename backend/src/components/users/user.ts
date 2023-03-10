@@ -1,4 +1,5 @@
 import { User } from '@prisma/client';
+import { Decimal } from '@prisma/client/runtime';
 
 // Require certain fields for user login and register
 interface UserLoginContext {
@@ -32,6 +33,7 @@ interface UserUpdateInput {
 interface UserReturnContext {
   status: number;
   data?: User;
+  aggregateData?: Decimal;
   message: string;
 }
 

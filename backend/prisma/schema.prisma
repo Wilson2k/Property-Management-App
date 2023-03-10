@@ -18,6 +18,7 @@ model User {
   password   String     @db.Text
   properties Property[]
   tenants    Tenant[]
+  leases     Lease[]
 }
 
 model Tenant {
@@ -29,7 +30,24 @@ model Tenant {
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     Int
   properties Property[]
+  leases     Lease[]
   tickets    Ticket[]
+}
+
+model Lease {
+  id          Int      @id @default(autoincrement())
+  startDate   DateTime @db.Date
+  endDate     DateTime @db.Date
+  monthlyRent Decimal  @db.Money
+  totalValue  Decimal  @db.Money
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenantId    Int
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId  Int
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId    Int
+
+  @@unique([tenantId, propertyId])
 }
 
 model Ticket {
@@ -57,6 +75,7 @@ model Property {
   ownerId Int
   tenants Tenant[]
   tickets Ticket[]
+  leases  Lease[]
 
   @@unique([address, city, state])
 }

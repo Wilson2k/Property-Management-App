@@ -71,6 +71,29 @@ const getUserService = async (userContext: UserContexts.UserContext) => {
   return userReturn;
 };
 
+const getUserMonthlyIncomeService = async (userContext: UserContexts.UserContext) => {
+  const userReturn: UserContexts.UserReturnContext = {
+    message: 'Error getting user',
+    status: 404,
+  };
+  if (userContext.id != null) {
+    // Check that input string is numeric
+    const userId = +userContext.id;
+    if (isNaN(userId)) {
+      userReturn.message = 'Bad user id';
+      userReturn.status = 422;
+      return userReturn;
+    }
+    const userIncome = await UserDAL.getUserMonthlyIncome(userId);
+    if (userIncome != null) {
+      userReturn.message = 'User found';
+      userReturn.aggregateData = userIncome;
+      userReturn.status = 200;
+    }
+  }
+  return userReturn;
+};
+
 const updateUserService = async (userContext: UserContexts.UserContext) => {
   const userReturn: UserContexts.UserReturnContext = {
     message: 'Error updating user',
@@ -166,4 +189,5 @@ export {
   updateUserService,
   getAllUserService,
   deleteAllUserService,
+  getUserMonthlyIncomeService,
 };

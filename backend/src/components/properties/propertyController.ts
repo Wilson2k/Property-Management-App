@@ -80,7 +80,7 @@ const getAllProperties = (req: Request, res: Response) => {
   };
 };
 
-// Get property id
+// Get property by id
 const getPropertyById = (req: CustomRequest<PropertyContext>, res: Response) => {
   async () => {
     const propertyContext: PropertyContext = {
@@ -89,6 +89,21 @@ const getPropertyById = (req: CustomRequest<PropertyContext>, res: Response) => 
     const propertyData = await PropertyServices.getPropertyByIdService(propertyContext);
     if (propertyData.status === 200 && propertyData.data !== undefined) {
       res.status(propertyData.status).send(propertyData.data);
+    } else {
+      res.status(propertyData.status).send(propertyData.message);
+    }
+  };
+};
+
+// Get property total income with id
+const getPropertyIncomeById = (req: CustomRequest<PropertyContext>, res: Response) => {
+  async () => {
+    const propertyContext: PropertyContext = {
+      id: req.body.id,
+    };
+    const propertyData = await PropertyServices.getPropertyIncomeService(propertyContext);
+    if (propertyData.status === 200 && propertyData.aggregateData !== undefined) {
+      res.status(propertyData.status).send(propertyData.aggregateData);
     } else {
       res.status(propertyData.status).send(propertyData.message);
     }
@@ -268,6 +283,7 @@ export {
   getAllProperties,
   getAllUserOpenTicketProperties,
   getAllUserProperties,
+  getPropertyIncomeById,
   getPropertyByAddress,
   getPropertyById,
   getUserPropertiesByCity,

@@ -100,6 +100,32 @@ const updatePropertyService = async (
   return propertyReturn;
 };
 
+// Get total income of property
+const getPropertyIncomeService = async (
+  propertyContext: PropertyContexts.PropertyContext
+) => {
+  const propertyReturn: PropertyContexts.PropertyReturnContext = {
+    message: 'Error getting user properties',
+    status: 404,
+  };
+  if (propertyContext.id != null) {
+    // Check that ownerId string is numeric
+    const propertyId = +propertyContext.id;
+    if (isNaN(propertyId) || propertyId < 0) {
+      propertyReturn.message = 'Bad Property ID';
+      propertyReturn.status = 422;
+      return propertyReturn;
+    }
+    const propertyIncome = await PropertyDAL.getPropertyMonthlyIncome(propertyId);
+    if (propertyIncome !== null) {
+      propertyReturn.message = 'Property Income Calculated';
+      propertyReturn.aggregateData = propertyIncome;
+      propertyReturn.status = 200;
+    }
+  }
+  return propertyReturn;
+};
+
 const deletePropertyService = async (
   propertyContext: PropertyContexts.PropertyContext
 ) => {
@@ -460,6 +486,7 @@ const getUserPropertiesByTenantService = async (
 
 export {
   getAllPropertiesService,
+  getPropertyIncomeService,
   getPropertyByIdService,
   getPropertyByAddressService,
   getUserPropertiesService,

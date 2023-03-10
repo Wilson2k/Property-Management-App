@@ -60,6 +60,18 @@ const deleteUser = async (userId: number) => {
   return query;
 };
 
+const getUserMonthlyIncome = async (userId: number) => {
+  const query = await prisma.lease.aggregate({
+    _sum: {
+      monthlyRent: true,
+    },
+    where: {
+      ownerId: userId,
+    },
+  });
+  return query._sum.monthlyRent;
+};
+
 export {
   getUserById,
   createNewUser,
@@ -68,4 +80,5 @@ export {
   getAllUsers,
   updateUser,
   deleteAllUsers,
+  getUserMonthlyIncome,
 };

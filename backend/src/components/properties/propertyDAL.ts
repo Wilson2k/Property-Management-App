@@ -181,10 +181,23 @@ const getUserOpenTicketProperties = async (ownerId: number) => {
   return query;
 };
 
+const getPropertyMonthlyIncome = async (propertyId: number) => {
+  const query = await prisma.lease.aggregate({
+    _sum: {
+      monthlyRent: true,
+    },
+    where: {
+      propertyId: propertyId,
+    },
+  });
+  return query._sum.monthlyRent;
+};
+
 export {
   getAllProperties,
   getPropertyById,
   getPropertyByAddress,
+  getPropertyMonthlyIncome,
   getAllUserProperties,
   getUserPropertiesByCity,
   getUserPropertiesByState,

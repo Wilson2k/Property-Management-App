@@ -34,6 +34,22 @@ const getUser = (req: CustomRequest<UserContext>, res: Response) => {
   };
 };
 
+// Get user monthly income
+const getUserIncome = (req: CustomRequest<UserContext>, res: Response) => {
+  async () => {
+    // Create new user context from req object here
+    const userContext: UserContext = {
+      id: req.body.id,
+    };
+    const userData = await UserServices.getUserMonthlyIncomeService(userContext);
+    if (userData.status === 200 && userData.aggregateData !== undefined) {
+      res.status(userData.status).send(userData.aggregateData);
+    } else {
+      res.status(userData.status).send(userData.message);
+    }
+  };
+};
+
 // Update a user's info
 const updateUser = (req: CustomRequest<UserContext>, res: Response) => {
   async () => {
@@ -126,4 +142,5 @@ export {
   deleteUser,
   getAllUsers,
   updateUser,
+  getUserIncome,
 };
