@@ -145,6 +145,17 @@ describe('Get User Properties', () => {
   });
 });
 
+describe('Get Property income', () => {
+  test('Get property monthly income', async () => {
+    const property: PropertyContexts.PropertyContext = {
+      id: 3005,
+    };
+    const propertyData = await PropertyServices.getPropertyIncomeService(property);
+    expect(propertyData.status).toBe(200);
+    expect(propertyData.aggregateData).toBe(900.87);
+  });
+});
+
 describe('Get User Properties bad input', () => {
   test('Get user properties bad id', async () => {
     const properties: PropertyContexts.PropertyContext = {

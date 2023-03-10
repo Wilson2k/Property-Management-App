@@ -38,8 +38,8 @@ model Lease {
   id          Int      @id @default(autoincrement())
   startDate   DateTime @db.Date
   endDate     DateTime @db.Date
+  months      Int      @db.Integer
   monthlyRent Decimal  @db.Money
-  totalValue  Decimal  @db.Money
   tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   tenantId    Int
   property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)

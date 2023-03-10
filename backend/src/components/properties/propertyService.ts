@@ -118,7 +118,7 @@ const getPropertyIncomeService = async (
     const propertyIncome = await PropertyDAL.getPropertyMonthlyIncome(propertyId);
     if (propertyIncome !== null) {
       propertyReturn.message = 'Property Income Calculated';
-      propertyReturn.aggregateData = propertyIncome;
+      propertyReturn.aggregateData = Number(propertyIncome);
       propertyReturn.status = 200;
     }
   }

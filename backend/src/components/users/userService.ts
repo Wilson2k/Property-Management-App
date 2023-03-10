@@ -87,7 +87,7 @@ const getUserMonthlyIncomeService = async (userContext: UserContexts.UserContext
     const userIncome = await UserDAL.getUserMonthlyIncome(userId);
     if (userIncome != null) {
       userReturn.message = 'User found';
-      userReturn.aggregateData = userIncome;
+      userReturn.aggregateData = Number(userIncome);
       userReturn.status = 200;
     }
   }

@@ -17,6 +17,7 @@ export async function seed() {
       properties: {
         create: [
           {
+            id: 3005,
             address: '123 Fake Street',
             city: 'San Francisco',
             state: 'CA',
@@ -67,6 +68,17 @@ export async function seed() {
         tenantId: tenant1.id,
         propertyId: prop1.id,
         openDate: new Date('1999-12-25T03:24:00'),
+      },
+    });
+    await prisma.lease.create({
+      data: {
+        startDate: new Date('2023-01-01T03:24:00'),
+        endDate: new Date('2023-07-01T03:24:00'),
+        monthlyRent: 900.87,
+        months: 6,
+        ownerId: user1.id,
+        tenantId: tenant1.id,
+        propertyId: prop1.id,
       },
     });
   }

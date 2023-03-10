@@ -1,5 +1,4 @@
 import { Property } from '@prisma/client';
-import { Decimal } from '@prisma/client/runtime';
 
 interface PropertyCreateContext {
   ownerId: string;
@@ -37,7 +36,7 @@ interface PropertyUpdateInput {
 interface PropertyReturnContext {
   status: number;
   data?: Property;
-  aggregateData?: Decimal;
+  aggregateData?: number;
   message: string;
 }
 
