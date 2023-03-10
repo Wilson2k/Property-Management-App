@@ -7,11 +7,6 @@ const getAllUsers = async () => {
   return query;
 };
 
-const deleteAllUsers = async () => {
-  const query = await prisma.user.deleteMany({});
-  return query;
-};
-
 const getUserById = async (userId: number) => {
   const query = await prisma.user.findUnique({
     where: {
@@ -79,6 +74,5 @@ export {
   deleteUser,
   getAllUsers,
   updateUser,
-  deleteAllUsers,
   getUserMonthlyIncome,
 };

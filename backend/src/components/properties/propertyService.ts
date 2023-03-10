@@ -65,7 +65,6 @@ const updatePropertyService = async (
         updateData.city,
         updateData.state
       );
-      console.log(propertyDuplicate);
       if (propertyDuplicate != null) {
         propertyReturn.message = 'Address already exists';
         propertyReturn.status = 409;
@@ -109,7 +108,7 @@ const getPropertyIncomeService = async (
     status: 404,
   };
   if (propertyContext.id != null) {
-    // Check that ownerId string is numeric
+    // Check that property id string is numeric
     const propertyId = +propertyContext.id;
     if (isNaN(propertyId) || propertyId < 0) {
       propertyReturn.message = 'Bad Property ID';

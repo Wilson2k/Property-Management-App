@@ -1,6 +1,6 @@
 // Jest unit testing user routes
 import { PrismaClient } from '@prisma/client';
-import { describe, expect, test, beforeAll } from '@jest/globals';
+import { describe, expect, test, beforeAll, afterAll } from '@jest/globals';
 import { seed } from '../../../seed';
 import * as UserServices from '../userService';
 import * as UserContexts from '../user';
@@ -19,6 +19,10 @@ beforeAll(async () => {
       await prisma.$disconnect();
       process.exit(1);
     });
+});
+
+afterAll(async () => {
+  await prisma.user.deleteMany({});
 });
 
 describe('Get User by ID', () => {
@@ -47,7 +51,15 @@ describe('Register User, test duplicate', () => {
     expect(newUser.data?.email).toBe(user.email);
     expect(newUser.data?.firstName).toBe(user.firstName);
     expect(newUser.data?.lastName).toBe(user.lastName);
+  });
 
+  test('Try registering duplicate', async () => {
+    const user: UserContexts.UserRegisterContext = {
+      firstName: 'Smokey',
+      lastName: 'A Bear',
+      email: 'smokeynoreply@nosmokey.com',
+      password: 'Nofires',
+    };
     const duplicate = await UserServices.registerUserService(user);
     expect(duplicate.status).toBe(409);
     expect(duplicate.message).toBe('User already exists');
@@ -157,14 +169,5 @@ describe('Register then update a new user', () => {
     expect(updatedUser.status).toBe(200);
     expect(updatedUser.data?.firstName).toBe('Perry');
     expect(updatedUser.data?.lastName).toBe('Plat');
-  });
-});
-
-describe('Delete all users', () => {
-  test('Delete all registered users', async () => {
-    await UserServices.deleteAllUserService();
-    const allUsers = await UserServices.getAllUserService();
-    expect(allUsers.status).toBe(404);
-    expect(allUsers.message).toBe('No users found');
   });
 });

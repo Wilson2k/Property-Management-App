@@ -175,12 +175,6 @@ const deleteUserService = async (userContext: UserContexts.UserContext) => {
   return userReturn;
 };
 
-// Returns number of deleted users
-const deleteAllUserService = async () => {
-  const deletedCount = await UserDAL.deleteAllUsers();
-  return deletedCount.count;
-};
-
 export {
   loginUserService,
   registerUserService,
@@ -188,6 +182,5 @@ export {
   deleteUserService,
   updateUserService,
   getAllUserService,
-  deleteAllUserService,
   getUserMonthlyIncomeService,
 };

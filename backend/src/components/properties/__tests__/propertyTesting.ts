@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { describe, expect, test, beforeAll } from '@jest/globals';
+import { describe, expect, test, beforeAll, afterAll } from '@jest/globals';
 import { seed } from '../../../seed';
 import * as PropertyServices from '../propertyService';
 import * as PropertyContexts from '../property';
@@ -18,6 +18,10 @@ beforeAll(async () => {
       await prisma.$disconnect();
       process.exit(1);
     });
+});
+
+afterAll(async () => {
+  await prisma.user.deleteMany({});
 });
 
 describe('Get User Properties', () => {
@@ -163,9 +167,9 @@ describe('Get User Properties bad input', () => {
   });
 });
 
-describe('Create Properties', () => {
-  test('Create property for seed user, test duplicate', async () => {
-    const properties: PropertyContexts.PropertyCreateContext = {
+describe('Create Property and test duplicate', () => {
+  test('Create property', async () => {
+    const property: PropertyContexts.PropertyCreateContext = {
       ownerId: userIds[0].toString(),
       address: '321 Big Street',
       city: 'San Jose',
@@ -173,12 +177,43 @@ describe('Create Properties', () => {
       size: 5000,
       type: 'Apartment',
     };
-    const propertyData = await PropertyServices.createPropertyService(properties);
+    const propertyData = await PropertyServices.createPropertyService(property);
     expect(propertyData.status).toBe(200);
     expect(propertyData.message).toBe('Property successfully created');
 
-    const duplicate = await PropertyServices.createPropertyService(properties);
+    const duplicate = await PropertyServices.createPropertyService(property);
     expect(duplicate.status).toBe(409);
     expect(duplicate.message).toBe('Property already exists');
+  });
+
+  test('Test create duplicate property', async () => {
+    const property: PropertyContexts.PropertyCreateContext = {
+      ownerId: userIds[0].toString(),
+      address: '321 Big Street',
+      city: 'San Jose',
+      state: 'CA',
+      size: 5000,
+      type: 'Apartment',
+    };
+    const duplicate = await PropertyServices.createPropertyService(property);
+    expect(duplicate.status).toBe(409);
+    expect(duplicate.message).toBe('Property already exists');
+  });
+});
+
+describe('Update Properties', () => {
+  test('Update user property', async () => {
+    const property: PropertyContexts.PropertyContext = {
+      id: 2000,
+      ownerId: userIds[1],
+      address: '1234 Mouse Street',
+      city: 'San Jose',
+      state: 'CA',
+      size: 980,
+      type: 'Apartment',
+    };
+    const propertyData = await PropertyServices.updatePropertyService(property);
+    expect(propertyData.status).toBe(200);
+    expect(propertyData.message).toBe('Property updated');
   });
 });

@@ -45,7 +45,7 @@ model Lease {
   property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   propertyId  Int
   owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  ownerId    Int
+  ownerId     Int
 
   @@unique([tenantId, propertyId])
 }
