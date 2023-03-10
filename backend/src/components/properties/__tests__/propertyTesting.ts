@@ -226,3 +226,22 @@ describe('Update Properties', () => {
     expect(propertyData.data?.address).toBe('1234 Mouse Street');
   });
 });
+
+describe('Delete Property', () => {
+  test('Delete user property', async () => {
+    const property: PropertyContexts.PropertyContext = {
+      id: 2000,
+    };
+    const propertyData = await PropertyServices.deletePropertyService(property);
+    expect(propertyData.status).toBe(200);
+    expect(propertyData.message).toBe('Property deleted');
+  });
+
+  test('Get deleted property', async () => {
+    const property: PropertyContexts.PropertyContext = {
+      id: 2000,
+    };
+    const propertyData = await PropertyServices.getPropertyByIdService(property);
+    expect(propertyData.status).toBe(404);
+  });
+});
