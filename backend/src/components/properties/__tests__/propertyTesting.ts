@@ -216,4 +216,13 @@ describe('Update Properties', () => {
     expect(propertyData.status).toBe(200);
     expect(propertyData.message).toBe('Property updated');
   });
+
+  test('Get updated property', async () => {
+    const property: PropertyContexts.PropertyContext = {
+      id: 2000,
+    };
+    const propertyData = await PropertyServices.getPropertyByIdService(property);
+    expect(propertyData.status).toBe(200);
+    expect(propertyData.data?.address).toBe('1234 Mouse Street');
+  });
 });
