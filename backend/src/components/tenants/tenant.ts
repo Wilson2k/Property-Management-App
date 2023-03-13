@@ -1,0 +1,49 @@
+import { Tenant } from '@prisma/client';
+
+interface TenantCreateContext {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  userId: number;
+  propertyId: number;
+}
+
+interface TenantContext {
+  id?: number;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  userId?: number;
+  propertyId?: number;
+}
+
+interface TenantUpdateInput {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+}
+
+// Contexts for tenant services
+interface TenantReturnContext {
+  status: number;
+  data?: Tenant;
+  aggregateData?: number;
+  message: string;
+}
+
+interface MultTenantReturnContext {
+  status: number;
+  data?: Tenant[];
+  message: string;
+}
+
+export {
+  TenantReturnContext,
+  TenantContext,
+  TenantCreateContext,
+  TenantUpdateInput,
+  MultTenantReturnContext,
+};

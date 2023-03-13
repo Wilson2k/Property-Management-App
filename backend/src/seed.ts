@@ -25,6 +25,7 @@ export async function seed() {
             size: 200,
           },
           {
+            id: 3008,
             address: '123 Real Street',
             city: 'San Francisco',
             state: 'CA',
@@ -35,15 +36,10 @@ export async function seed() {
       },
     },
   });
-  // Add a tenant and open a ticket on property 1 of first user
-  const prop1 = await prisma.property.findFirst({
-    where: {
-      address: '123 Fake Street',
-      city: 'San Francisco',
-      state: 'CA',
-    },
-  });
-  if (prop1) {
+  // Add a tenant with a lease to bot properties and open a ticket
+  const prop1 = await prisma.property.findUnique({ where: { id: 3005 } });
+  const prop2 = await prisma.property.findUnique({ where: { id: 3008 } });
+  if (prop1 && prop2) {
     const tenant1 = await prisma.tenant.upsert({
       where: { email: 'bob@tenant.com' },
       update: {},
@@ -70,16 +66,27 @@ export async function seed() {
         openDate: new Date('1999-12-25T03:24:00'),
       },
     });
-    await prisma.lease.create({
-      data: {
-        startDate: new Date('2023-01-01T03:24:00'),
-        endDate: new Date('2023-07-01T03:24:00'),
-        monthlyRent: 900.87,
-        months: 6,
-        ownerId: user1.id,
-        tenantId: tenant1.id,
-        propertyId: prop1.id,
-      },
+    await prisma.lease.createMany({
+      data: [
+        {
+          startDate: new Date('2023-01-01T03:24:00'),
+          endDate: new Date('2023-07-01T03:24:00'),
+          monthlyRent: 900.87,
+          months: 6,
+          ownerId: user1.id,
+          tenantId: tenant1.id,
+          propertyId: prop1.id,
+        },
+        {
+          startDate: new Date('2023-01-01T03:24:00'),
+          endDate: new Date('2023-07-01T03:24:00'),
+          monthlyRent: 100.13,
+          months: 6,
+          ownerId: user1.id,
+          tenantId: tenant1.id,
+          propertyId: prop2.id,
+        },
+      ],
     });
   }
   // Seed second user with three properties and no tenants

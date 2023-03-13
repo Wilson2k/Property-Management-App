@@ -25,7 +25,27 @@ afterAll(async () => {
   await prisma.user.deleteMany({});
 });
 
-describe('Get User by ID', () => {
+describe('Get User income ID', () => {
+  test('Get seeded user income', async () => {
+    const user: UserContexts.UserContext = {
+      id: userIds[0].toString(),
+    };
+    const userData = await UserServices.getUserMonthlyIncomeService(user);
+    expect(userData.status).toBe(200);
+    expect(userData.aggregateData).toBe(1001.0);
+  });
+
+  test('Get seeded user income', async () => {
+    const user: UserContexts.UserContext = {
+      id: userIds[1].toString(),
+    };
+    const userData = await UserServices.getUserMonthlyIncomeService(user);
+    expect(userData.status).toBe(200);
+    expect(userData.aggregateData).toBe(0);
+  });
+});
+
+describe('Get User income by id', () => {
   test('Get seeded user by ID', async () => {
     const user: UserContexts.UserContext = {
       id: userIds[0].toString(),
