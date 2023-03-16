@@ -73,7 +73,7 @@ model Property {
   images  String[] @db.Text
   owner   User     @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   ownerId Int
-  tenants Tenant[]
+  tenants Tenant[] 
   tickets Ticket[]
   leases  Lease[]
 

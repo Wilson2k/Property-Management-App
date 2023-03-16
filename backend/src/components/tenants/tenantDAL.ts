@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { TenantCreateContext, PropertyConnectInput } from './tenant';
+import { TenantCreateContext, PropertyConnectInput, TenantContext, TenantUpdateInput } from './tenant';
 const prisma = new PrismaClient();
 
 const createNewTenant = async (
@@ -25,4 +25,28 @@ const getTenantByEmail = async (tenantEmail: string) => {
   return query;
 };
 
-export { createNewTenant, getTenantByEmail };
+const updateTenant = async (
+  tenantId: number,
+  tenantContext: TenantUpdateInput
+) => {
+  const query = await prisma.tenant.update({
+    where: { id: tenantId },
+    data: tenantContext,
+  });
+  return query;
+};
+
+const getTenantsByProperty = async (propertyId: number) => {
+  const query = await prisma.tenant.findMany({
+    where: {
+      properties: {
+        some: {
+          id: propertyId
+        }
+      }
+    },
+  });
+  return query;
+};
+
+export { createNewTenant, getTenantByEmail, getTenantsByProperty, updateTenant };

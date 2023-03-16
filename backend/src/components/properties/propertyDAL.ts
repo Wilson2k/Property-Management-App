@@ -32,6 +32,18 @@ const deleteProperty = async (propertyId: number) => {
   return query;
 };
 
+const removePropertyTenant = async(propertyId: number, tenantId: number) => {
+  const query = await prisma.property.update({
+    where: { id: propertyId },
+    data: {
+      tenants: {
+        disconnect: [{id: tenantId}],
+      }
+    }
+  });
+  return query;
+};
+
 const getAllProperties = async () => {
   const query = await prisma.property.findMany();
   return query;

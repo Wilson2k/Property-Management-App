@@ -40,4 +40,14 @@ const createTenantService = async (tenantContext: TenantContexts.TenantCreateCon
   return tenantReturn;
 };
 
-export { createTenantService };
+const updateTenantService = async (tenantContext: TenantContexts.TenantContext) => {
+  const tenantReturn: TenantContexts.TenantReturnContext = {
+    message: 'Error creating tenant',
+    status: 400,
+  };
+  if (tenantContext.id != null && tenantContext.userId != null) { 
+
+  }
+};
+
+export { createTenantService, updateTenantService };
