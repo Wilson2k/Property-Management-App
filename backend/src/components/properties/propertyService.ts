@@ -40,9 +40,10 @@ const updatePropertyService = async (
   };
   if (propertyContext.ownerId != null && propertyContext.id != null) {
     const { ownerId, id, ...updateData } = propertyContext;
+    const updateInput: PropertyContexts.PropertyUpdateInput = updateData;
     // Check valid property id
     const propertyId = +id;
-    if (isNaN(propertyId)) {
+    if (isNaN(propertyId) || propertyId < 0) {
       propertyReturn.message = 'Bad property id';
       propertyReturn.status = 422;
       return propertyReturn;
@@ -54,16 +55,26 @@ const updatePropertyService = async (
       propertyReturn.status = 404;
       return propertyReturn;
     }
+    // All adress fields or none
+    if (
+      updateInput.address == null ||
+      updateInput.city == null ||
+      updateInput.state == null
+    ) {
+      updateInput.address = undefined;
+      updateInput.city = undefined;
+      updateInput.state = undefined;
+    }
     // Check for duplicate info if updating address
     if (
-      updateData.address != null &&
-      updateData.city != null &&
-      updateData.state != null
+      updateInput.address != null &&
+      updateInput.city != null &&
+      updateInput.state != null
     ) {
       const propertyDuplicate = await PropertyDAL.getPropertyByAddress(
-        updateData.address,
-        updateData.city,
-        updateData.state
+        updateInput.address,
+        updateInput.city,
+        updateInput.state
       );
       if (propertyDuplicate != null) {
         propertyReturn.message = 'Address already exists';
@@ -77,22 +88,22 @@ const updatePropertyService = async (
       propertyReturn.status = 401;
       return propertyReturn;
     }
-    // Check that updated data is there
+    // Check that updated data is inside input
     if (
-      updateData.address != null ||
-      updateData.city != null ||
-      updateData.state != null ||
-      updateData.type != null ||
-      updateData.size != null
+      (updateInput.address != null &&
+        updateInput.city != null &&
+        updateInput.state != null) ||
+      updateInput.type != null ||
+      updateInput.size != null
     ) {
-      const updatedProperty = await PropertyDAL.updateProperty(propertyId, updateData);
+      const updatedProperty = await PropertyDAL.updateProperty(propertyId, updateInput);
       if (updatedProperty != null) {
         propertyReturn.message = 'Property updated';
         propertyReturn.data = updatedProperty;
         propertyReturn.status = 200;
       }
     } else {
-      propertyReturn.message = 'No data updated';
+      propertyReturn.message = 'No data input';
       propertyReturn.status = 400;
     }
   }
@@ -152,7 +163,8 @@ const removePropertyTenantService = async (
     }
     const findProperty = await PropertyDAL.removePropertyTenant(propertyId, tenantId);
     if (findProperty != null) {
-      propertyReturn.message = 'Tenant removed from property and lease associated deleted';
+      propertyReturn.message =
+        'Tenant removed from property and lease associated deleted';
       propertyReturn.fullData = findProperty;
       propertyReturn.status = 200;
     }

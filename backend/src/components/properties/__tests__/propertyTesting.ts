@@ -152,7 +152,7 @@ describe('Get Property income', () => {
     };
     const propertyData = await PropertyServices.getPropertyIncomeService(property);
     expect(propertyData.status).toBe(200);
-    expect(propertyData.aggregateData).toBe(1001.00);
+    expect(propertyData.aggregateData).toBe(1001.0);
   });
 
   test('Get property monthly income', async () => {
@@ -222,6 +222,29 @@ describe('Create Property and test duplicate', () => {
 });
 
 describe('Update Properties', () => {
+  test('Invalid update property', async () => {
+    const property: PropertyContexts.PropertyContext = {
+      id: 2000,
+      ownerId: userIds[1],
+      address: '1234 Mouse Street',
+      city: 'San Jose',
+    };
+    const propertyData = await PropertyServices.updatePropertyService(property);
+    expect(propertyData.status).toBe(400);
+  });
+
+  test('Duplicate update property', async () => {
+    const property: PropertyContexts.PropertyContext = {
+      id: 2000,
+      ownerId: userIds[1],
+      address: '123 Fake Street',
+      city: 'San Francisco',
+      state: 'CA',
+    };
+    const propertyData = await PropertyServices.updatePropertyService(property);
+    expect(propertyData.status).toBe(409);
+  });
+
   test('Update user property', async () => {
     const property: PropertyContexts.PropertyContext = {
       id: 2000,
@@ -259,7 +282,6 @@ describe('Update Property Tenant', () => {
     expect(propertyData.fullData?.tenants?.length).toBe(1);
   });
 });
-
 
 describe('Delete Property', () => {
   test('Delete user property', async () => {

@@ -9,7 +9,6 @@ type PropertyFullType = Prisma.PropertyGetPayload<{
   include: typeof propertyIncludeAll;
 }>;
 
-
 interface PropertyCreateContext {
   ownerId: string;
   address: string;

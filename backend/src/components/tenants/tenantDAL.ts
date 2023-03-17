@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { TenantCreateContext, PropertyConnectInput, TenantContext, TenantUpdateInput } from './tenant';
+import { TenantCreateContext, PropertyConnectInput, TenantUpdateInput } from './tenant';
 const prisma = new PrismaClient();
 
 const createNewTenant = async (
@@ -16,6 +16,15 @@ const createNewTenant = async (
   return query;
 };
 
+const getTenantById = async (tenantId: number) => {
+  const query = await prisma.tenant.findUnique({
+    where: {
+      id: tenantId,
+    },
+  });
+  return query;
+};
+
 const getTenantByEmail = async (tenantEmail: string) => {
   const query = await prisma.tenant.findUnique({
     where: {
@@ -25,10 +34,16 @@ const getTenantByEmail = async (tenantEmail: string) => {
   return query;
 };
 
-const updateTenant = async (
-  tenantId: number,
-  tenantContext: TenantUpdateInput
-) => {
+const getTenantByPhone = async (tenantPhone: string) => {
+  const query = await prisma.tenant.findUnique({
+    where: {
+      phone: tenantPhone,
+    },
+  });
+  return query;
+};
+
+const updateTenant = async (tenantId: number, tenantContext: TenantUpdateInput) => {
   const query = await prisma.tenant.update({
     where: { id: tenantId },
     data: tenantContext,
@@ -41,12 +56,19 @@ const getTenantsByProperty = async (propertyId: number) => {
     where: {
       properties: {
         some: {
-          id: propertyId
-        }
-      }
+          id: propertyId,
+        },
+      },
     },
   });
   return query;
 };
 
-export { createNewTenant, getTenantByEmail, getTenantsByProperty, updateTenant };
+export {
+  createNewTenant,
+  getTenantByEmail,
+  getTenantsByProperty,
+  getTenantById,
+  updateTenant,
+  getTenantByPhone,
+};

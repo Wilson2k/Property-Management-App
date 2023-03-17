@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PropertyCreateContext, PropertyUpdateInput } from './property';
 const prisma = new PrismaClient();
 
@@ -33,28 +34,47 @@ const deleteProperty = async (propertyId: number) => {
 };
 
 const removePropertyTenant = async (propertyId: number, tenantId: number) => {
-  const [deleteLease, updateProperty] = await prisma.$transaction([
-    prisma.lease.delete({where: {
-      tenantId_propertyId: {
-        tenantId: tenantId,
-        propertyId: propertyId,
+  let retries = 0;
+  while (retries < 5) {
+    try {
+      const [deletedLease, updateProperty] = await prisma.$transaction(
+        [
+          prisma.lease.delete({
+            where: {
+              tenantId_propertyId: {
+                tenantId: tenantId,
+                propertyId: propertyId,
+              },
+            },
+          }),
+          prisma.property.update({
+            where: { id: propertyId },
+            data: {
+              tenants: {
+                disconnect: [{ id: tenantId }],
+              },
+            },
+            include: {
+              tenants: true,
+              leases: true,
+            },
+          }),
+        ],
+        {
+          isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        }
+      );
+      if (deletedLease) {
+        return updateProperty;
       }
-    }}),
-    prisma.property.update({
-      where: { id: propertyId },
-      data: {
-        tenants: {
-          disconnect: [{ id: tenantId }],
-        },
-      },
-      include: {
-        tenants: true,
-        leases: true,
+    } catch (e: unknown) {
+      if (e instanceof PrismaClientKnownRequestError && e.code === 'P2034') {
+        retries++;
+        continue;
       }
-    })
-  ]);
-  
-  return updateProperty;
+      throw e;
+    }
+  }
 };
 
 const getAllProperties = async () => {

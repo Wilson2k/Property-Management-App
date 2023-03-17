@@ -107,10 +107,18 @@ const updateUserService = async (userContext: UserContexts.UserContext) => {
     // Check that input string is numeric
     const { id, ...updateData } = userContext;
     const userId = +id;
-    if (isNaN(userId)) {
+    if (isNaN(userId) || userId < 0) {
       userReturn.message = 'Bad user id';
       userReturn.status = 422;
       return userReturn;
+    }
+    if (updateData.email != null) {
+      const userRecord = await UserDAL.getUserById(userId);
+      if (userRecord != null) {
+        userReturn.message = 'Email already taken';
+        userReturn.status = 409;
+        return userReturn;
+      }
     }
     // Check that updated data is there
     if (
