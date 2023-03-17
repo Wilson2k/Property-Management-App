@@ -1,4 +1,14 @@
-import { Property } from '@prisma/client';
+import { Property, Prisma } from '@prisma/client';
+
+const propertyIncludeAll = Prisma.validator<Prisma.PropertyInclude>()({
+  leases: true,
+  tenants: true,
+});
+
+type PropertyFullType = Prisma.PropertyGetPayload<{
+  include: typeof propertyIncludeAll;
+}>;
+
 
 interface PropertyCreateContext {
   ownerId: string;
@@ -17,6 +27,7 @@ interface PropertyContext {
   type?: string;
   size?: number;
   ownerId?: number;
+  tenantId?: number;
 }
 
 interface PropertyTenantContext {
@@ -37,6 +48,7 @@ interface PropertyReturnContext {
   status: number;
   data?: Property;
   aggregateData?: number;
+  fullData?: PropertyFullType;
   message: string;
 }
 

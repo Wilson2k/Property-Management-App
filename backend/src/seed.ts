@@ -36,7 +36,7 @@ export async function seed() {
       },
     },
   });
-  // Add a tenant with a lease to bot properties and open a ticket
+  // Add two tenants to one property, each with one lease
   const prop1 = await prisma.property.findUnique({ where: { id: 3005 } });
   const prop2 = await prisma.property.findUnique({ where: { id: 3008 } });
   if (prop1 && prop2) {
@@ -44,10 +44,28 @@ export async function seed() {
       where: { email: 'bob@tenant.com' },
       update: {},
       create: {
+        id: 203,
         firstName: 'bob',
         lastName: 'bill',
         email: 'bob@tenant.com',
         phone: '999-999-9999',
+        userId: user1.id,
+        properties: {
+          connect: {
+            id: prop1.id,
+          },
+        },
+      },
+    });
+    const tenant2 = await prisma.tenant.upsert({
+      where: { email: 'lotso@tenant.com' },
+      update: {},
+      create: {
+        id: 205,
+        firstName: 'lotso',
+        lastName: 'sweets',
+        email: 'lotso@tenant.com',
+        phone: '999-111-999',
         userId: user1.id,
         properties: {
           connect: {
@@ -83,8 +101,8 @@ export async function seed() {
           monthlyRent: 100.13,
           months: 6,
           ownerId: user1.id,
-          tenantId: tenant1.id,
-          propertyId: prop2.id,
+          tenantId: tenant2.id,
+          propertyId: prop1.id,
         },
       ],
     });

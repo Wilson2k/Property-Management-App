@@ -152,7 +152,16 @@ describe('Get Property income', () => {
     };
     const propertyData = await PropertyServices.getPropertyIncomeService(property);
     expect(propertyData.status).toBe(200);
-    expect(propertyData.aggregateData).toBe(900.87);
+    expect(propertyData.aggregateData).toBe(1001.00);
+  });
+
+  test('Get property monthly income', async () => {
+    const property2: PropertyContexts.PropertyContext = {
+      id: 3008,
+    };
+    const propertyData2 = await PropertyServices.getPropertyIncomeService(property2);
+    expect(propertyData2.status).toBe(200);
+    expect(propertyData2.aggregateData).toBe(0);
   });
 });
 
@@ -237,6 +246,20 @@ describe('Update Properties', () => {
     expect(propertyData.data?.address).toBe('1234 Mouse Street');
   });
 });
+
+describe('Update Property Tenant', () => {
+  test('Remove Tenant From Property', async () => {
+    const property: PropertyContexts.PropertyContext = {
+      id: 3005,
+      tenantId: 203,
+    };
+    const propertyData = await PropertyServices.removePropertyTenantService(property);
+    expect(propertyData.status).toBe(200);
+    expect(propertyData.fullData?.leases?.length).toBe(1);
+    expect(propertyData.fullData?.tenants?.length).toBe(1);
+  });
+});
+
 
 describe('Delete Property', () => {
   test('Delete user property', async () => {

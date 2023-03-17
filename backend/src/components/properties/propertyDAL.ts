@@ -32,16 +32,29 @@ const deleteProperty = async (propertyId: number) => {
   return query;
 };
 
-const removePropertyTenant = async(propertyId: number, tenantId: number) => {
-  const query = await prisma.property.update({
-    where: { id: propertyId },
-    data: {
-      tenants: {
-        disconnect: [{id: tenantId}],
+const removePropertyTenant = async (propertyId: number, tenantId: number) => {
+  const [deleteLease, updateProperty] = await prisma.$transaction([
+    prisma.lease.delete({where: {
+      tenantId_propertyId: {
+        tenantId: tenantId,
+        propertyId: propertyId,
       }
-    }
-  });
-  return query;
+    }}),
+    prisma.property.update({
+      where: { id: propertyId },
+      data: {
+        tenants: {
+          disconnect: [{ id: tenantId }],
+        },
+      },
+      include: {
+        tenants: true,
+        leases: true,
+      }
+    })
+  ]);
+  
+  return updateProperty;
 };
 
 const getAllProperties = async () => {
@@ -220,5 +233,6 @@ export {
   getUserPropertiesByMaxSize,
   getUserPropertiesByMinSize,
   updateProperty,
+  removePropertyTenant,
   deleteProperty,
 };

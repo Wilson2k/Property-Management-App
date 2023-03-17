@@ -120,6 +120,41 @@ const getPropertyIncomeService = async (
       propertyReturn.message = 'Property Income Calculated';
       propertyReturn.aggregateData = Number(propertyIncome);
       propertyReturn.status = 200;
+    } else {
+      propertyReturn.message = 'Property has no income';
+      propertyReturn.aggregateData = 0;
+      propertyReturn.status = 200;
+    }
+  }
+  return propertyReturn;
+};
+
+const removePropertyTenantService = async (
+  propertyContext: PropertyContexts.PropertyContext
+) => {
+  const propertyReturn: PropertyContexts.PropertyReturnContext = {
+    message: 'Error deleting property',
+    status: 400,
+  };
+  if (propertyContext.id != null && propertyContext.tenantId != null) {
+    // Check that inputs are numeric
+    const propertyId = +propertyContext.id;
+    if (isNaN(propertyId) || propertyId < 0) {
+      propertyReturn.message = 'Bad property id';
+      propertyReturn.status = 422;
+      return propertyReturn;
+    }
+    const tenantId = +propertyContext.tenantId;
+    if (isNaN(tenantId) || tenantId < 0) {
+      propertyReturn.message = 'Bad tenant id';
+      propertyReturn.status = 422;
+      return propertyReturn;
+    }
+    const findProperty = await PropertyDAL.removePropertyTenant(propertyId, tenantId);
+    if (findProperty != null) {
+      propertyReturn.message = 'Tenant removed from property and lease associated deleted';
+      propertyReturn.fullData = findProperty;
+      propertyReturn.status = 200;
     }
   }
   return propertyReturn;
@@ -259,7 +294,7 @@ const getUserPropertiesByCityService = async (
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
     const ownerId = +propertyContext.ownerId;
-    if (isNaN(ownerId)) {
+    if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
       return propertyReturn;
@@ -293,7 +328,7 @@ const getUserPropertiesByStateService = async (
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
     const ownerId = +propertyContext.ownerId;
-    if (isNaN(ownerId)) {
+    if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
       return propertyReturn;
@@ -327,7 +362,7 @@ const getUserPropertiesByTypeService = async (
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
     const ownerId = +propertyContext.ownerId;
-    if (isNaN(ownerId)) {
+    if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
       return propertyReturn;
@@ -361,7 +396,7 @@ const getUserPropertiesByMinSizeService = async (
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
     const ownerId = +propertyContext.ownerId;
-    if (isNaN(ownerId)) {
+    if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
       return propertyReturn;
@@ -395,7 +430,7 @@ const getUserPropertiesByMaxSizeService = async (
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
     const ownerId = +propertyContext.ownerId;
-    if (isNaN(ownerId)) {
+    if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
       return propertyReturn;
@@ -429,7 +464,7 @@ const getUserOpenTicketPropertiesService = async (
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
     const ownerId = +propertyContext.ownerId;
-    if (isNaN(ownerId)) {
+    if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
       return propertyReturn;
@@ -499,4 +534,5 @@ export {
   createPropertyService,
   updatePropertyService,
   deletePropertyService,
+  removePropertyTenantService,
 };
