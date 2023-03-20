@@ -1,6 +1,35 @@
 import * as TenantDAL from './tenantDAL';
 import * as TenantContexts from './tenant';
 
+const getTenantByIdService = async (TenantContexts: TenantContexts.TenantContext) => {
+  const tenantReturn: TenantContexts.TenantReturnContext = {
+    message: 'Error creating tenant',
+    status: 400,
+  };
+};
+
+const getTenantByEmailService = async (TenantContexts: TenantContexts.TenantContext) => {
+  const tenantReturn: TenantContexts.TenantReturnContext = {
+    message: 'Error creating tenant',
+    status: 400,
+  };
+};
+
+const getTenantByPhoneService = async (TenantContexts: TenantContexts.TenantContext) => {
+  const tenantReturn: TenantContexts.TenantReturnContext = {
+    message: 'Error creating tenant',
+    status: 400,
+  };
+};
+
+// Returns list of tenants that live within a specific property
+const getTenantsByProperty = async (TenantContexts: TenantContexts.TenantContext) => {
+  const tenantReturn: TenantContexts.TenantReturnContext = {
+    message: 'Error creating tenant',
+    status: 400,
+  };
+};
+
 const createTenantService = async (tenantContext: TenantContexts.TenantCreateContext) => {
   const tenantReturn: TenantContexts.TenantReturnContext = {
     message: 'Error creating tenant',

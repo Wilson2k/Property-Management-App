@@ -8,12 +8,25 @@ const createPropertyService = async (
     message: 'Error creating property',
     status: 400,
   };
+  if (propertyContext.ownerId == null) {
+    propertyReturn.message = 'User not found';
+    propertyReturn.status = 404;
+    return propertyReturn;
+  }
   const userId = +propertyContext.ownerId;
-  if (isNaN(userId)) {
+  if (isNaN(userId) || userId < 0) {
     propertyReturn.message = 'Invalid user id';
     propertyReturn.status = 422;
     return propertyReturn;
   }
+  const size = +propertyContext.size;
+  if (isNaN(size) || size < 0) {
+    propertyReturn.message = 'Invalid size';
+    propertyReturn.status = 422;
+    return propertyReturn;
+  }
+  // Convert size to number if not already
+  propertyContext.size = size;
   const findProperty = await PropertyDAL.getPropertyByAddress(
     propertyContext.address,
     propertyContext.city,
@@ -83,7 +96,7 @@ const updatePropertyService = async (
       }
     }
     // Check that owner matches database
-    if (propertyRecord.ownerId != ownerId) {
+    if (propertyRecord.ownerId != +ownerId) {
       propertyReturn.message = 'Not authorized to update property';
       propertyReturn.status = 401;
       return propertyReturn;

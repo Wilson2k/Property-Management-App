@@ -10,7 +10,7 @@ type PropertyFullType = Prisma.PropertyGetPayload<{
 }>;
 
 interface PropertyCreateContext {
-  ownerId: string;
+  ownerId?: string;
   address: string;
   city: string;
   state: string;
@@ -30,7 +30,7 @@ interface PropertyContext {
 }
 
 interface PropertyTenantContext {
-  ownerId: number;
+  ownerId?: number;
   tenant: string;
 }
 

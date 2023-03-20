@@ -127,6 +127,10 @@ const updateUserService = async (userContext: UserContexts.UserContext) => {
       updateData.lastName != null ||
       updateData.password != null
     ) {
+      if (updateData.password != null) {
+        const hashedPass = await hash(updateData.password, 12);
+        updateData.password = hashedPass;
+      }
       const updatedUser = await UserDAL.updateUser(userId, updateData);
       if (updatedUser != null) {
         userReturn.message = 'User updated';
