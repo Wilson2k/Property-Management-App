@@ -34,12 +34,13 @@ const createNewUserProperty = async (
 // Update a property's info
 const updateProperty = async (req: CustomRequest<PropertyContext>, res: Response) => {
   const propertyContext: PropertyContext = {
-    id: req.body.id,
+    id: +req.params.id,
     address: req.body.address,
     city: req.body.city,
     state: req.body.state,
     type: req.body.type,
     size: req.body.size,
+    ownerId: req.session.user,
   };
   const propertyData = await PropertyServices.updatePropertyService(propertyContext);
   if (propertyData.status === 200 && propertyData.data !== undefined) {
@@ -75,7 +76,7 @@ const getAllProperties = async (req: Request, res: Response) => {
 // Get property by id
 const getPropertyById = async (req: CustomRequest<PropertyContext>, res: Response) => {
   const propertyContext: PropertyContext = {
-    id: req.body.id,
+    id: +req.params.id,
   };
   const propertyData = await PropertyServices.getPropertyByIdService(propertyContext);
   if (propertyData.status === 200 && propertyData.data !== undefined) {

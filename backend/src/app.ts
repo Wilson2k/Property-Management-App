@@ -10,8 +10,8 @@ import asyncHandler from 'express-async-handler';
 import Redis from 'ioredis';
 import connectRedis from 'connect-redis';
 // Routes and middleware
-import * as UserCon from './components/users/UserController';
-import * as PropertyCon from './components/properties/propertyController';
+import * as User from './components/users/UserController';
+import * as Property from './components/properties/propertyController';
 import { checkSession } from './middleware/auth';
 
 // Declaration merge to add user key to session object
@@ -48,18 +48,17 @@ app.use(
 );
 
 // User Routes
-app.get('/');
-app.post('/login', asyncHandler(UserCon.loginUser));
-app.post('/register', asyncHandler(UserCon.registerUser));
-app.get('/profile', checkSession, asyncHandler(UserCon.getUser));
-app.post('/logout', checkSession, asyncHandler(UserCon.logoutUser));
-app.delete('/user/delete', checkSession, asyncHandler(UserCon.deleteUser));
+app.get('/', (req, res) => {res.send('Welcome to the property management app!')});
+app.post('/login', asyncHandler(User.loginUser));
+app.post('/register', asyncHandler(User.registerUser));
+app.get('/profile', checkSession, asyncHandler(User.getUser));
+app.post('/logout', checkSession, asyncHandler(User.logoutUser));
+app.delete('/user/delete', checkSession, asyncHandler(User.deleteUser));
 // Property routes
-app.post(
-  '/property/create',
-  checkSession,
-  asyncHandler(PropertyCon.createNewUserProperty)
-);
-app.get('/properties', checkSession, asyncHandler(PropertyCon.getAllUserProperties));
+app.get('/properties', checkSession, asyncHandler(Property.getAllUserProperties));
+app.post('/property/create', checkSession, asyncHandler(Property.createNewUserProperty));
+app.get('/property/:id', checkSession, asyncHandler(Property.getPropertyById));
+app.post('/property/:id/update', checkSession, asyncHandler(Property.updateProperty));
+app.get('/properties/opentickets', checkSession, asyncHandler(Property.getAllUserOpenTicketProperties));
 
 export default app;

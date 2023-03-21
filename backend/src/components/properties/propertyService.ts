@@ -54,6 +54,9 @@ const updatePropertyService = async (
   if (propertyContext.ownerId != null && propertyContext.id != null) {
     const { ownerId, id, ...updateData } = propertyContext;
     const updateInput: PropertyContexts.PropertyUpdateInput = updateData;
+    if (updateInput.size) {
+      updateInput.size = +updateInput.size;
+    }
     // Check valid property id
     const propertyId = +id;
     if (isNaN(propertyId) || propertyId < 0) {
