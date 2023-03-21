@@ -47,18 +47,34 @@ app.use(
   })
 );
 
-// User Routes
+// Home page
 app.get('/', (req, res) => {res.send('Welcome to the property management app!')});
+// User Routes
 app.post('/login', asyncHandler(User.loginUser));
 app.post('/register', asyncHandler(User.registerUser));
 app.get('/profile', checkSession, asyncHandler(User.getUser));
+app.get('/user/income', checkSession, asyncHandler(User.getUserIncome));
 app.post('/logout', checkSession, asyncHandler(User.logoutUser));
+app.put('/user/update', checkSession, asyncHandler(User.updateUser));
 app.delete('/user/delete', checkSession, asyncHandler(User.deleteUser));
 // Property routes
-app.get('/properties', checkSession, asyncHandler(Property.getAllUserProperties));
 app.post('/property/create', checkSession, asyncHandler(Property.createNewUserProperty));
 app.get('/property/:id', checkSession, asyncHandler(Property.getPropertyById));
-app.post('/property/:id/update', checkSession, asyncHandler(Property.updateProperty));
+app.get('/property/:id/income', checkSession, asyncHandler(Property.getPropertyIncomeById));
+app.put('/property/:id/update', checkSession, asyncHandler(Property.updateProperty));
+app.delete('/property/:id/delete', checkSession, asyncHandler(Property.deleteUserProperty));
+app.get('/property/:address', checkSession, asyncHandler(Property.getPropertyByAddress));
+app.get('/properties', checkSession, asyncHandler(Property.getAllUserProperties));
+app.get('/properties/:maxsize', checkSession, asyncHandler(Property.getUserPropertiesByMaxSize));
+app.get('/properties/:minsize', checkSession, asyncHandler(Property.getUserPropertiesByMinSize));
+app.get('/properties/:city', checkSession, asyncHandler(Property.getUserPropertiesByCity));
+app.get('/properties/:state', checkSession, asyncHandler(Property.getUserPropertiesByState));
+app.get('/properties/:type', checkSession, asyncHandler(Property.getUserPropertiesByType));
+app.get('/properties/:tenant', checkSession, asyncHandler(Property.getUserPropertiesByTenant));
 app.get('/properties/opentickets', checkSession, asyncHandler(Property.getAllUserOpenTicketProperties));
+//Tenant routes
+
+// 404 route
+app.get('*', function(req, res){ res.status(404).send('Page not found');});
 
 export default app;
