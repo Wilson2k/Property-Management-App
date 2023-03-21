@@ -10,7 +10,7 @@ Frontend built with React TypeScript. Backend built with Node.js using Express s
 
 To run backend locally, make sure you have [Docker](https://www.docker.com/) installed and running on your machine.
 
-First make an .env file to configure your local PostgreSQL database.
+First make an .env file to configure your local PostgreSQL database and Redis server.
 
 ```bash
   cd backend
@@ -27,12 +27,18 @@ DB_PORT=5432
 DB_NAME=testdb
 DB_SCHEMA=test
 DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?schema=${DB_SCHEMA}"
+REDIS_PORT=6379
 ```
 
-Then to startup your local PostgreSQL database, and run the server
+Then to startup your local PostgreSQL database and Redis server.
 
 ```bash
   npm install
   npm run migrate-dev
+```
+
+Finally, to run the app locally.
+
+```bash
   npm run dev
 ```
