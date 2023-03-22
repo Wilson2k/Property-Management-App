@@ -16,6 +16,23 @@ const createNewTenant = async (
   return query;
 };
 
+const updateTenant = async (tenantId: number, tenantContext: TenantUpdateInput) => {
+  const query = await prisma.tenant.update({
+    where: { id: tenantId },
+    data: tenantContext,
+  });
+  return query;
+};
+
+const deleteTenant = async (tenantId: number) => {
+  const query = await prisma.tenant.delete({
+    where: {
+      id: tenantId,
+    },
+  });
+  return query;
+};
+
 const getTenantById = async (tenantId: number) => {
   const query = await prisma.tenant.findUnique({
     where: {
@@ -43,14 +60,6 @@ const getTenantByPhone = async (tenantPhone: string) => {
   return query;
 };
 
-const updateTenant = async (tenantId: number, tenantContext: TenantUpdateInput) => {
-  const query = await prisma.tenant.update({
-    where: { id: tenantId },
-    data: tenantContext,
-  });
-  return query;
-};
-
 const getTenantsByProperty = async (propertyId: number) => {
   const query = await prisma.tenant.findMany({
     where: {
@@ -70,5 +79,6 @@ export {
   getTenantsByProperty,
   getTenantById,
   updateTenant,
+  deleteTenant,
   getTenantByPhone,
 };

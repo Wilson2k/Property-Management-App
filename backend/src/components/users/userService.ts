@@ -170,7 +170,7 @@ const deleteUserService = async (userContext: UserContexts.UserContext) => {
   if (userContext.id != null) {
     // Check that input string is numeric
     const userId = +userContext.id;
-    if (isNaN(userId)) {
+    if (isNaN(userId) || userId < 0) {
       userReturn.message = 'Bad user id';
       userReturn.status = 422;
       return userReturn;

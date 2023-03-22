@@ -1,10 +1,7 @@
 import { Request, Response } from 'express';
+import CustomRequest from '../../utils/request';
 import * as UserServices from './userService';
 import { UserContext, UserLoginContext, UserRegisterContext } from './user';
-
-interface CustomRequest<T> extends Request {
-  body: T;
-}
 
 // Getting all users
 const getAllUsers = async (req: Request, res: Response) => {

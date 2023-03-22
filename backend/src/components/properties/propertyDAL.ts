@@ -67,12 +67,12 @@ const removePropertyTenant = async (propertyId: number, tenantId: number) => {
       if (deletedLease) {
         return updateProperty;
       }
-    } catch (e: unknown) {
-      if (e instanceof PrismaClientKnownRequestError && e.code === 'P2034') {
+    } catch (err: unknown) {
+      if (err instanceof PrismaClientKnownRequestError && err.code === 'P2034') {
         retries++;
         continue;
       }
-      throw e;
+      throw err;
     }
   }
 };

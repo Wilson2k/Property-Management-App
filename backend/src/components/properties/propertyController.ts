@@ -1,14 +1,11 @@
 import { Request, Response } from 'express';
+import CustomRequest from '../../utils/request';
 import * as PropertyServices from './propertyService';
 import {
   PropertyContext,
   PropertyCreateContext,
   PropertyTenantContext,
 } from './property';
-
-interface CustomRequest<T> extends Request {
-  body: T;
-}
 
 // Get all properties owned by user of specific type
 const createNewUserProperty = async (

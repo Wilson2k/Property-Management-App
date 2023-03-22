@@ -1,33 +1,90 @@
 import * as TenantDAL from './tenantDAL';
 import * as TenantContexts from './tenant';
 
-const getTenantByIdService = async (TenantContexts: TenantContexts.TenantContext) => {
+const getTenantByIdService = async (tenantContext: TenantContexts.TenantContext) => {
   const tenantReturn: TenantContexts.TenantReturnContext = {
-    message: 'Error creating tenant',
-    status: 400,
+    message: 'Error getting tenant',
+    status: 404,
   };
+  if (tenantContext.id != null) {
+    const tenantId = +tenantContext.id;
+    if (isNaN(tenantId) || tenantId < 0) {
+      tenantReturn.status = 422;
+      tenantReturn.message = 'Bad tenant id';
+      return tenantReturn;
+    }
+    const tenantRecord = await TenantDAL.getTenantById(tenantId);
+    if (tenantRecord !== null) {
+      tenantReturn.status = 200;
+      tenantReturn.message = 'Tenant found';
+      tenantReturn.data = tenantRecord;
+      return tenantReturn;
+    }
+  }
+  return tenantReturn;
 };
 
-const getTenantByEmailService = async (TenantContexts: TenantContexts.TenantContext) => {
+const getTenantByEmailService = async (tenantContext: TenantContexts.TenantContext) => {
   const tenantReturn: TenantContexts.TenantReturnContext = {
-    message: 'Error creating tenant',
-    status: 400,
+    message: 'Error getting tenant',
+    status: 404,
   };
+  if (tenantContext.email != null) {
+    const tenantEmail = tenantContext.email;
+    const tenantRecord = await TenantDAL.getTenantByEmail(tenantEmail);
+    if (tenantRecord !== null) {
+      tenantReturn.status = 200;
+      tenantReturn.message = 'Tenant found';
+      tenantReturn.data = tenantRecord;
+      return tenantReturn;
+    }
+  }
+  return tenantReturn;
 };
 
-const getTenantByPhoneService = async (TenantContexts: TenantContexts.TenantContext) => {
+const getTenantByPhoneService = async (tenantContext: TenantContexts.TenantContext) => {
   const tenantReturn: TenantContexts.TenantReturnContext = {
-    message: 'Error creating tenant',
-    status: 400,
+    message: 'Error getting tenant',
+    status: 404,
   };
+  if (tenantContext.phone != null) {
+    const tenantEmail = tenantContext.phone;
+    const tenantRecord = await TenantDAL.getTenantByPhone(tenantEmail);
+    if (tenantRecord !== null) {
+      tenantReturn.status = 200;
+      tenantReturn.message = 'Tenant found';
+      tenantReturn.data = tenantRecord;
+      return tenantReturn;
+    }
+  }
+  return tenantReturn;
 };
 
 // Returns list of tenants that live within a specific property
-const getTenantsByProperty = async (TenantContexts: TenantContexts.TenantContext) => {
-  const tenantReturn: TenantContexts.TenantReturnContext = {
-    message: 'Error creating tenant',
+const getTenantsByProperty = async (tenantContext: TenantContexts.TenantContext) => {
+  const tenantReturn: TenantContexts.MultTenantReturnContext = {
+    message: 'Error getting tenants',
     status: 400,
   };
+  if (tenantContext.propertyId != null) {
+    const propertyId = +tenantContext.propertyId;
+    if (isNaN(propertyId) || propertyId < 0) {
+      tenantReturn.status = 422;
+      tenantReturn.message = 'Bad property id';
+      return tenantReturn;
+    }
+    const tenants = await TenantDAL.getTenantsByProperty(propertyId);
+    if (tenants !== null) {
+      if (tenants.length === 0) {
+        tenantReturn.message = 'Property has no tenants';
+      } else {
+        tenantReturn.message = 'Tenants found';
+      }
+      tenantReturn.status = 200;
+      tenantReturn.data = tenants;
+      return tenantReturn;
+    }
+  }
 };
 
 const createTenantService = async (tenantContext: TenantContexts.TenantCreateContext) => {
@@ -35,8 +92,13 @@ const createTenantService = async (tenantContext: TenantContexts.TenantCreateCon
     message: 'Error creating tenant',
     status: 400,
   };
+  if (tenantContext.userId == null) {
+    tenantReturn.message = 'Bad user id';
+    tenantReturn.status = 422;
+    return tenantReturn;
+  }
   const userId = +tenantContext.userId;
-  const propertyId = +tenantContext.properties;
+  const propertyId = +tenantContext.propertyId;
   if (isNaN(userId) || userId < 0) {
     tenantReturn.message = 'Invalid user id';
     tenantReturn.status = 422;
@@ -132,6 +194,37 @@ const updateTenantService = async (tenantContext: TenantContexts.TenantContext) 
       tenantReturn.status = 400;
     }
   }
+  return tenantReturn;
 };
 
-export { createTenantService, updateTenantService };
+const deleteTenantService = async (tenantContext: TenantContexts.TenantContext) => {
+  const tenantReturn: TenantContexts.TenantReturnContext = {
+    message: 'Error deleting tenant',
+    status: 400,
+  };
+  if (tenantContext.id != null) {
+    const tenantId = +tenantContext.id;
+    if (isNaN(tenantId) || tenantId < 0) {
+      tenantReturn.message = 'Bad tenant id';
+      tenantReturn.status = 422;
+      return tenantReturn;
+    }
+    const tenantRecord = await TenantDAL.deleteTenant(tenantId);
+    if (tenantRecord != null) {
+      tenantReturn.message = 'Tenant deleted';
+      tenantReturn.data = tenantRecord;
+      tenantReturn.status = 200;
+    }
+  }
+  return tenantReturn;
+};
+
+export {
+  createTenantService,
+  updateTenantService,
+  deleteTenantService,
+  getTenantByEmailService,
+  getTenantByIdService,
+  getTenantByPhoneService,
+  getTenantsByProperty,
+};
