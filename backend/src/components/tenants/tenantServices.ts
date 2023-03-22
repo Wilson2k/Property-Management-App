@@ -48,8 +48,8 @@ const getTenantByPhoneService = async (tenantContext: TenantContexts.TenantConte
     status: 404,
   };
   if (tenantContext.phone != null) {
-    const tenantEmail = tenantContext.phone;
-    const tenantRecord = await TenantDAL.getTenantByPhone(tenantEmail);
+    const tenantPhone = tenantContext.phone;
+    const tenantRecord = await TenantDAL.getTenantByPhone(tenantPhone);
     if (tenantRecord !== null) {
       tenantReturn.status = 200;
       tenantReturn.message = 'Tenant found';
@@ -92,34 +92,40 @@ const createTenantService = async (tenantContext: TenantContexts.TenantCreateCon
     message: 'Error creating tenant',
     status: 400,
   };
-  if (tenantContext.userId == null) {
+  const { userId, propertyId, ...tenantInput } = { ...tenantContext };
+  if (userId == null) {
     tenantReturn.message = 'Bad user id';
     tenantReturn.status = 422;
     return tenantReturn;
   }
-  const userId = +tenantContext.userId;
-  const propertyId = +tenantContext.propertyId;
-  if (isNaN(userId) || userId < 0) {
+  if (propertyId == null) {
+    tenantReturn.message = 'Bad property id';
+    tenantReturn.status = 422;
+    return tenantReturn;
+  }
+  const userIdInput = +userId;
+  if (isNaN(userIdInput) || userIdInput < 0) {
     tenantReturn.message = 'Invalid user id';
     tenantReturn.status = 422;
     return tenantReturn;
   }
-  if (isNaN(propertyId) || propertyId < 0) {
+  const propertyIdNum = +propertyId;
+  if (isNaN(propertyIdNum) || propertyIdNum < 0) {
     tenantReturn.message = 'Invalid property id';
     tenantReturn.status = 422;
     return tenantReturn;
   }
   const propertyIdInput: TenantContexts.PropertyConnectInput = {
     connect: {
-      id: propertyId,
+      id: propertyIdNum,
     },
   };
   const findTenant = await TenantDAL.getTenantByEmail(tenantContext.email);
   if (findTenant === null) {
     const newTenant = await TenantDAL.createNewTenant(
-      userId,
+      userIdInput,
       propertyIdInput,
-      tenantContext
+      tenantInput
     );
     tenantReturn.data = newTenant;
     tenantReturn.status = 200;

@@ -65,7 +65,7 @@ export async function seed() {
         firstName: 'lotso',
         lastName: 'sweets',
         email: 'lotso@tenant.com',
-        phone: '999-111-999',
+        phone: '999-111-9999',
         userId: user1.id,
         properties: {
           connect: {
@@ -113,6 +113,7 @@ export async function seed() {
     where: { email: 'wilson@nosmokey.com' },
     update: {},
     create: {
+      id: 270,
       firstName: 'Wilson',
       lastName: 'Human',
       email: 'wilson@nosmokey.com',

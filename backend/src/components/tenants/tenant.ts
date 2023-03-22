@@ -11,7 +11,7 @@ interface TenantCreateContext {
   lastName: string;
   email: string;
   phone: string;
-  propertyId: string;
+  propertyId?: string;
   userId?: string;
 }
 
