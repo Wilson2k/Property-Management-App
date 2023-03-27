@@ -25,12 +25,12 @@ interface PropertyContext {
   state?: string;
   type?: string;
   size?: number;
-  ownerId?: number;
+  ownerId?: string;
   tenantId?: number;
 }
 
 interface PropertyTenantContext {
-  ownerId?: number;
+  ownerId?: string;
   tenant: string;
 }
 

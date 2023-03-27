@@ -17,7 +17,7 @@ const getAllUsers = async (req: Request, res: Response) => {
 const getUser = async (req: CustomRequest<UserContext>, res: Response) => {
   // Create new user context from req object here
   const userContext: UserContext = {
-    id: req.session.user?.toString(),
+    id: req.session.user,
   };
   const userData = await UserServices.getUserService(userContext);
   if (userData.status === 200 && userData.data !== undefined) {
@@ -31,11 +31,11 @@ const getUser = async (req: CustomRequest<UserContext>, res: Response) => {
 const getUserIncome = async (req: CustomRequest<UserContext>, res: Response) => {
   // Create new user context from req object here
   const userContext: UserContext = {
-    id: req.session.user?.toString(),
+    id: req.session.user,
   };
   const userData = await UserServices.getUserMonthlyIncomeService(userContext);
   if (userData.status === 200 && userData.aggregateData !== undefined) {
-    res.status(userData.status).send(userData.aggregateData);
+    res.status(userData.status).send(userData.aggregateData.toString());
   } else {
     res.status(userData.status).send(userData.message);
   }
@@ -45,7 +45,7 @@ const getUserIncome = async (req: CustomRequest<UserContext>, res: Response) => 
 const updateUser = async (req: CustomRequest<UserContext>, res: Response) => {
   // Create new user context from req object here
   const userContext: UserContext = {
-    id: req.session.user?.toString(),
+    id: req.session.user,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
@@ -97,7 +97,7 @@ const registerUser = async (req: CustomRequest<UserRegisterContext>, res: Respon
 const deleteUser = async (req: CustomRequest<UserContext>, res: Response) => {
   // Create new user context from req object here
   const userContext: UserContext = {
-    id: req.session.user?.toString(),
+    id: req.session.user,
   };
   const deletedUser = await UserServices.deleteUserService(userContext);
   if (deletedUser.status === 200 && deletedUser.data !== undefined) {

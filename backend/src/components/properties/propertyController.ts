@@ -13,7 +13,7 @@ const createNewUserProperty = async (
   res: Response
 ) => {
   const propertyContext: PropertyCreateContext = {
-    ownerId: req.session.user?.toString(),
+    ownerId: req.session.user,
     address: req.body.address,
     city: req.body.city,
     state: req.body.state,
@@ -93,7 +93,7 @@ const getPropertyIncomeById = async (
   };
   const propertyData = await PropertyServices.getPropertyIncomeService(propertyContext);
   if (propertyData.status === 200 && propertyData.aggregateData !== undefined) {
-    res.status(propertyData.status).send(propertyData.aggregateData);
+    res.status(propertyData.status).send(propertyData.aggregateData.toString());
   } else {
     res.status(propertyData.status).send(propertyData.message);
   }
@@ -105,7 +105,9 @@ const getPropertyByAddress = async (
   res: Response
 ) => {
   const propertyContext: PropertyContext = {
-    address: req.params.address,
+    address: req.query.address as string,
+    city: req.query.city as string,
+    state: req.query.state as string
   };
   const propertyData = await PropertyServices.getPropertyByAddressService(
     propertyContext
@@ -157,7 +159,7 @@ const getUserPropertiesByCity = async (
   res: Response
 ) => {
   const propertyContext: PropertyContext = {
-    city: req.params.city,
+    city: req.query.city as string,
     ownerId: req.session.user,
   };
   const propertyData = await PropertyServices.getUserPropertiesByCityService(
@@ -176,7 +178,7 @@ const getUserPropertiesByState = async (
   res: Response
 ) => {
   const propertyContext: PropertyContext = {
-    state: req.params.state,
+    state: req.query.state as string,
     ownerId: req.session.user,
   };
   const propertyData = await PropertyServices.getUserPropertiesByStateService(
@@ -195,7 +197,7 @@ const getUserPropertiesByType = async (
   res: Response
 ) => {
   const propertyContext: PropertyContext = {
-    type: req.params.type,
+    type: req.query.type as string,
     ownerId: req.session.user,
   };
   const propertyData = await PropertyServices.getUserPropertiesByTypeService(
@@ -215,7 +217,7 @@ const getUserPropertiesByMinSize = async (
 ) => {
   const propertyContext: PropertyContext = {
     ownerId: req.session.user,
-    size: +req.params.minsize,
+    size: Number(req.query.size as string),
   };
   const propertyData = await PropertyServices.getUserPropertiesByMinSizeService(
     propertyContext
@@ -234,7 +236,7 @@ const getUserPropertiesByMaxSize = async (
 ) => {
   const propertyContext: PropertyContext = {
     ownerId: req.session.user,
-    size: +req.params.maxsize,
+    size: Number(req.query.size as string),
   };
   const propertyData = await PropertyServices.getUserPropertiesByMaxSizeService(
     propertyContext
@@ -253,7 +255,7 @@ const getUserPropertiesByTenant = async (
 ) => {
   const propertyContext: PropertyTenantContext = {
     ownerId: req.session.user,
-    tenant: req.params.tenant,
+    tenant: req.query.tenant as string,
   };
   const propertyData = await PropertyServices.getUserPropertiesByTenantService(
     propertyContext

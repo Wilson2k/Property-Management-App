@@ -17,7 +17,7 @@ import { checkSession } from './middleware/auth';
 // Declaration merge to add user key to session object
 declare module 'express-session' {
   interface SessionData {
-    user: number;
+    user: string;
   }
 }
 
@@ -73,35 +73,35 @@ app.delete(
   checkSession,
   asyncHandler(Property.deleteUserProperty)
 );
-app.get('/property/:address', checkSession, asyncHandler(Property.getPropertyByAddress));
 app.get('/properties', checkSession, asyncHandler(Property.getAllUserProperties));
+app.get('/properties/address', checkSession, asyncHandler(Property.getPropertyByAddress));
 app.get(
-  '/properties/:maxsize',
+  '/properties/maxsize',
   checkSession,
   asyncHandler(Property.getUserPropertiesByMaxSize)
 );
 app.get(
-  '/properties/:minsize',
+  '/properties/minsize',
   checkSession,
   asyncHandler(Property.getUserPropertiesByMinSize)
 );
 app.get(
-  '/properties/:city',
+  '/properties/city',
   checkSession,
   asyncHandler(Property.getUserPropertiesByCity)
 );
 app.get(
-  '/properties/:state',
+  '/properties/state',
   checkSession,
   asyncHandler(Property.getUserPropertiesByState)
 );
 app.get(
-  '/properties/:type',
+  '/properties/type',
   checkSession,
   asyncHandler(Property.getUserPropertiesByType)
 );
 app.get(
-  '/properties/:tenant',
+  '/properties/tenant',
   checkSession,
   asyncHandler(Property.getUserPropertiesByTenant)
 );

@@ -41,15 +41,9 @@ const updateUser = async (userId: number, userContext: UserUpdateInput) => {
 };
 
 const deleteUser = async (userId: number) => {
-  // Delete user with id, only pass email and name data back
   const query = await prisma.user.delete({
     where: {
       id: userId,
-    },
-    select: {
-      email: true,
-      firstName: true,
-      lastName: true,
     },
   });
   return query;

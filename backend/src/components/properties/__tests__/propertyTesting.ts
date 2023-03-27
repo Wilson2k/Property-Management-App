@@ -3,6 +3,7 @@ import { describe, expect, test, beforeAll, afterAll } from '@jest/globals';
 import { seed } from '../../../seed';
 import * as PropertyServices from '../propertyService';
 import * as PropertyContexts from '../property';
+import { getPublicId } from '../../../utils/hashId';
 
 const prisma = new PrismaClient();
 
@@ -27,7 +28,7 @@ afterAll(async () => {
 describe('Get User Properties', () => {
   test('Get seeded user properties', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId: userIds[0],
+      ownerId: getPublicId('user',userIds[0]),
     };
     const propertyData = await PropertyServices.getUserPropertiesService(properties);
     expect(propertyData.status).toBe(200);
@@ -67,7 +68,7 @@ describe('Get User Properties', () => {
 
   test('Get user properties by city', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId: userIds[1],
+      ownerId: getPublicId('user',userIds[1]),
       city: 'San Francisco',
     };
     const propertyData = await PropertyServices.getUserPropertiesByCityService(
@@ -81,7 +82,7 @@ describe('Get User Properties', () => {
 
   test('Get user properties by state', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId: userIds[1],
+      ownerId: getPublicId('user',userIds[1]),
       state: 'CA',
     };
     const propertyData = await PropertyServices.getUserPropertiesByStateService(
@@ -96,7 +97,7 @@ describe('Get User Properties', () => {
 
   test('Get user properties by tenant', async () => {
     const properties: PropertyContexts.PropertyTenantContext = {
-      ownerId: userIds[0],
+      ownerId:  getPublicId('user',userIds[0]),
       tenant: 'bob bill',
     };
     const propertyData = await PropertyServices.getUserPropertiesByTenantService(
@@ -109,7 +110,7 @@ describe('Get User Properties', () => {
 
   test('Get user properties by type', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId: userIds[0],
+      ownerId:  getPublicId('user',userIds[0]),
       type: 'Single Family',
     };
     const propertyData = await PropertyServices.getUserPropertiesByTypeService(
@@ -123,7 +124,7 @@ describe('Get User Properties', () => {
 
   test('Get user properties by open tickets', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId: userIds[0],
+      ownerId:  getPublicId('user',userIds[0]),
     };
     const propertyData = await PropertyServices.getUserOpenTicketPropertiesService(
       properties
@@ -135,7 +136,7 @@ describe('Get User Properties', () => {
 
   test('Get user properties when no open tickets', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId: userIds[1],
+      ownerId:  getPublicId('user',userIds[1]),
     };
     const propertyData = await PropertyServices.getUserOpenTicketPropertiesService(
       properties
@@ -168,7 +169,7 @@ describe('Get Property income', () => {
 describe('Get User Properties bad input', () => {
   test('Get user properties bad id', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId: -1,
+      ownerId: 'foobar',
     };
     const propertyData = await PropertyServices.getUserPropertiesService(properties);
     expect(propertyData.status).toBe(422);
@@ -176,7 +177,7 @@ describe('Get User Properties bad input', () => {
 
   test('Get user properties bad tenant name', async () => {
     const properties: PropertyContexts.PropertyTenantContext = {
-      ownerId: userIds[1],
+      ownerId: getPublicId('user',userIds[1]),
       tenant: 'foobar',
     };
     const propertyData = await PropertyServices.getUserPropertiesByTenantService(
@@ -190,7 +191,7 @@ describe('Get User Properties bad input', () => {
 describe('Create Property and test duplicate', () => {
   test('Create property', async () => {
     const property: PropertyContexts.PropertyCreateContext = {
-      ownerId: userIds[0].toString(),
+      ownerId: getPublicId('user', userIds[0]),
       address: '321 Big Street',
       city: 'San Jose',
       state: 'CA',
@@ -208,7 +209,7 @@ describe('Create Property and test duplicate', () => {
 
   test('Test create duplicate property', async () => {
     const property: PropertyContexts.PropertyCreateContext = {
-      ownerId: userIds[0].toString(),
+      ownerId: getPublicId('user', userIds[0]),
       address: '321 Big Street',
       city: 'San Jose',
       state: 'CA',
@@ -225,7 +226,7 @@ describe('Update Properties', () => {
   test('Invalid update property', async () => {
     const property: PropertyContexts.PropertyContext = {
       id: 2000,
-      ownerId: userIds[1],
+      ownerId: getPublicId('user',userIds[1]),
       address: '1234 Mouse Street',
       city: 'San Jose',
     };
@@ -236,7 +237,7 @@ describe('Update Properties', () => {
   test('Duplicate update property', async () => {
     const property: PropertyContexts.PropertyContext = {
       id: 2000,
-      ownerId: userIds[1],
+      ownerId: getPublicId('user',userIds[1]),
       address: '123 Fake Street',
       city: 'San Francisco',
       state: 'CA',
@@ -248,7 +249,7 @@ describe('Update Properties', () => {
   test('Update user property', async () => {
     const property: PropertyContexts.PropertyContext = {
       id: 2000,
-      ownerId: userIds[1],
+      ownerId: getPublicId('user',userIds[1]),
       address: '1234 Mouse Street',
       city: 'San Jose',
       state: 'CA',

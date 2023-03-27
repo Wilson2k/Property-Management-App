@@ -1,5 +1,6 @@
 import * as PropertyDAL from './propertyDAL';
 import * as PropertyContexts from './property';
+import { getDatabaseId } from '../../utils/hashId';
 
 const createPropertyService = async (
   propertyContext: PropertyContexts.PropertyCreateContext
@@ -13,7 +14,7 @@ const createPropertyService = async (
     propertyReturn.status = 404;
     return propertyReturn;
   }
-  const userId = +propertyContext.ownerId;
+  const userId = Number( getDatabaseId('user', propertyContext.ownerId));
   if (isNaN(userId) || userId < 0) {
     propertyReturn.message = 'Invalid user id';
     propertyReturn.status = 422;
@@ -53,6 +54,7 @@ const updatePropertyService = async (
   };
   if (propertyContext.ownerId != null && propertyContext.id != null) {
     const { ownerId, id, ...updateData } = propertyContext;
+    const ownerIdValue = Number( getDatabaseId('user', ownerId))
     const updateInput: PropertyContexts.PropertyUpdateInput = updateData;
     if (updateInput.size) {
       updateInput.size = +updateInput.size;
@@ -99,7 +101,7 @@ const updatePropertyService = async (
       }
     }
     // Check that owner matches database
-    if (propertyRecord.ownerId != +ownerId) {
+    if (propertyRecord.ownerId != ownerIdValue) {
       propertyReturn.message = 'Not authorized to update property';
       propertyReturn.status = 401;
       return propertyReturn;
@@ -160,7 +162,7 @@ const removePropertyTenantService = async (
   propertyContext: PropertyContexts.PropertyContext
 ) => {
   const propertyReturn: PropertyContexts.PropertyReturnContext = {
-    message: 'Error deleting property',
+    message: 'Error deleting tenant from property',
     status: 400,
   };
   if (propertyContext.id != null && propertyContext.tenantId != null) {
@@ -203,11 +205,16 @@ const deletePropertyService = async (
       propertyReturn.status = 422;
       return propertyReturn;
     }
-    const findProperty = await PropertyDAL.deleteProperty(propertyId);
+    const findProperty = await PropertyDAL.getPropertyById(propertyId);
     if (findProperty != null) {
+      const deleteProperty = await PropertyDAL.deleteProperty(propertyId);
       propertyReturn.message = 'Property deleted';
-      propertyReturn.data = findProperty;
+      propertyReturn.data = deleteProperty;
       propertyReturn.status = 200;
+    } else {
+      propertyReturn.message = 'Property not found';
+      propertyReturn.status = 404;
+      return propertyReturn;
     }
   }
   return propertyReturn;
@@ -259,7 +266,7 @@ const getPropertyByAddressService = async (
   propertyContext: PropertyContexts.PropertyContext
 ) => {
   const propertyReturn: PropertyContexts.PropertyReturnContext = {
-    message: 'Error getting property',
+    message: 'Error getting property by address',
     status: 404,
   };
   if (
@@ -294,7 +301,7 @@ const getUserPropertiesService = async (
   };
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
-    const ownerId = +propertyContext.ownerId;
+    const ownerId = Number( getDatabaseId('user',propertyContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
@@ -321,7 +328,7 @@ const getUserPropertiesByCityService = async (
   };
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
-    const ownerId = +propertyContext.ownerId;
+    const ownerId = Number( getDatabaseId('user',propertyContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
@@ -355,7 +362,7 @@ const getUserPropertiesByStateService = async (
   };
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
-    const ownerId = +propertyContext.ownerId;
+    const ownerId = Number( getDatabaseId('user',propertyContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
@@ -389,7 +396,7 @@ const getUserPropertiesByTypeService = async (
   };
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
-    const ownerId = +propertyContext.ownerId;
+    const ownerId = Number( getDatabaseId('user',propertyContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
@@ -418,12 +425,12 @@ const getUserPropertiesByMinSizeService = async (
   propertyContext: PropertyContexts.PropertyContext
 ) => {
   const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
-    message: 'Error getting properties by type',
+    message: 'Error getting properties by min size',
     status: 404,
   };
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
-    const ownerId = +propertyContext.ownerId;
+    const ownerId = Number( getDatabaseId('user',propertyContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
@@ -452,12 +459,12 @@ const getUserPropertiesByMaxSizeService = async (
   propertyContext: PropertyContexts.PropertyContext
 ) => {
   const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
-    message: 'Error getting properties by type',
+    message: 'Error getting properties by max size',
     status: 404,
   };
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
-    const ownerId = +propertyContext.ownerId;
+    const ownerId = Number( getDatabaseId('user',propertyContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
@@ -491,7 +498,7 @@ const getUserOpenTicketPropertiesService = async (
   };
   if (propertyContext.ownerId != null) {
     // Check that ownerId string is numeric
-    const ownerId = +propertyContext.ownerId;
+    const ownerId = Number( getDatabaseId('user',propertyContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
@@ -512,12 +519,12 @@ const getUserPropertiesByTenantService = async (
   propertyContext: PropertyContexts.PropertyTenantContext
 ) => {
   const propertyReturn: PropertyContexts.MultPropertiesReturnContext = {
-    message: 'Error getting properties with open tickets',
+    message: 'Error getting properties by tenant',
     status: 404,
   };
   if (propertyContext.ownerId != null && propertyContext.tenant != null) {
     // Check that ownerId string is numeric
-    const ownerId = +propertyContext.ownerId;
+    const ownerId = Number( getDatabaseId('user',propertyContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
       propertyReturn.message = 'Bad owner ID';
       propertyReturn.status = 422;
