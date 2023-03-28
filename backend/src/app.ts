@@ -12,6 +12,7 @@ import connectRedis from 'connect-redis';
 // Routes and middleware
 import * as User from './components/users/UserController';
 import * as Property from './components/properties/propertyController';
+import * as Tenant from './components/tenants/tenantController';
 import { checkSession } from './middleware/auth';
 
 // Declaration merge to add user key to session object
@@ -62,47 +63,26 @@ app.delete('/user/delete', checkSession, asyncHandler(User.deleteUser));
 // Property routes
 app.post('/property/create', checkSession, asyncHandler(Property.createNewUserProperty));
 app.get('/property/:id', checkSession, asyncHandler(Property.getPropertyById));
-app.get(
-  '/property/:id/income',
-  checkSession,
-  asyncHandler(Property.getPropertyIncomeById)
-);
+app.get('/property/:id/income',checkSession,asyncHandler(Property.getPropertyIncomeById));
 app.put('/property/:id/update', checkSession, asyncHandler(Property.updateProperty));
-app.delete(
-  '/property/:id/delete',
-  checkSession,
-  asyncHandler(Property.deleteUserProperty)
-);
+app.delete('/property/:id/delete',checkSession,asyncHandler(Property.deleteUserProperty));
 app.get('/properties', checkSession, asyncHandler(Property.getAllUserProperties));
 app.get('/properties/address', checkSession, asyncHandler(Property.getPropertyByAddress));
-app.get(
-  '/properties/maxsize',
-  checkSession,
-  asyncHandler(Property.getUserPropertiesByMaxSize)
-);
-app.get(
-  '/properties/minsize',
-  checkSession,
-  asyncHandler(Property.getUserPropertiesByMinSize)
-);
+app.get('/properties/maxsize',checkSession,asyncHandler(Property.getUserPropertiesByMaxSize));
+app.get('/properties/minsize',checkSession,asyncHandler(Property.getUserPropertiesByMinSize));
 app.get('/properties/city', checkSession, asyncHandler(Property.getUserPropertiesByCity));
-app.get(
-  '/properties/state',
-  checkSession,
-  asyncHandler(Property.getUserPropertiesByState)
-);
+app.get('/properties/state',checkSession,asyncHandler(Property.getUserPropertiesByState));
 app.get('/properties/type', checkSession, asyncHandler(Property.getUserPropertiesByType));
-app.get(
-  '/properties/tenant',
-  checkSession,
-  asyncHandler(Property.getUserPropertiesByTenant)
-);
-app.get(
-  '/properties/opentickets',
-  checkSession,
-  asyncHandler(Property.getAllUserOpenTicketProperties)
-);
-//Tenant routes
+app.get('/properties/tenant',checkSession,asyncHandler(Property.getUserPropertiesByTenant));
+app.get('/properties/opentickets',checkSession,asyncHandler(Property.getAllUserOpenTicketProperties));
+// Tenant routes
+app.post('/tenant/create', checkSession, asyncHandler(Tenant.createTenant));
+app.put('/tenant/:id/update', checkSession, asyncHandler(Tenant.createTenant));
+app.delete('/tenant/:id/delete', checkSession, asyncHandler(Tenant.deleteTenant));
+app.get('/tenant/:id', checkSession, asyncHandler(Tenant.getTenantById))
+app.get('/tenant/email', checkSession, asyncHandler(Tenant.getTenantByEmail))
+app.get('/tenant/phone', checkSession, asyncHandler(Tenant.getTenantByPhone))
+// Lease routes
 
 // 404 route
 app.get('*', function (req, res) {

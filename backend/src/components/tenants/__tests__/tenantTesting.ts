@@ -3,6 +3,7 @@ import { describe, expect, test, beforeAll, afterAll } from '@jest/globals';
 import { seed } from '../../../seed';
 import * as TenantServices from '../tenantServices';
 import * as TenantContexts from '../tenant';
+import { getPublicId } from '../../../utils/hashId';
 
 const prisma = new PrismaClient();
 
@@ -28,6 +29,7 @@ describe('Get user tenants', () => {
   test('Get tenant by id', async () => {
     const tenant: TenantContexts.TenantContext = {
       id: 203,
+      userId: getPublicId('user', userIds[0]),
     };
     const tenantData = await TenantServices.getTenantByIdService(tenant);
     expect(tenantData.status).toBe(200);
@@ -37,6 +39,7 @@ describe('Get user tenants', () => {
   test('Get tenant by email', async () => {
     const tenant: TenantContexts.TenantContext = {
       email: 'lotso@tenant.com',
+      userId: getPublicId('user', userIds[0]),
     };
     const tenantData = await TenantServices.getTenantByEmailService(tenant);
     expect(tenantData.status).toBe(200);
@@ -46,6 +49,7 @@ describe('Get user tenants', () => {
   test('Get tenant by phone', async () => {
     const tenant: TenantContexts.TenantContext = {
       phone: '999-999-9999',
+      userId: getPublicId('user', userIds[0]),
     };
     const tenantData = await TenantServices.getTenantByPhoneService(tenant);
     expect(tenantData.status).toBe(200);
@@ -56,7 +60,7 @@ describe('Get user tenants', () => {
 describe('Create a new tenant', () => {
   test('Create new tenant and attach to property', async () => {
     const tenant: TenantContexts.TenantCreateContext = {
-      userId: userIds[1].toString(),
+      userId: getPublicId('user', userIds[1]),
       propertyId: '2000',
       firstName: 'Billy',
       lastName: 'Jean',

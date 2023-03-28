@@ -21,7 +21,7 @@ interface TenantContext {
   lastName?: string;
   email?: string;
   phone?: string;
-  userId?: number;
+  userId?: string;
   propertyId?: number;
 }
 

@@ -12,7 +12,7 @@ const createTenant = async (req: CustomRequest<TenantCreateContext>, res: Respon
     email: req.body.email,
     phone: req.body.phone,
     propertyId: req.body.propertyId,
-    userId: req.session.user?.toString(),
+    userId: req.session.user,
   };
   const newTenant = await TenantSrvices.createTenantService(tenantContext);
   if (newTenant.status === 200 && newTenant.data !== undefined) {
@@ -44,6 +44,7 @@ const updateTenant = async (req: CustomRequest<TenantContext>, res: Response) =>
 const deleteTenant = async (req: CustomRequest<TenantContext>, res: Response) => {
   const tenantContext: TenantContext = {
     id: +req.params.id,
+    userId: req.session.user,
   };
   const deletedTenant = await TenantSrvices.deleteTenantService(tenantContext);
   if (deletedTenant.status === 200 && deletedTenant.data !== undefined) {
@@ -57,6 +58,7 @@ const deleteTenant = async (req: CustomRequest<TenantContext>, res: Response) =>
 const getTenantById = async (req: CustomRequest<TenantContext>, res: Response) => {
   const tenantContext: TenantContext = {
     id: +req.params.id,
+    userId: req.session.user,
   };
   const tenantData = await TenantSrvices.getTenantByIdService(tenantContext);
   if (tenantData.status === 200 && tenantData.data !== undefined) {
@@ -69,7 +71,8 @@ const getTenantById = async (req: CustomRequest<TenantContext>, res: Response) =
 // Get tenant by email
 const getTenantByEmail = async (req: CustomRequest<TenantContext>, res: Response) => {
   const tenantContext: TenantContext = {
-    email: req.params.email,
+    email: req.query.email as string,
+    userId: req.session.user,
   };
   const tenantData = await TenantSrvices.getTenantByEmailService(tenantContext);
   if (tenantData.status === 200 && tenantData.data !== undefined) {
@@ -82,7 +85,8 @@ const getTenantByEmail = async (req: CustomRequest<TenantContext>, res: Response
 // Get tenant by phone
 const getTenantByPhone = async (req: CustomRequest<TenantContext>, res: Response) => {
   const tenantContext: TenantContext = {
-    phone: req.params.phone,
+    phone: req.query.phone as string,
+    userId: req.session.user,
   };
   const tenantData = await TenantSrvices.getTenantByPhoneService(tenantContext);
   if (tenantData.status === 200 && tenantData.data !== undefined) {

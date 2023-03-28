@@ -1,12 +1,14 @@
 import * as TenantDAL from './tenantDAL';
 import * as TenantContexts from './tenant';
+import { getPropertyById } from '../properties/propertyDAL';
+import { getDatabaseId } from '../../utils/hashId';
 
 const getTenantByIdService = async (tenantContext: TenantContexts.TenantContext) => {
   const tenantReturn: TenantContexts.TenantReturnContext = {
     message: 'Error getting tenant',
     status: 404,
   };
-  if (tenantContext.id != null) {
+  if (tenantContext.id != null && tenantContext.userId != null) {
     const tenantId = +tenantContext.id;
     if (isNaN(tenantId) || tenantId < 0) {
       tenantReturn.status = 422;
@@ -14,7 +16,13 @@ const getTenantByIdService = async (tenantContext: TenantContexts.TenantContext)
       return tenantReturn;
     }
     const tenantRecord = await TenantDAL.getTenantById(tenantId);
+    const user = Number(getDatabaseId('user', tenantContext.userId));
     if (tenantRecord !== null) {
+      if (tenantRecord.userId != user) {
+        tenantReturn.status = 401;
+        tenantReturn.message = 'Not authorized to get tenant';
+        return tenantReturn;
+      }
       tenantReturn.status = 200;
       tenantReturn.message = 'Tenant found';
       tenantReturn.data = tenantRecord;
@@ -29,10 +37,16 @@ const getTenantByEmailService = async (tenantContext: TenantContexts.TenantConte
     message: 'Error getting tenant',
     status: 404,
   };
-  if (tenantContext.email != null) {
+  if (tenantContext.email != null && tenantContext.userId != null) {
     const tenantEmail = tenantContext.email;
     const tenantRecord = await TenantDAL.getTenantByEmail(tenantEmail);
+    const user = Number(getDatabaseId('user', tenantContext.userId));
     if (tenantRecord !== null) {
+      if (tenantRecord.userId != user) {
+        tenantReturn.status = 401;
+        tenantReturn.message = 'Not authorized to get tenant';
+        return tenantReturn;
+      }
       tenantReturn.status = 200;
       tenantReturn.message = 'Tenant found';
       tenantReturn.data = tenantRecord;
@@ -47,10 +61,16 @@ const getTenantByPhoneService = async (tenantContext: TenantContexts.TenantConte
     message: 'Error getting tenant',
     status: 404,
   };
-  if (tenantContext.phone != null) {
+  if (tenantContext.phone != null && tenantContext.userId != null) {
     const tenantPhone = tenantContext.phone;
     const tenantRecord = await TenantDAL.getTenantByPhone(tenantPhone);
+    const user = Number(getDatabaseId('user', tenantContext.userId));
     if (tenantRecord !== null) {
+      if (tenantRecord.userId != user) {
+        tenantReturn.status = 401;
+        tenantReturn.message = 'Not authorized to get tenant';
+        return tenantReturn;
+      }
       tenantReturn.status = 200;
       tenantReturn.message = 'Tenant found';
       tenantReturn.data = tenantRecord;
@@ -66,11 +86,25 @@ const getTenantsByProperty = async (tenantContext: TenantContexts.TenantContext)
     message: 'Error getting tenants',
     status: 400,
   };
-  if (tenantContext.propertyId != null) {
+  if (tenantContext.propertyId != null && tenantContext.userId != null) {
     const propertyId = +tenantContext.propertyId;
     if (isNaN(propertyId) || propertyId < 0) {
       tenantReturn.status = 422;
       tenantReturn.message = 'Bad property id';
+      return tenantReturn;
+    }
+    // Check property exists
+    const propertyRecord = await getPropertyById(propertyId);
+    if (propertyRecord == null) {
+      tenantReturn.status = 404;
+      tenantReturn.message = 'Property not found';
+      return tenantReturn;
+    }
+    // Check user owns property
+    const user = Number(getDatabaseId('user', tenantContext.userId));
+    if (propertyRecord.ownerId != user) {
+      tenantReturn.status = 401;
+      tenantReturn.message = 'Not authorized to get property';
       return tenantReturn;
     }
     const tenants = await TenantDAL.getTenantsByProperty(propertyId);
@@ -103,7 +137,7 @@ const createTenantService = async (tenantContext: TenantContexts.TenantCreateCon
     tenantReturn.status = 422;
     return tenantReturn;
   }
-  const userIdInput = +userId;
+  const userIdInput = Number(getDatabaseId('user', userId));
   if (isNaN(userIdInput) || userIdInput < 0) {
     tenantReturn.message = 'Invalid user id';
     tenantReturn.status = 422;
@@ -143,7 +177,7 @@ const updateTenantService = async (tenantContext: TenantContexts.TenantContext) 
     status: 400,
   };
   if (tenantContext.id != null && tenantContext.userId != null) {
-    const { id, ...updateData } = tenantContext;
+    const { id, userId, ...updateData } = tenantContext;
     const updateInput: TenantContexts.TenantUpdateInput = updateData;
     // Check valid tenant id
     const tenantId = +id;
@@ -157,6 +191,13 @@ const updateTenantService = async (tenantContext: TenantContexts.TenantContext) 
     if (tenantRecord == null) {
       tenantReturn.message = 'Tenant not found';
       tenantReturn.status = 404;
+      return tenantReturn;
+    }
+    // Check that user made tenant
+    const user = Number(getDatabaseId('user', userId));
+    if (tenantRecord.userId != user) {
+      tenantReturn.message = 'Not authorized to update tenant';
+      tenantReturn.status = 401;
       return tenantReturn;
     }
     // If update data is same as database, ignore it
@@ -208,17 +249,30 @@ const deleteTenantService = async (tenantContext: TenantContexts.TenantContext) 
     message: 'Error deleting tenant',
     status: 400,
   };
-  if (tenantContext.id != null) {
+  if (tenantContext.id != null && tenantContext.userId != null) {
     const tenantId = +tenantContext.id;
     if (isNaN(tenantId) || tenantId < 0) {
       tenantReturn.message = 'Bad tenant id';
       tenantReturn.status = 422;
       return tenantReturn;
     }
-    const tenantRecord = await TenantDAL.deleteTenant(tenantId);
-    if (tenantRecord != null) {
+    const tenantRecord = await TenantDAL.getTenantById(tenantId);
+    if (tenantRecord == null) {
+      tenantReturn.message = 'Tenant not found';
+      tenantReturn.status = 404;
+      return tenantReturn;
+    }
+    // Check that user made tenant
+    const user = Number(getDatabaseId('user', tenantContext.userId));
+    if (tenantRecord.userId != user) {
+      tenantReturn.message = 'Not authorized to update tenant';
+      tenantReturn.status = 401;
+      return tenantReturn;
+    }
+    const deleteTenant = await TenantDAL.deleteTenant(tenantId);
+    if (deleteTenant != null) {
       tenantReturn.message = 'Tenant deleted';
-      tenantReturn.data = tenantRecord;
+      tenantReturn.data = deleteTenant;
       tenantReturn.status = 200;
     }
   }
