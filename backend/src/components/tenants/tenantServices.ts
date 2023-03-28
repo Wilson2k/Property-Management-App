@@ -119,6 +119,7 @@ const getTenantsByProperty = async (tenantContext: TenantContexts.TenantContext)
       return tenantReturn;
     }
   }
+  return tenantReturn;
 };
 
 const createTenantService = async (tenantContext: TenantContexts.TenantCreateContext) => {
@@ -126,14 +127,9 @@ const createTenantService = async (tenantContext: TenantContexts.TenantCreateCon
     message: 'Error creating tenant',
     status: 400,
   };
-  const { userId, propertyId, ...tenantInput } = { ...tenantContext };
+  const { userId, ...tenantInput } = { ...tenantContext };
   if (userId == null) {
     tenantReturn.message = 'Bad user id';
-    tenantReturn.status = 422;
-    return tenantReturn;
-  }
-  if (propertyId == null) {
-    tenantReturn.message = 'Bad property id';
     tenantReturn.status = 422;
     return tenantReturn;
   }
@@ -143,22 +139,10 @@ const createTenantService = async (tenantContext: TenantContexts.TenantCreateCon
     tenantReturn.status = 422;
     return tenantReturn;
   }
-  const propertyIdNum = +propertyId;
-  if (isNaN(propertyIdNum) || propertyIdNum < 0) {
-    tenantReturn.message = 'Invalid property id';
-    tenantReturn.status = 422;
-    return tenantReturn;
-  }
-  const propertyIdInput: TenantContexts.PropertyConnectInput = {
-    connect: {
-      id: propertyIdNum,
-    },
-  };
   const findTenant = await TenantDAL.getTenantByEmail(tenantContext.email);
   if (findTenant === null) {
     const newTenant = await TenantDAL.createNewTenant(
       userIdInput,
-      propertyIdInput,
       tenantInput
     );
     tenantReturn.data = newTenant;

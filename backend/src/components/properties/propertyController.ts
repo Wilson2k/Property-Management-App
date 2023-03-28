@@ -47,6 +47,36 @@ const updateProperty = async (req: CustomRequest<PropertyContext>, res: Response
   }
 };
 
+// Remove property tenant
+const removePropertyTenant = async (req: CustomRequest<PropertyContext>, res: Response) => {
+  const propertyContext: PropertyContext = {
+    id: +req.params.id,
+    tenantId: +req.params.tenantid,
+    ownerId: req.session.user,
+  };
+  const updatedProperty = await PropertyServices.removePropertyTenantService(propertyContext);
+  if (updatedProperty.status === 200 && updatedProperty.fullData !== undefined) {
+    res.status(updatedProperty.status).send(updatedProperty.fullData);
+  } else {
+    res.status(updatedProperty.status).send(updatedProperty.message);
+  }
+};
+
+// Add property tenant
+const addPropertyTenant = async (req: CustomRequest<PropertyContext>, res: Response) => {
+  const propertyContext: PropertyContext = {
+    id: +req.params.id,
+    tenantId: +req.params.tenantid,
+    ownerId: req.session.user,
+  };
+  const updatedProperty = await PropertyServices.addPropertyTenantService(propertyContext);
+  if (updatedProperty.status === 200 && updatedProperty.fullData !== undefined) {
+    res.status(updatedProperty.status).send(updatedProperty.fullData);
+  } else {
+    res.status(updatedProperty.status).send(updatedProperty.message);
+  }
+};
+
 // Delete property
 const deleteUserProperty = async (req: CustomRequest<PropertyContext>, res: Response) => {
   const propertyContext: PropertyContext = {
@@ -259,7 +289,7 @@ const getUserPropertiesByTenant = async (
 ) => {
   const propertyContext: PropertyTenantContext = {
     ownerId: req.session.user,
-    tenant: req.query.tenant as string,
+    tenantId: req.params.tenantid,
   };
   const propertyData = await PropertyServices.getUserPropertiesByTenantService(
     propertyContext
@@ -286,5 +316,7 @@ export {
   getUserPropertiesByMaxSize,
   createNewUserProperty,
   updateProperty,
+  addPropertyTenant,
+  removePropertyTenant,
   deleteUserProperty,
 };

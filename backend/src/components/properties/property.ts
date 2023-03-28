@@ -31,7 +31,7 @@ interface PropertyContext {
 
 interface PropertyTenantContext {
   ownerId?: string;
-  tenant: string;
+  tenantId?: string;
 }
 
 interface PropertyUpdateInput {

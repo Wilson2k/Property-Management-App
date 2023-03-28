@@ -58,10 +58,9 @@ describe('Get user tenants', () => {
 });
 
 describe('Create a new tenant', () => {
-  test('Create new tenant and attach to property', async () => {
+  test('Create new tenant', async () => {
     const tenant: TenantContexts.TenantCreateContext = {
       userId: getPublicId('user', userIds[1]),
-      propertyId: '2000',
       firstName: 'Billy',
       lastName: 'Jean',
       email: 'billyjean@mj.com',
@@ -69,5 +68,20 @@ describe('Create a new tenant', () => {
     };
     const newTenant = await TenantServices.createTenantService(tenant);
     expect(newTenant.status).toBe(200);
+    expect(newTenant.data?.firstName).toBe('Billy');
+  });
+});
+
+describe('Update a tenant', () => {
+  test('Update tenant and expect updated info', async () => {
+    const tenant: TenantContexts.TenantContext = {
+      id: 203,
+      userId: getPublicId('user', userIds[0]),
+      firstName: 'Foo',
+      lastName: 'Barn',
+    };
+    const newTenant = await TenantServices.updateTenantService(tenant);
+    expect(newTenant.status).toBe(200);
+    expect(newTenant.data?.firstName).toBe('Foo');
   });
 });

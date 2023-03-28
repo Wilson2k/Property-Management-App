@@ -1,5 +1,6 @@
 import * as PropertyDAL from './propertyDAL';
 import * as PropertyContexts from './property';
+import * as TenantDAL from '../tenants/tenantDAL';
 import { getDatabaseId } from '../../utils/hashId';
 
 const createPropertyService = async (
@@ -196,7 +197,7 @@ const removePropertyTenantService = async (
       propertyReturn.status = 422;
       return propertyReturn;
     }
-    // Check that owner matches database
+    // Check that user owns property
     const ownerId = Number(getDatabaseId('user', propertyContext.ownerId));
     const propertyRecord = await PropertyDAL.getPropertyById(propertyId);
     if (propertyRecord == null) {
@@ -209,10 +210,83 @@ const removePropertyTenantService = async (
       propertyReturn.status = 401;
       return propertyReturn;
     }
+    // Check that user made tenant
+    const tenantRecord = await TenantDAL.getTenantById(tenantId);
+    if (tenantRecord == null) {
+      propertyReturn.message = 'Tenant not found';
+      propertyReturn.status = 404;
+      return propertyReturn;
+    }
+    if (tenantRecord.userId != ownerId) {
+      propertyReturn.message = 'Not authorized to get tenant';
+      propertyReturn.status = 401;
+      return propertyReturn;
+    }
     const findProperty = await PropertyDAL.removePropertyTenant(propertyId, tenantId);
     if (findProperty != null) {
       propertyReturn.message =
         'Tenant removed from property and lease associated deleted';
+      propertyReturn.fullData = findProperty;
+      propertyReturn.status = 200;
+    }
+  }
+  return propertyReturn;
+};
+
+const addPropertyTenantService = async (
+  propertyContext: PropertyContexts.PropertyContext
+) => {
+  const propertyReturn: PropertyContexts.PropertyReturnContext = {
+    message: 'Error adding tenant to property',
+    status: 400,
+  };
+  if (
+    propertyContext.id != null &&
+    propertyContext.tenantId != null &&
+    propertyContext.ownerId != null
+  ) {
+    // Check that inputs are numeric
+    const propertyId = +propertyContext.id;
+    if (isNaN(propertyId) || propertyId < 0) {
+      propertyReturn.message = 'Bad property id';
+      propertyReturn.status = 422;
+      return propertyReturn;
+    }
+    const tenantId = +propertyContext.tenantId;
+    if (isNaN(tenantId) || tenantId < 0) {
+      propertyReturn.message = 'Bad tenant id';
+      propertyReturn.status = 422;
+      return propertyReturn;
+    }
+    // Check that user made property
+    const ownerId = Number(getDatabaseId('user', propertyContext.ownerId));
+    const propertyRecord = await PropertyDAL.getPropertyById(propertyId);
+    if (propertyRecord == null) {
+      propertyReturn.message = 'Property not found';
+      propertyReturn.status = 404;
+      return propertyReturn;
+    }
+    if (propertyRecord.ownerId != ownerId) {
+      propertyReturn.message = 'Not authorized to get property';
+      propertyReturn.status = 401;
+      return propertyReturn;
+    }
+    // Check that user made tenant
+    const tenantRecord = await TenantDAL.getTenantById(tenantId);
+    if (tenantRecord == null) {
+      propertyReturn.message = 'Tenant not found';
+      propertyReturn.status = 404;
+      return propertyReturn;
+    }
+    if (tenantRecord.userId != ownerId) {
+      propertyReturn.message = 'Not authorized to get tenant';
+      propertyReturn.status = 401;
+      return propertyReturn;
+    }
+    const findProperty = await PropertyDAL.addPropertyTenant(propertyId, tenantId);
+    if (findProperty != null) {
+      propertyReturn.message =
+        'Tenant added to property';
       propertyReturn.fullData = findProperty;
       propertyReturn.status = 200;
     }
@@ -578,7 +652,7 @@ const getUserPropertiesByTenantService = async (
     message: 'Error getting properties by tenant',
     status: 404,
   };
-  if (propertyContext.ownerId != null && propertyContext.tenant != null) {
+  if (propertyContext.ownerId != null && propertyContext.tenantId != null) {
     // Check that ownerId string is numeric
     const ownerId = Number(getDatabaseId('user', propertyContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
@@ -586,22 +660,32 @@ const getUserPropertiesByTenantService = async (
       propertyReturn.status = 422;
       return propertyReturn;
     }
-    const tenantName = propertyContext.tenant.split(' ', 2);
-    if (tenantName.length !== 2) {
-      propertyReturn.message = 'Bad tenant name';
+    // Check tenantid string numeric
+    const tenantId = +propertyContext.tenantId;
+    if (isNaN(tenantId) || tenantId < 0) {
+      propertyReturn.message = 'Bad tenant id';
       propertyReturn.status = 422;
       return propertyReturn;
     }
-    const tenantFname = tenantName[0];
-    const tenantLname = tenantName[1];
+    // Check that user made tenant
+    const tenantRecord = await TenantDAL.getTenantById(tenantId);
+    if (tenantRecord == null) {
+      propertyReturn.message = 'Tenant not found';
+      propertyReturn.status = 404;
+      return propertyReturn;
+    }
+    if (tenantRecord.userId != ownerId) {
+      propertyReturn.message = 'Not authorized to get tenant';
+      propertyReturn.status = 401;
+      return propertyReturn;
+    }
     const findProperties = await PropertyDAL.getUserPropertiesByTenant(
       ownerId,
-      tenantFname,
-      tenantLname
+      tenantId
     );
     if (findProperties !== null) {
       propertyReturn.message =
-        findProperties.length == 0 ? 'Tenant not found' : 'Owner Properties found';
+        findProperties.length == 0 ? 'No properties with tenant' : 'Owner Properties found';
       propertyReturn.data = findProperties;
       propertyReturn.status = 200;
     }
@@ -626,4 +710,5 @@ export {
   updatePropertyService,
   deletePropertyService,
   removePropertyTenantService,
+  addPropertyTenantService,
 };

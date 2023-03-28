@@ -1,15 +1,13 @@
 import { PrismaClient } from '@prisma/client';
-import { TenantCreateContext, PropertyConnectInput, TenantUpdateInput } from './tenant';
+import { TenantCreateContext, TenantUpdateInput } from './tenant';
 const prisma = new PrismaClient();
 
 const createNewTenant = async (
   ownerId: number,
-  propertyId: PropertyConnectInput,
   tenantContext: TenantCreateContext
 ) => {
   const userInfo = { userId: ownerId };
-  const propertyInfo = { properties: propertyId };
-  const tenantData = { ...tenantContext, ...userInfo, ...propertyInfo };
+  const tenantData = { ...tenantContext, ...userInfo };
   const query = await prisma.tenant.create({
     data: tenantData,
   });

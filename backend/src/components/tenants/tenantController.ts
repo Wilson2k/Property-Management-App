@@ -11,7 +11,6 @@ const createTenant = async (req: CustomRequest<TenantCreateContext>, res: Respon
     lastName: req.body.lastName,
     email: req.body.email,
     phone: req.body.phone,
-    propertyId: req.body.propertyId,
     userId: req.session.user,
   };
   const newTenant = await TenantSrvices.createTenantService(tenantContext);
@@ -96,10 +95,25 @@ const getTenantByPhone = async (req: CustomRequest<TenantContext>, res: Response
   }
 };
 
+// Get tenant by property
+const getTenantsByProperty = async (req: CustomRequest<TenantContext>, res: Response) => {
+  const tenantContext: TenantContext = {
+    propertyId: +req.params.property,
+    userId: req.session.user,
+  };
+  const tenantData = await TenantSrvices.getTenantsByProperty(tenantContext);
+  if (tenantData.status === 200 && tenantData.data !== undefined) {
+    res.status(tenantData.status).send(tenantData.data);
+  } else {
+    res.status(tenantData.status).send(tenantData.message);
+  }
+};
+
 export {
   getTenantById,
   getTenantByEmail,
   getTenantByPhone,
+  getTenantsByProperty,
   createTenant,
   updateTenant,
   deleteTenant,

@@ -26,8 +26,6 @@ interface LeaseUpdateInput {
   endDate?: Date;
   months?: number;
   monthlyRent?: number;
-  tenantId?: number;
-  propertyId?: number;
 }
 
 // Contexts for Lease services

@@ -39,12 +39,10 @@ const removePropertyTenant = async (propertyId: number, tenantId: number) => {
     try {
       const [deletedLease, updateProperty] = await prisma.$transaction(
         [
-          prisma.lease.delete({
+          prisma.lease.deleteMany({
             where: {
-              tenantId_propertyId: {
-                tenantId: tenantId,
-                propertyId: propertyId,
-              },
+              tenantId: tenantId,
+              propertyId: propertyId,
             },
           }),
           prisma.property.update({
@@ -76,6 +74,22 @@ const removePropertyTenant = async (propertyId: number, tenantId: number) => {
     }
   }
 };
+
+const addPropertyTenant = async (propertyId: number, tenantId: number) => {
+  const query = await prisma.property.update({
+    where: { id: propertyId },
+    data: {
+      tenants: {
+        connect: [{ id: tenantId }],
+      },
+    },
+    include: {
+      tenants: true,
+      leases: true,
+    },
+  })
+  return query;
+}
 
 const getAllProperties = async () => {
   const query = await prisma.property.findMany();
@@ -177,16 +191,14 @@ const getUserPropertiesByMaxSize = async (ownerId: number, maxSize: number) => {
 
 const getUserPropertiesByTenant = async (
   ownerId: number,
-  tenantFname: string,
-  tenantLname: string
+  tenantId: number,
 ) => {
   const query = await prisma.property.findMany({
     where: {
       ownerId: ownerId,
       tenants: {
         some: {
-          firstName: tenantFname,
-          lastName: tenantLname,
+          id: tenantId,
         },
       },
     },
@@ -254,5 +266,6 @@ export {
   getUserPropertiesByMinSize,
   updateProperty,
   removePropertyTenant,
+  addPropertyTenant,
   deleteProperty,
 };

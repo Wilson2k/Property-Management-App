@@ -100,7 +100,7 @@ describe('Get User Properties', () => {
   test('Get user properties by tenant', async () => {
     const properties: PropertyContexts.PropertyTenantContext = {
       ownerId: getPublicId('user', userIds[0]),
-      tenant: 'bob bill',
+      tenantId: '203',
     };
     const propertyData = await PropertyServices.getUserPropertiesByTenantService(
       properties
@@ -182,13 +182,13 @@ describe('Get User Properties bad input', () => {
   test('Get user properties bad tenant name', async () => {
     const properties: PropertyContexts.PropertyTenantContext = {
       ownerId: getPublicId('user', userIds[1]),
-      tenant: 'foobar',
+      tenantId: 'foobar',
     };
     const propertyData = await PropertyServices.getUserPropertiesByTenantService(
       properties
     );
     expect(propertyData.status).toBe(422);
-    expect(propertyData.message).toBe('Bad tenant name');
+    expect(propertyData.message).toBe('Bad tenant id');
   });
 });
 
@@ -277,16 +277,28 @@ describe('Update Properties', () => {
 });
 
 describe('Update Property Tenant', () => {
+  test('Add Tenant to Property', async () => {
+    const property: PropertyContexts.PropertyContext = {
+      id: 3008,
+      tenantId: 203,
+      ownerId: getPublicId('user', userIds[0]),
+    };
+    const propertyData = await PropertyServices.addPropertyTenantService(property);
+    expect(propertyData.status).toBe(200);
+    expect(propertyData.fullData?.leases?.length).toBe(0);
+    expect(propertyData.fullData?.tenants?.length).toBe(1);
+  });
+
   test('Remove Tenant From Property', async () => {
     const property: PropertyContexts.PropertyContext = {
-      id: 3005,
+      id: 3008,
       tenantId: 203,
       ownerId: getPublicId('user', userIds[0]),
     };
     const propertyData = await PropertyServices.removePropertyTenantService(property);
     expect(propertyData.status).toBe(200);
-    expect(propertyData.fullData?.leases?.length).toBe(1);
-    expect(propertyData.fullData?.tenants?.length).toBe(1);
+    expect(propertyData.fullData?.leases?.length).toBe(0);
+    expect(propertyData.fullData?.tenants?.length).toBe(0);
   });
 });
 

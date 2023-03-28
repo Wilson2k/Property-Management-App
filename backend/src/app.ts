@@ -65,6 +65,8 @@ app.post('/property/create', checkSession, asyncHandler(Property.createNewUserPr
 app.get('/property/:id', checkSession, asyncHandler(Property.getPropertyById));
 app.get('/property/:id/income',checkSession,asyncHandler(Property.getPropertyIncomeById));
 app.put('/property/:id/update', checkSession, asyncHandler(Property.updateProperty));
+app.put('/property/:id/add/:tenantid', checkSession, asyncHandler(Property.addPropertyTenant));
+app.put('/property/:id/remove/:tenantid', checkSession, asyncHandler(Property.removePropertyTenant));
 app.delete('/property/:id/delete',checkSession,asyncHandler(Property.deleteUserProperty));
 app.get('/properties', checkSession, asyncHandler(Property.getAllUserProperties));
 app.get('/properties/address', checkSession, asyncHandler(Property.getPropertyByAddress));
@@ -73,7 +75,7 @@ app.get('/properties/minsize',checkSession,asyncHandler(Property.getUserProperti
 app.get('/properties/city', checkSession, asyncHandler(Property.getUserPropertiesByCity));
 app.get('/properties/state',checkSession,asyncHandler(Property.getUserPropertiesByState));
 app.get('/properties/type', checkSession, asyncHandler(Property.getUserPropertiesByType));
-app.get('/properties/tenant',checkSession,asyncHandler(Property.getUserPropertiesByTenant));
+app.get('/properties/:tenantid',checkSession,asyncHandler(Property.getUserPropertiesByTenant));
 app.get('/properties/opentickets',checkSession,asyncHandler(Property.getAllUserOpenTicketProperties));
 // Tenant routes
 app.post('/tenant/create', checkSession, asyncHandler(Tenant.createTenant));
@@ -82,6 +84,7 @@ app.delete('/tenant/:id/delete', checkSession, asyncHandler(Tenant.deleteTenant)
 app.get('/tenant/:id', checkSession, asyncHandler(Tenant.getTenantById))
 app.get('/tenant/email', checkSession, asyncHandler(Tenant.getTenantByEmail))
 app.get('/tenant/phone', checkSession, asyncHandler(Tenant.getTenantByPhone))
+app.get('/tenants/:propertyid', checkSession, asyncHandler(Tenant.getTenantsByProperty))
 // Lease routes
 
 // 404 route

@@ -1,17 +1,10 @@
 import { Tenant } from '@prisma/client';
 
-interface PropertyConnectInput {
-  connect: {
-    id: number;
-  };
-}
-
 interface TenantCreateContext {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  propertyId?: string;
   userId?: string;
 }
 
@@ -52,5 +45,4 @@ export {
   TenantCreateContext,
   TenantUpdateInput,
   MultTenantReturnContext,
-  PropertyConnectInput,
 };
