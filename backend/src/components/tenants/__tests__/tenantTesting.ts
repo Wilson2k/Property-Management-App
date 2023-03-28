@@ -55,6 +55,15 @@ describe('Get user tenants', () => {
     expect(tenantData.status).toBe(200);
     expect(tenantData.data?.firstName).toBe('bob');
   });
+
+  test('Get tenants by user', async () => {
+    const tenant: TenantContexts.TenantContext = {
+      userId: getPublicId('user', userIds[0]),
+    };
+    const tenantData = await TenantServices.getTenantsByUser(tenant);
+    expect(tenantData.status).toBe(200);
+    expect(tenantData.data?.length).toBe(2);
+  });
 });
 
 describe('Create a new tenant', () => {
@@ -81,6 +90,18 @@ describe('Update a tenant', () => {
       lastName: 'Barn',
     };
     const newTenant = await TenantServices.updateTenantService(tenant);
+    expect(newTenant.status).toBe(200);
+    expect(newTenant.data?.firstName).toBe('Foo');
+  });
+});
+
+describe('Delete a tenant', () => {
+  test('Delete a tenant and expect deleted tenant data', async () => {
+    const tenant: TenantContexts.TenantContext = {
+      id: 203,
+      userId: getPublicId('user', userIds[0]),
+    };
+    const newTenant = await TenantServices.deleteTenantService(tenant);
     expect(newTenant.status).toBe(200);
     expect(newTenant.data?.firstName).toBe('Foo');
   });

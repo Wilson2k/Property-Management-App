@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import CustomRequest from '../../utils/request';
-import * as TenantSrvices from './tenantServices';
+import * as TenantServices from './tenantServices';
 import { TenantContext, TenantCreateContext } from './tenant';
 
 // Create a new tenant
@@ -13,7 +13,7 @@ const createTenant = async (req: CustomRequest<TenantCreateContext>, res: Respon
     phone: req.body.phone,
     userId: req.session.user,
   };
-  const newTenant = await TenantSrvices.createTenantService(tenantContext);
+  const newTenant = await TenantServices.createTenantService(tenantContext);
   if (newTenant.status === 200 && newTenant.data !== undefined) {
     res.status(newTenant.status).send(newTenant.data);
   } else {
@@ -31,7 +31,7 @@ const updateTenant = async (req: CustomRequest<TenantContext>, res: Response) =>
     phone: req.body.phone,
     userId: req.session.user,
   };
-  const tenantData = await TenantSrvices.updateTenantService(tenantContext);
+  const tenantData = await TenantServices.updateTenantService(tenantContext);
   if (tenantData.status === 200 && tenantData.data !== undefined) {
     res.status(tenantData.status).send(tenantData.data);
   } else {
@@ -45,7 +45,7 @@ const deleteTenant = async (req: CustomRequest<TenantContext>, res: Response) =>
     id: +req.params.id,
     userId: req.session.user,
   };
-  const deletedTenant = await TenantSrvices.deleteTenantService(tenantContext);
+  const deletedTenant = await TenantServices.deleteTenantService(tenantContext);
   if (deletedTenant.status === 200 && deletedTenant.data !== undefined) {
     res.status(deletedTenant.status).send(deletedTenant.data);
   } else {
@@ -59,7 +59,7 @@ const getTenantById = async (req: CustomRequest<TenantContext>, res: Response) =
     id: +req.params.id,
     userId: req.session.user,
   };
-  const tenantData = await TenantSrvices.getTenantByIdService(tenantContext);
+  const tenantData = await TenantServices.getTenantByIdService(tenantContext);
   if (tenantData.status === 200 && tenantData.data !== undefined) {
     res.status(tenantData.status).send(tenantData.data);
   } else {
@@ -73,7 +73,7 @@ const getTenantByEmail = async (req: CustomRequest<TenantContext>, res: Response
     email: req.query.email as string,
     userId: req.session.user,
   };
-  const tenantData = await TenantSrvices.getTenantByEmailService(tenantContext);
+  const tenantData = await TenantServices.getTenantByEmailService(tenantContext);
   if (tenantData.status === 200 && tenantData.data !== undefined) {
     res.status(tenantData.status).send(tenantData.data);
   } else {
@@ -87,7 +87,7 @@ const getTenantByPhone = async (req: CustomRequest<TenantContext>, res: Response
     phone: req.query.phone as string,
     userId: req.session.user,
   };
-  const tenantData = await TenantSrvices.getTenantByPhoneService(tenantContext);
+  const tenantData = await TenantServices.getTenantByPhoneService(tenantContext);
   if (tenantData.status === 200 && tenantData.data !== undefined) {
     res.status(tenantData.status).send(tenantData.data);
   } else {
@@ -95,13 +95,26 @@ const getTenantByPhone = async (req: CustomRequest<TenantContext>, res: Response
   }
 };
 
-// Get tenant by property
+// Get tenants by property
 const getTenantsByProperty = async (req: CustomRequest<TenantContext>, res: Response) => {
   const tenantContext: TenantContext = {
     propertyId: +req.params.property,
     userId: req.session.user,
   };
-  const tenantData = await TenantSrvices.getTenantsByProperty(tenantContext);
+  const tenantData = await TenantServices.getTenantsByProperty(tenantContext);
+  if (tenantData.status === 200 && tenantData.data !== undefined) {
+    res.status(tenantData.status).send(tenantData.data);
+  } else {
+    res.status(tenantData.status).send(tenantData.message);
+  }
+};
+
+// Get tenants by user
+const getTenantsByUser = async (req: CustomRequest<TenantContext>, res: Response) => {
+  const tenantContext: TenantContext = {
+    userId: req.session.user,
+  };
+  const tenantData = await TenantServices.getTenantsByUser(tenantContext);
   if (tenantData.status === 200 && tenantData.data !== undefined) {
     res.status(tenantData.status).send(tenantData.data);
   } else {
@@ -114,6 +127,7 @@ export {
   getTenantByEmail,
   getTenantByPhone,
   getTenantsByProperty,
+  getTenantsByUser,
   createTenant,
   updateTenant,
   deleteTenant,

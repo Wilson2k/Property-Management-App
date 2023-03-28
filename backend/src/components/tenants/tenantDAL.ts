@@ -2,10 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { TenantCreateContext, TenantUpdateInput } from './tenant';
 const prisma = new PrismaClient();
 
-const createNewTenant = async (
-  ownerId: number,
-  tenantContext: TenantCreateContext
-) => {
+const createNewTenant = async (ownerId: number, tenantContext: TenantCreateContext) => {
   const userInfo = { userId: ownerId };
   const tenantData = { ...tenantContext, ...userInfo };
   const query = await prisma.tenant.create({
@@ -58,6 +55,15 @@ const getTenantByPhone = async (tenantPhone: string) => {
   return query;
 };
 
+const getTenantsByUser = async (userId: number) => {
+  const query = await prisma.tenant.findMany({
+    where: {
+      userId: userId,
+    },
+  });
+  return query;
+};
+
 const getTenantsByProperty = async (propertyId: number) => {
   const query = await prisma.tenant.findMany({
     where: {
@@ -76,6 +82,7 @@ export {
   getTenantByEmail,
   getTenantsByProperty,
   getTenantById,
+  getTenantsByUser,
   updateTenant,
   deleteTenant,
   getTenantByPhone,

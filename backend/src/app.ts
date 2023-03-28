@@ -85,6 +85,7 @@ app.get('/tenant/:id', checkSession, asyncHandler(Tenant.getTenantById))
 app.get('/tenant/email', checkSession, asyncHandler(Tenant.getTenantByEmail))
 app.get('/tenant/phone', checkSession, asyncHandler(Tenant.getTenantByPhone))
 app.get('/tenants/:propertyid', checkSession, asyncHandler(Tenant.getTenantsByProperty))
+app.get('/tenants', checkSession, asyncHandler(Tenant.getTenantsByUser))
 // Lease routes
 
 // 404 route

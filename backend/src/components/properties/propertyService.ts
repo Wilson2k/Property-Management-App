@@ -285,8 +285,7 @@ const addPropertyTenantService = async (
     }
     const findProperty = await PropertyDAL.addPropertyTenant(propertyId, tenantId);
     if (findProperty != null) {
-      propertyReturn.message =
-        'Tenant added to property';
+      propertyReturn.message = 'Tenant added to property';
       propertyReturn.fullData = findProperty;
       propertyReturn.status = 200;
     }
@@ -679,13 +678,12 @@ const getUserPropertiesByTenantService = async (
       propertyReturn.status = 401;
       return propertyReturn;
     }
-    const findProperties = await PropertyDAL.getUserPropertiesByTenant(
-      ownerId,
-      tenantId
-    );
+    const findProperties = await PropertyDAL.getUserPropertiesByTenant(ownerId, tenantId);
     if (findProperties !== null) {
       propertyReturn.message =
-        findProperties.length == 0 ? 'No properties with tenant' : 'Owner Properties found';
+        findProperties.length == 0
+          ? 'No properties with tenant'
+          : 'Owner Properties found';
       propertyReturn.data = findProperties;
       propertyReturn.status = 200;
     }

@@ -122,6 +122,34 @@ const getTenantsByProperty = async (tenantContext: TenantContexts.TenantContext)
   return tenantReturn;
 };
 
+// Returns list of tenants that specific user made
+const getTenantsByUser = async (tenantContext: TenantContexts.TenantContext) => {
+  const tenantReturn: TenantContexts.MultTenantReturnContext = {
+    message: 'Error getting tenants',
+    status: 400,
+  };
+  if (tenantContext.userId != null) {
+    const user = Number(getDatabaseId('user', tenantContext.userId));
+    if (isNaN(user) || user < 0) {
+      tenantReturn.status = 422;
+      tenantReturn.message = 'Bad user input';
+      return tenantReturn;
+    }
+    const tenants = await TenantDAL.getTenantsByUser(user);
+    if (tenants !== null) {
+      if (tenants.length === 0) {
+        tenantReturn.message = 'User has no tenants';
+      } else {
+        tenantReturn.message = 'Tenants found';
+      }
+      tenantReturn.status = 200;
+      tenantReturn.data = tenants;
+      return tenantReturn;
+    }
+  }
+  return tenantReturn;
+};
+
 const createTenantService = async (tenantContext: TenantContexts.TenantCreateContext) => {
   const tenantReturn: TenantContexts.TenantReturnContext = {
     message: 'Error creating tenant',
@@ -141,10 +169,7 @@ const createTenantService = async (tenantContext: TenantContexts.TenantCreateCon
   }
   const findTenant = await TenantDAL.getTenantByEmail(tenantContext.email);
   if (findTenant === null) {
-    const newTenant = await TenantDAL.createNewTenant(
-      userIdInput,
-      tenantInput
-    );
+    const newTenant = await TenantDAL.createNewTenant(userIdInput, tenantInput);
     tenantReturn.data = newTenant;
     tenantReturn.status = 200;
     tenantReturn.message = 'Tenant successfully created';
@@ -222,7 +247,7 @@ const updateTenantService = async (tenantContext: TenantContexts.TenantContext) 
       }
     } else {
       tenantReturn.message = 'No data input';
-      tenantReturn.status = 400;
+      tenantReturn.status = 422;
     }
   }
   return tenantReturn;
@@ -271,4 +296,5 @@ export {
   getTenantByIdService,
   getTenantByPhoneService,
   getTenantsByProperty,
+  getTenantsByUser,
 };

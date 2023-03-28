@@ -87,9 +87,9 @@ const addPropertyTenant = async (propertyId: number, tenantId: number) => {
       tenants: true,
       leases: true,
     },
-  })
+  });
   return query;
-}
+};
 
 const getAllProperties = async () => {
   const query = await prisma.property.findMany();
@@ -189,10 +189,7 @@ const getUserPropertiesByMaxSize = async (ownerId: number, maxSize: number) => {
   return query;
 };
 
-const getUserPropertiesByTenant = async (
-  ownerId: number,
-  tenantId: number,
-) => {
+const getUserPropertiesByTenant = async (ownerId: number, tenantId: number) => {
   const query = await prisma.property.findMany({
     where: {
       ownerId: ownerId,
