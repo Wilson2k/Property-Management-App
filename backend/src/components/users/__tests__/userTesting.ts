@@ -29,7 +29,7 @@ afterAll(async () => {
 describe('Get User income ID', () => {
   test('Get seeded user income', async () => {
     const user: UserContexts.UserContext = {
-      id:  getPublicId('user',userIds[0]),
+      id: getPublicId('user', userIds[0]),
     };
     const userData = await UserServices.getUserMonthlyIncomeService(user);
     expect(userData.status).toBe(200);
@@ -38,7 +38,7 @@ describe('Get User income ID', () => {
 
   test('Get seeded user income', async () => {
     const user: UserContexts.UserContext = {
-      id:  getPublicId('user',userIds[1]),
+      id: getPublicId('user', userIds[1]),
     };
     const userData = await UserServices.getUserMonthlyIncomeService(user);
     expect(userData.status).toBe(200);
@@ -49,7 +49,7 @@ describe('Get User income ID', () => {
 describe('Get User income by id', () => {
   test('Get seeded user by ID', async () => {
     const user: UserContexts.UserContext = {
-      id:  getPublicId('user',userIds[0]),
+      id: getPublicId('user', userIds[0]),
     };
     const userData = await UserServices.getUserService(user);
     expect(userData.status).toBe(200);
@@ -102,13 +102,13 @@ describe('Register User, then delete user', () => {
     expect(newUser.data?.firstName).toBe(user.firstName);
     expect(newUser.data?.lastName).toBe(user.lastName);
     if (newUser.data?.id) {
-      userId = Number( getDatabaseId('user', newUser.data?.id));
+      userId = Number(getDatabaseId('user', newUser.data?.id));
     }
   });
 
   test('Delete newly registered user', async () => {
     const userIdContext: UserContexts.UserContext = {
-      id:  getPublicId('user', userId),
+      id: getPublicId('user', userId),
     };
     const deletedUser = await UserServices.deleteUserService(userIdContext);
     expect(deletedUser.status).toBe(200);
@@ -134,13 +134,13 @@ describe('Login User, get logged in user', () => {
     expect(newUser.data?.lastName).toBe('Human');
     expect(newUser.data?.id).toBeDefined();
     if (newUser.data?.id) {
-      userId = Number( getDatabaseId('user',newUser.data.id));
+      userId = Number(getDatabaseId('user', newUser.data.id));
     }
   });
 
   test('Get logged in user', async () => {
     const user: UserContexts.UserContext = {
-      id:  getPublicId('user',userId),
+      id: getPublicId('user', userId),
     };
     const newUser = await UserServices.getUserService(user);
     expect(newUser.status).toBe(200);
@@ -166,13 +166,13 @@ describe('Register then update a new user', () => {
     expect(newUser.data?.firstName).toBe(user.firstName);
     expect(newUser.data?.lastName).toBe(user.lastName);
     if (newUser.data?.id) {
-      userId = Number( getDatabaseId('user',newUser.data.id));
+      userId = Number(getDatabaseId('user', newUser.data.id));
     }
   });
 
   test('Update newly registered user', async () => {
     const userContext: UserContexts.UserContext = {
-      id:  getPublicId('user', userId),
+      id: getPublicId('user', userId),
       firstName: 'Perry',
       lastName: 'Plat',
     };
@@ -184,7 +184,7 @@ describe('Register then update a new user', () => {
 
   test('Get updated user data', async () => {
     const userContext: UserContexts.UserContext = {
-      id:  getPublicId('user', userId),
+      id: getPublicId('user', userId),
     };
     const updatedUser = await UserServices.getUserService(userContext);
     expect(updatedUser.status).toBe(200);

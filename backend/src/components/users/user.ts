@@ -1,9 +1,9 @@
 import { User } from '@prisma/client';
 
-type UserNoId = Omit<User, "id">
+type UserNoId = Omit<User, 'id'>;
 
 interface UserData extends UserNoId {
-  id: string
+  id: string;
 }
 
 // Require certain fields for user login and register
@@ -55,5 +55,5 @@ export {
   UserUpdateInput,
   UserReturnContext,
   MultUsersReturnContext,
-  UserData
+  UserData,
 };

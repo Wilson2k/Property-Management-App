@@ -11,7 +11,7 @@ const loginUserService = async (userContext: UserContexts.UserLoginContext) => {
   if (userContext.email != null) {
     const findUser = await UserDAL.getUserByEmail(userContext.email);
     if (findUser != null) {
-      const publicId =  getPublicId('user', findUser.id);
+      const publicId = getPublicId('user', findUser.id);
       const userData: UserContexts.UserData = { ...findUser, id: publicId };
       await compare(userContext.password, findUser.password).then((res) => {
         if (res) {
@@ -39,7 +39,7 @@ const registerUserService = async (userContext: UserContexts.UserRegisterContext
       await hash(userContext.password, 12).then(async (hash) => {
         userContext.password = hash;
         const newUser = await UserDAL.createNewUser(userContext);
-        const publicId =  getPublicId('user', newUser.id);
+        const publicId = getPublicId('user', newUser.id);
         const userData: UserContexts.UserData = { ...newUser, id: publicId };
         userReturn.data = userData;
         userReturn.status = 200;
@@ -60,7 +60,7 @@ const getUserService = async (userContext: UserContexts.UserContext) => {
   };
   if (userContext.id != null) {
     // Check that input string is numeric
-    const databaseId =  getDatabaseId('user', userContext.id);
+    const databaseId = getDatabaseId('user', userContext.id);
     const userId = Number(databaseId);
     if (isNaN(userId)) {
       userReturn.message = 'Bad user id';
@@ -69,7 +69,7 @@ const getUserService = async (userContext: UserContexts.UserContext) => {
     }
     const findUser = await UserDAL.getUserById(userId);
     if (findUser != null) {
-      const publicId =  getPublicId('user', findUser.id);
+      const publicId = getPublicId('user', findUser.id);
       const userData: UserContexts.UserData = { ...findUser, id: publicId };
       userReturn.message = 'User found';
       userReturn.data = userData;
@@ -86,7 +86,7 @@ const getUserMonthlyIncomeService = async (userContext: UserContexts.UserContext
   };
   if (userContext.id != null) {
     // Check that input string is numeric
-    const databaseId =  getDatabaseId('user', userContext.id);
+    const databaseId = getDatabaseId('user', userContext.id);
     const userId = Number(databaseId);
     if (isNaN(userId)) {
       userReturn.message = 'Bad user id';
@@ -115,7 +115,7 @@ const updateUserService = async (userContext: UserContexts.UserContext) => {
   if (userContext.id != null) {
     // Check that input string is numeric
     const { id, ...updateData } = userContext;
-    const databaseId =  getDatabaseId('user',id);
+    const databaseId = getDatabaseId('user', id);
     const userId = Number(databaseId);
     if (isNaN(userId) || userId < 0) {
       userReturn.message = 'Bad user id';
@@ -143,7 +143,7 @@ const updateUserService = async (userContext: UserContexts.UserContext) => {
       }
       const updatedUser = await UserDAL.updateUser(userId, updateData);
       if (updatedUser != null) {
-        const publicId =  getPublicId('user', updatedUser.id);
+        const publicId = getPublicId('user', updatedUser.id);
         const userData: UserContexts.UserData = { ...updatedUser, id: publicId };
         userReturn.message = 'User updated';
         userReturn.data = userData;
@@ -164,7 +164,7 @@ const getAllUserService = async () => {
   };
   const users = await UserDAL.getAllUsers();
   if (users.length !== 0) {
-    const usersData = users.map( (user) => {
+    const usersData = users.map((user) => {
       const publicId = getPublicId('user', user.id);
       const userData: UserContexts.UserData = { ...user, id: publicId };
       return userData;
@@ -186,7 +186,7 @@ const deleteUserService = async (userContext: UserContexts.UserContext) => {
   };
   if (userContext.id != null) {
     // Check that input string is numeric
-    const databaseId =  getDatabaseId('user', userContext.id);
+    const databaseId = getDatabaseId('user', userContext.id);
     const userId = Number(databaseId);
     if (isNaN(userId) || userId < 0) {
       userReturn.message = 'Bad user id';
@@ -195,7 +195,7 @@ const deleteUserService = async (userContext: UserContexts.UserContext) => {
     }
     const findUser = await UserDAL.deleteUser(userId);
     if (findUser != null) {
-      const publicId =  getPublicId('user', findUser.id);
+      const publicId = getPublicId('user', findUser.id);
       const userData: UserContexts.UserData = { ...findUser, id: publicId };
       userReturn.message = 'User deleted';
       userReturn.data = userData;

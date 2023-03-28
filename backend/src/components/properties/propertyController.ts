@@ -51,6 +51,7 @@ const updateProperty = async (req: CustomRequest<PropertyContext>, res: Response
 const deleteUserProperty = async (req: CustomRequest<PropertyContext>, res: Response) => {
   const propertyContext: PropertyContext = {
     id: +req.params.id,
+    ownerId: req.session.user,
   };
   const deletedProperty = await PropertyServices.deletePropertyService(propertyContext);
   if (deletedProperty.status === 200 && deletedProperty.data !== undefined) {
@@ -74,6 +75,7 @@ const getAllProperties = async (req: Request, res: Response) => {
 const getPropertyById = async (req: CustomRequest<PropertyContext>, res: Response) => {
   const propertyContext: PropertyContext = {
     id: +req.params.id,
+    ownerId: req.session.user,
   };
   const propertyData = await PropertyServices.getPropertyByIdService(propertyContext);
   if (propertyData.status === 200 && propertyData.data !== undefined) {
@@ -90,6 +92,7 @@ const getPropertyIncomeById = async (
 ) => {
   const propertyContext: PropertyContext = {
     id: +req.params.id,
+    ownerId: req.session.user,
   };
   const propertyData = await PropertyServices.getPropertyIncomeService(propertyContext);
   if (propertyData.status === 200 && propertyData.aggregateData !== undefined) {
@@ -99,7 +102,7 @@ const getPropertyIncomeById = async (
   }
 };
 
-// Get property address
+// Get property by address
 const getPropertyByAddress = async (
   req: CustomRequest<PropertyContext>,
   res: Response
@@ -107,7 +110,8 @@ const getPropertyByAddress = async (
   const propertyContext: PropertyContext = {
     address: req.query.address as string,
     city: req.query.city as string,
-    state: req.query.state as string
+    state: req.query.state as string,
+    ownerId: req.session.user,
   };
   const propertyData = await PropertyServices.getPropertyByAddressService(
     propertyContext

@@ -28,7 +28,7 @@ afterAll(async () => {
 describe('Get User Properties', () => {
   test('Get seeded user properties', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId: getPublicId('user',userIds[0]),
+      ownerId: getPublicId('user', userIds[0]),
     };
     const propertyData = await PropertyServices.getUserPropertiesService(properties);
     expect(propertyData.status).toBe(200);
@@ -44,6 +44,7 @@ describe('Get User Properties', () => {
   test('Get property by id', async () => {
     const property: PropertyContexts.PropertyContext = {
       id: 2000,
+      ownerId: getPublicId('user', userIds[1]),
     };
     const propertyData = await PropertyServices.getPropertyByIdService(property);
     expect(propertyData.status).toBe(200);
@@ -58,6 +59,7 @@ describe('Get User Properties', () => {
       address: '123 Dog Street',
       city: 'San Francisco',
       state: 'CA',
+      ownerId: getPublicId('user', userIds[1]),
     };
     const propertyData = await PropertyServices.getPropertyByAddressService(property);
     expect(propertyData.status).toBe(200);
@@ -68,7 +70,7 @@ describe('Get User Properties', () => {
 
   test('Get user properties by city', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId: getPublicId('user',userIds[1]),
+      ownerId: getPublicId('user', userIds[1]),
       city: 'San Francisco',
     };
     const propertyData = await PropertyServices.getUserPropertiesByCityService(
@@ -82,7 +84,7 @@ describe('Get User Properties', () => {
 
   test('Get user properties by state', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId: getPublicId('user',userIds[1]),
+      ownerId: getPublicId('user', userIds[1]),
       state: 'CA',
     };
     const propertyData = await PropertyServices.getUserPropertiesByStateService(
@@ -97,7 +99,7 @@ describe('Get User Properties', () => {
 
   test('Get user properties by tenant', async () => {
     const properties: PropertyContexts.PropertyTenantContext = {
-      ownerId:  getPublicId('user',userIds[0]),
+      ownerId: getPublicId('user', userIds[0]),
       tenant: 'bob bill',
     };
     const propertyData = await PropertyServices.getUserPropertiesByTenantService(
@@ -110,7 +112,7 @@ describe('Get User Properties', () => {
 
   test('Get user properties by type', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId:  getPublicId('user',userIds[0]),
+      ownerId: getPublicId('user', userIds[0]),
       type: 'Single Family',
     };
     const propertyData = await PropertyServices.getUserPropertiesByTypeService(
@@ -124,7 +126,7 @@ describe('Get User Properties', () => {
 
   test('Get user properties by open tickets', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId:  getPublicId('user',userIds[0]),
+      ownerId: getPublicId('user', userIds[0]),
     };
     const propertyData = await PropertyServices.getUserOpenTicketPropertiesService(
       properties
@@ -136,7 +138,7 @@ describe('Get User Properties', () => {
 
   test('Get user properties when no open tickets', async () => {
     const properties: PropertyContexts.PropertyContext = {
-      ownerId:  getPublicId('user',userIds[1]),
+      ownerId: getPublicId('user', userIds[1]),
     };
     const propertyData = await PropertyServices.getUserOpenTicketPropertiesService(
       properties
@@ -150,6 +152,7 @@ describe('Get Property income', () => {
   test('Get property monthly income', async () => {
     const property: PropertyContexts.PropertyContext = {
       id: 3005,
+      ownerId: getPublicId('user', userIds[0]),
     };
     const propertyData = await PropertyServices.getPropertyIncomeService(property);
     expect(propertyData.status).toBe(200);
@@ -159,6 +162,7 @@ describe('Get Property income', () => {
   test('Get property monthly income', async () => {
     const property2: PropertyContexts.PropertyContext = {
       id: 3008,
+      ownerId: getPublicId('user', userIds[0]),
     };
     const propertyData2 = await PropertyServices.getPropertyIncomeService(property2);
     expect(propertyData2.status).toBe(200);
@@ -177,7 +181,7 @@ describe('Get User Properties bad input', () => {
 
   test('Get user properties bad tenant name', async () => {
     const properties: PropertyContexts.PropertyTenantContext = {
-      ownerId: getPublicId('user',userIds[1]),
+      ownerId: getPublicId('user', userIds[1]),
       tenant: 'foobar',
     };
     const propertyData = await PropertyServices.getUserPropertiesByTenantService(
@@ -226,7 +230,7 @@ describe('Update Properties', () => {
   test('Invalid update property', async () => {
     const property: PropertyContexts.PropertyContext = {
       id: 2000,
-      ownerId: getPublicId('user',userIds[1]),
+      ownerId: getPublicId('user', userIds[1]),
       address: '1234 Mouse Street',
       city: 'San Jose',
     };
@@ -237,7 +241,7 @@ describe('Update Properties', () => {
   test('Duplicate update property', async () => {
     const property: PropertyContexts.PropertyContext = {
       id: 2000,
-      ownerId: getPublicId('user',userIds[1]),
+      ownerId: getPublicId('user', userIds[1]),
       address: '123 Fake Street',
       city: 'San Francisco',
       state: 'CA',
@@ -249,7 +253,7 @@ describe('Update Properties', () => {
   test('Update user property', async () => {
     const property: PropertyContexts.PropertyContext = {
       id: 2000,
-      ownerId: getPublicId('user',userIds[1]),
+      ownerId: getPublicId('user', userIds[1]),
       address: '1234 Mouse Street',
       city: 'San Jose',
       state: 'CA',
@@ -264,6 +268,7 @@ describe('Update Properties', () => {
   test('Get updated property', async () => {
     const property: PropertyContexts.PropertyContext = {
       id: 2000,
+      ownerId: getPublicId('user', userIds[1]),
     };
     const propertyData = await PropertyServices.getPropertyByIdService(property);
     expect(propertyData.status).toBe(200);
@@ -276,6 +281,7 @@ describe('Update Property Tenant', () => {
     const property: PropertyContexts.PropertyContext = {
       id: 3005,
       tenantId: 203,
+      ownerId: getPublicId('user', userIds[0]),
     };
     const propertyData = await PropertyServices.removePropertyTenantService(property);
     expect(propertyData.status).toBe(200);
@@ -288,6 +294,7 @@ describe('Delete Property', () => {
   test('Delete user property', async () => {
     const property: PropertyContexts.PropertyContext = {
       id: 2000,
+      ownerId: getPublicId('user', userIds[1]),
     };
     const propertyData = await PropertyServices.deletePropertyService(property);
     expect(propertyData.status).toBe(200);

@@ -85,21 +85,13 @@ app.get(
   checkSession,
   asyncHandler(Property.getUserPropertiesByMinSize)
 );
-app.get(
-  '/properties/city',
-  checkSession,
-  asyncHandler(Property.getUserPropertiesByCity)
-);
+app.get('/properties/city', checkSession, asyncHandler(Property.getUserPropertiesByCity));
 app.get(
   '/properties/state',
   checkSession,
   asyncHandler(Property.getUserPropertiesByState)
 );
-app.get(
-  '/properties/type',
-  checkSession,
-  asyncHandler(Property.getUserPropertiesByType)
-);
+app.get('/properties/type', checkSession, asyncHandler(Property.getUserPropertiesByType));
 app.get(
   '/properties/tenant',
   checkSession,
