@@ -13,13 +13,15 @@ const deleteLeaseService = async (leaseContext: LeaseContexts.LeaseContext) => {
 
 const getLeaseByIdService = async (leaseContext: LeaseContexts.LeaseContext) => {};
 
-const getLeasesByLengthService = async (leaseContext: LeaseContexts.LeaseContext) => {};
-
 const getLeasesByMinRentService = async (leaseContext: LeaseContexts.LeaseContext) => {};
 
 const getLeasesByMaxRentService = async (leaseContext: LeaseContexts.LeaseContext) => {};
 
 const getLeaseByTimeToEndDateService = async (
+  leaseContext: LeaseContexts.LeaseContext
+) => {};
+
+const getExpiredLeasesService = async (
   leaseContext: LeaseContexts.LeaseContext
 ) => {};
 

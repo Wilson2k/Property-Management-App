@@ -14,13 +14,16 @@ const deleteLease = async (req: CustomRequest<LeaseContext>, res: Response) => {
 
 const getLeaseById = async (req: CustomRequest<LeaseContext>, res: Response) => {};
 
-const getLeasesByLength = async (req: CustomRequest<LeaseContext>, res: Response) => {};
-
 const getLeasesByMinRent = async (req: CustomRequest<LeaseContext>, res: Response) => {};
 
 const getLeasesByMaxRent = async (req: CustomRequest<LeaseContext>, res: Response) => {};
 
 const getLeaseByTimeToEndDate = async (
+  req: CustomRequest<LeaseContext>,
+  res: Response
+) => {};
+
+const getExpiredLeases = async (
   req: CustomRequest<LeaseContext>,
   res: Response
 ) => {};
