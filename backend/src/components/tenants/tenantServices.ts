@@ -167,8 +167,9 @@ const createTenantService = async (tenantContext: TenantContexts.TenantCreateCon
     tenantReturn.status = 422;
     return tenantReturn;
   }
-  const findTenant = await TenantDAL.getTenantByEmail(tenantContext.email);
-  if (findTenant === null) {
+  const findTenantByEmail = await TenantDAL.getTenantByEmail(tenantContext.email);
+  const findTenantByPhone = await TenantDAL.getTenantByPhone(tenantContext.phone);
+  if (findTenantByEmail === null && findTenantByPhone === null) {
     const newTenant = await TenantDAL.createNewTenant(userIdInput, tenantInput);
     tenantReturn.data = newTenant;
     tenantReturn.status = 200;

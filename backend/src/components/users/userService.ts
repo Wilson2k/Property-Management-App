@@ -193,10 +193,16 @@ const deleteUserService = async (userContext: UserContexts.UserContext) => {
       userReturn.status = 422;
       return userReturn;
     }
-    const findUser = await UserDAL.deleteUser(userId);
-    if (findUser != null) {
-      const publicId = getPublicId('user', findUser.id);
-      const userData: UserContexts.UserData = { ...findUser, id: publicId };
+    const findUser = await UserDAL.getUserById(userId);
+    if (findUser == null) {
+      userReturn.message = 'User not found';
+      userReturn.status = 404;
+      return userReturn;
+    }
+    const deleteUser = await UserDAL.deleteUser(userId);
+    if (deleteUser != null) {
+      const publicId = getPublicId('user', deleteUser.id);
+      const userData: UserContexts.UserData = { ...deleteUser, id: publicId };
       userReturn.message = 'User deleted';
       userReturn.data = userData;
       userReturn.status = 200;

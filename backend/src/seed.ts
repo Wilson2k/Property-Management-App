@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
-// Seed function returns array of ids of users
+// Seed function returns array of ids of users for testing
 export async function seed() {
   // Seed first user with two properties
   const hash1 = bcrypt.hashSync('nofires', 12);

@@ -13,7 +13,9 @@ import connectRedis from 'connect-redis';
 import * as User from './components/users/UserController';
 import * as Property from './components/properties/propertyController';
 import * as Tenant from './components/tenants/tenantController';
+import * as Lease from './components/leases/leaseController'
 import { checkSession } from './middleware/auth';
+import { validator } from './middleware/validator';
 
 // Declaration merge to add user key to session object
 declare module 'express-session' {
@@ -53,8 +55,8 @@ app.get('/', (req, res) => {
   res.send('Welcome to the property management app!');
 });
 // User Routes
-app.post('/login', asyncHandler(User.loginUser));
-app.post('/register', asyncHandler(User.registerUser));
+app.post('/login', checkSession, asyncHandler(User.loginUser));
+app.post('/register', checkSession, asyncHandler(User.registerUser));
 app.get('/profile', checkSession, asyncHandler(User.getUser));
 app.get('/user/income', checkSession, asyncHandler(User.getUserIncome));
 app.post('/logout', checkSession, asyncHandler(User.logoutUser));
@@ -78,8 +80,8 @@ app.get('/properties/type', checkSession, asyncHandler(Property.getUserPropertie
 app.get('/properties/:tenantid',checkSession,asyncHandler(Property.getUserPropertiesByTenant));
 app.get('/properties/opentickets',checkSession,asyncHandler(Property.getAllUserOpenTicketProperties));
 // Tenant routes
-app.post('/tenant/create', checkSession, asyncHandler(Tenant.createTenant));
-app.put('/tenant/:id/update', checkSession, asyncHandler(Tenant.createTenant));
+app.post('/tenant/create', checkSession, validator('tenant'), asyncHandler(Tenant.createTenant));
+app.put('/tenant/:id/update', checkSession, asyncHandler(Tenant.updateTenant));
 app.delete('/tenant/:id/delete', checkSession, asyncHandler(Tenant.deleteTenant));
 app.get('/tenant/:id', checkSession, asyncHandler(Tenant.getTenantById))
 app.get('/tenant/email', checkSession, asyncHandler(Tenant.getTenantByEmail))
@@ -87,6 +89,17 @@ app.get('/tenant/phone', checkSession, asyncHandler(Tenant.getTenantByPhone))
 app.get('/tenants/:propertyid', checkSession, asyncHandler(Tenant.getTenantsByProperty))
 app.get('/tenants', checkSession, asyncHandler(Tenant.getTenantsByUser))
 // Lease routes
+app.post('/lease/create/:tenantid/:propertyid', checkSession, asyncHandler(Lease.createNewLease));
+app.put('/lease/:id/update', checkSession, asyncHandler(Lease.updateLease));
+app.delete('/lease/:id/delete', checkSession, asyncHandler(Lease.deleteLease));
+app.get('/lease/:id', checkSession, asyncHandler(Lease.getLeaseById));
+app.get('/leases', checkSession, asyncHandler(Lease.getLeasesByUser));
+app.get('/leases/minrent', checkSession, asyncHandler(Lease.getLeasesByMinRent));
+app.get('/leases/maxrent', checkSession, asyncHandler(Lease.getLeasesByMaxRent));
+app.get('/leases/time', checkSession, asyncHandler(Lease.getLeaseByTimeToEndDate));
+app.get('/leases/expired', checkSession, asyncHandler(Lease.getExpiredLeases));
+app.get('/leases/tenant/:tenantid', checkSession, asyncHandler(Lease.getLeasesByTenant));
+app.get('/leases/property/:propertyid', checkSession, asyncHandler(Lease.getLeasesByTenant));
 
 // 404 route
 app.get('*', function (req, res) {

@@ -7,7 +7,7 @@ interface LeaseCreateContext {
   monthlyRent: number;
   tenantId: number;
   propertyId: number;
-  ownerId: number;
+  ownerId?: string;
 }
 
 interface LeaseContext {
@@ -18,7 +18,7 @@ interface LeaseContext {
   monthlyRent?: number;
   tenantId?: number;
   propertyId?: number;
-  ownerId?: number;
+  ownerId?: string;
 }
 
 interface LeaseUpdateInput {

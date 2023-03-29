@@ -1,11 +1,12 @@
 import { PrismaClient } from '@prisma/client';
-import { Decimal } from '@prisma/client/runtime';
 import { LeaseCreateContext, LeaseUpdateInput } from './lease';
 const prisma = new PrismaClient();
 
-const createNewLease = async (leaseContext: LeaseCreateContext) => {
+const createNewLease = async (userId: number, leaseContext: LeaseCreateContext) => {
+  const userInfo = { ownerId: userId };
+  const leaseData = { ...leaseContext, ...userInfo };
   const query = await prisma.lease.create({
-    data: leaseContext,
+    data: leaseData,
   });
   return query;
 };
@@ -34,7 +35,19 @@ const getLeaseById = async (leaseId: number) => {
   return query;
 };
 
-const getLeasesByMinRent = async (userId: number, minRent: Decimal) => {
+const getLeaseByPropertyTenant = async (tenantid: number, propertyid: number) => {
+  const query = await prisma.lease.findUnique({
+    where: {
+      tenantId_propertyId: {
+        tenantId: tenantid,
+        propertyId: propertyid
+      }
+    },
+  });
+  return query;
+};
+
+const getLeasesByMinRent = async (userId: number, minRent: number) => {
   const query = await prisma.lease.findMany({
     where: {
       ownerId: userId,
@@ -49,7 +62,7 @@ const getLeasesByMinRent = async (userId: number, minRent: Decimal) => {
   return query;
 };
 
-const getLeasesByMaxRent = async (userId: number, maxRent: Decimal) => {
+const getLeasesByMaxRent = async (userId: number, maxRent: number) => {
   const query = await prisma.lease.findMany({
     where: {
       ownerId: userId,
@@ -145,6 +158,7 @@ export {
   getLeasesByProperty,
   getLeasesByTenant,
   getLeasesByUser,
+  getLeaseByPropertyTenant,
   createNewLease,
   updateLease,
   deleteLease

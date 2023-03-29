@@ -99,6 +99,11 @@ const deleteUser = async (req: CustomRequest<UserContext>, res: Response) => {
   const userContext: UserContext = {
     id: req.session.user,
   };
+  req.session.destroy((err) => {
+    if (err) {
+      res.status(500).send('Delete failed');
+    }
+  });
   const deletedUser = await UserServices.deleteUserService(userContext);
   if (deletedUser.status === 200 && deletedUser.data !== undefined) {
     res.status(deletedUser.status).send(deletedUser.data);
@@ -111,7 +116,7 @@ const deleteUser = async (req: CustomRequest<UserContext>, res: Response) => {
 const logoutUser = (req: Request, res: Response) => {
   req.session.destroy((err) => {
     if (err) {
-      res.status(400).send('Logout failed');
+      res.status(500).send('Logout failed');
     }
     res.status(200).end('Logged Out');
   });
