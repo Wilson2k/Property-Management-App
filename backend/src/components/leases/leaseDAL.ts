@@ -40,8 +40,8 @@ const getLeaseByPropertyTenant = async (tenantid: number, propertyid: number) =>
     where: {
       tenantId_propertyId: {
         tenantId: tenantid,
-        propertyId: propertyid
-      }
+        propertyId: propertyid,
+      },
     },
   });
   return query;
@@ -53,11 +53,11 @@ const getLeasesByMinRent = async (userId: number, minRent: number) => {
       ownerId: userId,
       monthlyRent: {
         gte: minRent,
-      }
+      },
     },
     orderBy: {
       months: 'asc',
-    }
+    },
   });
   return query;
 };
@@ -68,11 +68,11 @@ const getLeasesByMaxRent = async (userId: number, maxRent: number) => {
       ownerId: userId,
       monthlyRent: {
         lte: maxRent,
-      }
+      },
     },
     orderBy: {
       months: 'asc',
-    }
+    },
   });
   return query;
 };
@@ -83,11 +83,11 @@ const getLeaseByTimeToEndDate = async (userId: number, currentDate: Date) => {
       ownerId: userId,
       endDate: {
         gte: currentDate,
-      }
+      },
     },
     orderBy: {
-      endDate: 'desc'
-    }
+      endDate: 'desc',
+    },
   });
   return query;
 };
@@ -98,11 +98,11 @@ const getExpiredLeases = async (userId: number, currentDate: Date) => {
       ownerId: userId,
       endDate: {
         lte: currentDate,
-      }
+      },
     },
     orderBy: {
-      endDate: 'asc'
-    }
+      endDate: 'asc',
+    },
   });
   return query;
 };
@@ -110,11 +110,11 @@ const getExpiredLeases = async (userId: number, currentDate: Date) => {
 const getLeasesByUser = async (userId: number) => {
   const query = await prisma.lease.findMany({
     where: {
-      ownerId: userId
+      ownerId: userId,
     },
     orderBy: {
       months: 'asc',
-    }
+    },
   });
   return query;
 };
@@ -123,13 +123,13 @@ const getLeasesByTenant = async (userId: number, tenantId: number) => {
   const query = await prisma.lease.findMany({
     where: {
       ownerId: userId,
-      tenantId: tenantId
+      tenantId: tenantId,
     },
     orderBy: {
       tenant: {
         lastName: 'asc',
-      }
-    }
+      },
+    },
   });
   return query;
 };
@@ -138,18 +138,18 @@ const getLeasesByProperty = async (userId: number, propertyId: number) => {
   const query = await prisma.lease.findMany({
     where: {
       ownerId: userId,
-      propertyId: propertyId
+      propertyId: propertyId,
     },
     orderBy: {
       property: {
         address: 'asc',
-      }
-    }
+      },
+    },
   });
   return query;
 };
 
-export { 
+export {
   getExpiredLeases,
   getLeaseById,
   getLeaseByTimeToEndDate,
@@ -161,5 +161,5 @@ export {
   getLeaseByPropertyTenant,
   createNewLease,
   updateLease,
-  deleteLease
+  deleteLease,
 };

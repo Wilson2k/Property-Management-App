@@ -10,7 +10,7 @@ const createNewLeaseService = async (leaseContext: LeaseContexts.LeaseCreateCont
     status: 400,
   };
   const { ownerId, ...leaseInput } = { ...leaseContext };
-  if(ownerId == null){
+  if (ownerId == null) {
     leaseReturn.message = 'Bad user id';
     leaseReturn.status = 422;
     return leaseReturn;
@@ -25,6 +25,33 @@ const createNewLeaseService = async (leaseContext: LeaseContexts.LeaseCreateCont
   const propertyId = leaseInput.propertyId;
   if (isNaN(tenantId) || tenantId < 0 || isNaN(propertyId) || propertyId < 0) {
     leaseReturn.message = 'Invalid lease input';
+    leaseReturn.status = 422;
+    return leaseReturn;
+  }
+  const propertyRecord = await getPropertyById(propertyId);
+  const tenantRecord = await getTenantById(tenantId);
+  if (propertyRecord == null || tenantRecord == null) {
+    leaseReturn.message = 'Property or tenant not found';
+    leaseReturn.status = 404;
+    return leaseReturn;
+  }
+  if (propertyRecord.ownerId != userIdInput || tenantRecord.userId != userIdInput) {
+    leaseReturn.message = 'Not authorized to create lease';
+    leaseReturn.status = 401;
+    return leaseReturn;
+  }
+  if (leaseContext.endDate <= leaseContext.startDate) {
+    leaseReturn.message = 'End date can not be before start date';
+    leaseReturn.status = 422;
+    return leaseReturn;
+  }
+  if (
+    leaseContext.months !=
+    leaseContext.endDate.getMonth() -
+      leaseContext.startDate.getMonth() +
+      12 * (leaseContext.endDate.getFullYear() - leaseContext.startDate.getFullYear())
+  ) {
+    leaseReturn.message = 'Length of lease does not match start and end date';
     leaseReturn.status = 422;
     return leaseReturn;
   }
@@ -46,7 +73,7 @@ const updateLeaseService = async (leaseContext: LeaseContexts.LeaseContext) => {
     message: 'Error updating lease',
     status: 400,
   };
-  if(leaseContext.id != null && leaseContext.ownerId != null){
+  if (leaseContext.id != null && leaseContext.ownerId != null) {
     const { id, ownerId, ...updateData } = leaseContext;
     const updateInput: LeaseContexts.LeaseUpdateInput = updateData;
     // Check valid lease id
@@ -74,9 +101,43 @@ const updateLeaseService = async (leaseContext: LeaseContexts.LeaseContext) => {
     if (
       updateInput.startDate != null ||
       updateInput.endDate != null ||
-      updateInput.monthlyRent != null ||
-      updateInput.months != null
+      updateInput.monthlyRent != null
     ) {
+      if (updateInput.startDate != null && updateInput.endDate != null) {
+        updateInput.startDate = new Date(updateInput.startDate);
+        updateInput.endDate = new Date(updateInput.endDate);
+        if (updateInput.startDate >= updateInput.endDate) {
+          leaseReturn.message = 'Start date must be before end date';
+          leaseReturn.status = 422;
+          return leaseReturn;
+        }
+        updateInput.months =
+          updateInput.endDate.getMonth() -
+          updateInput.startDate.getMonth() +
+          12 * (updateInput.endDate.getFullYear() - updateInput.startDate.getFullYear());
+      } else if (updateInput.startDate != null) {
+        updateInput.startDate = new Date(updateInput.startDate);
+        if (updateInput.startDate >= leaseRecord.endDate) {
+          leaseReturn.message = 'Start date must be before end date';
+          leaseReturn.status = 422;
+          return leaseReturn;
+        }
+        updateInput.months =
+          leaseRecord.endDate.getMonth() -
+          updateInput.startDate.getMonth() +
+          12 * (leaseRecord.endDate.getFullYear() - updateInput.startDate.getFullYear());
+      } else if (updateInput.endDate != null) {
+        updateInput.endDate = new Date(updateInput.endDate);
+        if (leaseRecord.startDate >= updateInput.endDate) {
+          leaseReturn.message = 'Start date must be before end date';
+          leaseReturn.status = 422;
+          return leaseReturn;
+        }
+        updateInput.months =
+          updateInput.endDate.getMonth() -
+          leaseRecord.startDate.getMonth() +
+          12 * (updateInput.endDate.getFullYear() - leaseRecord.startDate.getFullYear());
+      }
       const updatedLease = await LeaseDAL.updateLease(leaseId, updateInput);
       if (updatedLease != null) {
         leaseReturn.message = 'Lease updated';
@@ -160,7 +221,7 @@ const getLeasesByMinRentService = async (leaseContext: LeaseContexts.LeaseContex
     message: 'Error getting leases',
     status: 404,
   };
-  if(leaseContext.ownerId != null && leaseContext.monthlyRent != null){
+  if (leaseContext.ownerId != null && leaseContext.monthlyRent != null) {
     // Check that ownerId string is numeric
     const ownerId = Number(getDatabaseId('user', leaseContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
@@ -189,7 +250,7 @@ const getLeasesByMaxRentService = async (leaseContext: LeaseContexts.LeaseContex
     message: 'Error getting leases',
     status: 400,
   };
-  if(leaseContext.ownerId != null && leaseContext.monthlyRent != null){
+  if (leaseContext.ownerId != null && leaseContext.monthlyRent != null) {
     // Check that ownerId string is numeric
     const ownerId = Number(getDatabaseId('user', leaseContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
@@ -213,12 +274,14 @@ const getLeasesByMaxRentService = async (leaseContext: LeaseContexts.LeaseContex
   return leaseReturn;
 };
 
-const getLeaseByTimeToEndDateService = async (leaseContext: LeaseContexts.LeaseContext) => {
+const getLeaseByTimeToEndDateService = async (
+  leaseContext: LeaseContexts.LeaseContext
+) => {
   const leaseReturn: LeaseContexts.MultLeaseReturnContext = {
     message: 'Error getting leases',
     status: 400,
   };
-  if(leaseContext.ownerId != null){
+  if (leaseContext.ownerId != null) {
     // Check that ownerId string is numeric
     const ownerId = Number(getDatabaseId('user', leaseContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
@@ -242,7 +305,7 @@ const getExpiredLeasesService = async (leaseContext: LeaseContexts.LeaseContext)
     message: 'Error getting leases',
     status: 400,
   };
-  if(leaseContext.ownerId != null){
+  if (leaseContext.ownerId != null) {
     // Check that ownerId string is numeric
     const ownerId = Number(getDatabaseId('user', leaseContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
@@ -266,7 +329,7 @@ const getLeasesByUserService = async (leaseContext: LeaseContexts.LeaseContext) 
     message: 'Error getting leases',
     status: 400,
   };
-  if(leaseContext.ownerId != null){
+  if (leaseContext.ownerId != null) {
     // Check that ownerId string is numeric
     const ownerId = Number(getDatabaseId('user', leaseContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
@@ -289,7 +352,7 @@ const getLeasesByTenantService = async (leaseContext: LeaseContexts.LeaseContext
     message: 'Error getting leases',
     status: 400,
   };
-  if(leaseContext.ownerId != null && leaseContext.tenantId != null){
+  if (leaseContext.ownerId != null && leaseContext.tenantId != null) {
     // Check that ownerId string is numeric
     const ownerId = Number(getDatabaseId('user', leaseContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
@@ -305,12 +368,12 @@ const getLeasesByTenantService = async (leaseContext: LeaseContexts.LeaseContext
       return leaseReturn;
     }
     const tenantRecord = await getTenantById(tenantId);
-    if(tenantRecord == null){
+    if (tenantRecord == null) {
       leaseReturn.message = 'Tenant not found';
       leaseReturn.status = 404;
       return leaseReturn;
     }
-    if(tenantRecord.userId != ownerId){
+    if (tenantRecord.userId != ownerId) {
       leaseReturn.message = 'Not authorized to get leases';
       leaseReturn.status = 401;
       return leaseReturn;
@@ -330,7 +393,7 @@ const getLeasesByPropertyService = async (leaseContext: LeaseContexts.LeaseConte
     message: 'Error getting leases',
     status: 400,
   };
-  if(leaseContext.ownerId != null && leaseContext.propertyId != null){
+  if (leaseContext.ownerId != null && leaseContext.propertyId != null) {
     // Check that ownerId string is numeric
     const ownerId = Number(getDatabaseId('user', leaseContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
@@ -346,12 +409,12 @@ const getLeasesByPropertyService = async (leaseContext: LeaseContexts.LeaseConte
       return leaseReturn;
     }
     const propertyRecord = await getPropertyById(propertyId);
-    if(propertyRecord == null){
+    if (propertyRecord == null) {
       leaseReturn.message = 'Property not found';
       leaseReturn.status = 404;
       return leaseReturn;
     }
-    if(propertyRecord.ownerId != ownerId){
+    if (propertyRecord.ownerId != ownerId) {
       leaseReturn.message = 'Not authorized to get leases';
       leaseReturn.status = 401;
       return leaseReturn;
@@ -378,4 +441,4 @@ export {
   getLeasesByMinRentService,
   getLeaseByTimeToEndDateService,
   getExpiredLeasesService,
-}
+};

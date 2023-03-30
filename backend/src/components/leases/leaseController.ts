@@ -3,16 +3,13 @@ import CustomRequest from '../../utils/request';
 import * as LeaseServices from './leaseServices';
 import { LeaseContext, LeaseCreateContext } from './lease';
 
-const createNewLease = async (
-  req: CustomRequest<LeaseCreateContext>,
-  res: Response
-) => {
+const createNewLease = async (req: CustomRequest<LeaseCreateContext>, res: Response) => {
   const leaseContext: LeaseCreateContext = {
     ownerId: req.session.user,
-    startDate: req.body.startDate,
-    endDate: req.body.endDate,
-    months: req.body.months,
-    monthlyRent: req.body.monthlyRent,
+    startDate: new Date(req.body.startDate),
+    endDate: new Date(req.body.endDate),
+    months: +req.body.months,
+    monthlyRent: +req.body.monthlyRent,
     tenantId: +req.params.tenantid,
     propertyId: +req.params.propertyid,
   };
@@ -29,7 +26,6 @@ const updateLease = async (req: CustomRequest<LeaseContext>, res: Response) => {
     id: +req.params.id,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
-    months: req.body.months,
     monthlyRent: req.body.monthlyRent,
     ownerId: req.session.user,
   };
@@ -93,7 +89,10 @@ const getLeasesByMaxRent = async (req: CustomRequest<LeaseContext>, res: Respons
   }
 };
 
-const getLeaseByTimeToEndDate = async (req: CustomRequest<LeaseContext>,res: Response) => {
+const getLeaseByTimeToEndDate = async (
+  req: CustomRequest<LeaseContext>,
+  res: Response
+) => {
   const leaseContext: LeaseContext = {
     ownerId: req.session.user,
   };
@@ -105,10 +104,7 @@ const getLeaseByTimeToEndDate = async (req: CustomRequest<LeaseContext>,res: Res
   }
 };
 
-const getExpiredLeases = async (
-  req: CustomRequest<LeaseContext>,
-  res: Response
-) => {
+const getExpiredLeases = async (req: CustomRequest<LeaseContext>, res: Response) => {
   const leaseContext: LeaseContext = {
     ownerId: req.session.user,
   };
@@ -169,5 +165,5 @@ export {
   getExpiredLeases,
   getLeasesByUser,
   getLeasesByTenant,
-  getLeasesByProperty
+  getLeasesByProperty,
 };

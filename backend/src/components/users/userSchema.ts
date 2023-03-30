@@ -1,7 +1,5 @@
-import Joi from "joi";
+import Joi from 'joi';
 
-const userSchema = Joi.object({
-    
-});
+const userSchema = Joi.object({});
 
 export default userSchema;

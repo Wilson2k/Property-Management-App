@@ -13,7 +13,7 @@ import connectRedis from 'connect-redis';
 import * as User from './components/users/UserController';
 import * as Property from './components/properties/propertyController';
 import * as Tenant from './components/tenants/tenantController';
-import * as Lease from './components/leases/leaseController'
+import * as Lease from './components/leases/leaseController';
 import { checkSession } from './middleware/auth';
 import { validator } from './middleware/validator';
 
@@ -89,9 +89,9 @@ app.get('/tenant/phone', checkSession, asyncHandler(Tenant.getTenantByPhone))
 app.get('/tenants/:propertyid', checkSession, asyncHandler(Tenant.getTenantsByProperty))
 app.get('/tenants', checkSession, asyncHandler(Tenant.getTenantsByUser))
 // Lease routes
-app.post('/lease/create/:tenantid/:propertyid', checkSession, asyncHandler(Lease.createNewLease));
-app.put('/lease/:id/update', checkSession, asyncHandler(Lease.updateLease));
-app.delete('/lease/:id/delete', checkSession, asyncHandler(Lease.deleteLease));
+app.post('/lease/create/:tenantid/:propertyid', checkSession, validator('lease'), asyncHandler(Lease.createNewLease));
+app.put('/lease/:id/update', checkSession, validator('lease'), asyncHandler(Lease.updateLease));
+app.delete('/lease/:id/delete', validator('lease'), checkSession, asyncHandler(Lease.deleteLease));
 app.get('/lease/:id', checkSession, asyncHandler(Lease.getLeaseById));
 app.get('/leases', checkSession, asyncHandler(Lease.getLeasesByUser));
 app.get('/leases/minrent', checkSession, asyncHandler(Lease.getLeasesByMinRent));
