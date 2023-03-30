@@ -82,6 +82,7 @@ export async function seed() {
         tenantId: tenant1.id,
         propertyId: prop1.id,
         openDate: new Date('1999-12-25T03:24:00'),
+        ownerId: user1.id,
       },
     });
     await prisma.lease.createMany({

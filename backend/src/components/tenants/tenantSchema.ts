@@ -4,11 +4,11 @@ import Joi from 'joi';
 const phoneNumber = new RegExp(/^(1-)?\d{3}-\d{3}-\d{4}$/);
 
 const tenantSchema = Joi.object({
-  firstName: Joi.string().alphanum().min(3).max(30),
+  firstName: Joi.string().alphanum().min(2).max(30),
 
-  lastName: Joi.string().alphanum().min(3).max(30),
+  lastName: Joi.string().alphanum().min(2).max(30),
 
-  email: Joi.string().email().email({ minDomainSegments: 2 }),
+  email: Joi.string().email({ minDomainSegments: 2 }),
 
   phone: Joi.string().min(12).max(14).pattern(phoneNumber),
 
@@ -16,7 +16,7 @@ const tenantSchema = Joi.object({
 
   propertyId: Joi.number(),
 
-  userId: Joi.string(),
+  userId: Joi.string().max(255),
 });
 
 export default tenantSchema;

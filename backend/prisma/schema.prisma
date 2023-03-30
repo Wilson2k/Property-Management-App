@@ -19,6 +19,7 @@ model User {
   properties Property[]
   tenants    Tenant[]
   leases     Lease[]
+  tickets    Ticket[]
 }
 
 model Tenant {
@@ -27,7 +28,7 @@ model Tenant {
   lastName   String     @db.Text
   email      String     @unique @db.Text
   phone      String     @unique @db.Text
-  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade )
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId     Int
   properties Property[]
   leases     Lease[]
@@ -57,10 +58,12 @@ model Ticket {
   details    String    @db.Text
   openDate   DateTime  @db.Date
   closeDate  DateTime? @db.Date
-  tenant     Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade, onUpdate: Cascade )
+  tenant     Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   tenantId   Int
   property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   propertyId Int
+  owner      User      @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ownerId    Int
 }
 
 model Property {
@@ -73,7 +76,7 @@ model Property {
   images  String[] @db.Text
   owner   User     @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   ownerId Int
-  tenants Tenant[] 
+  tenants Tenant[]
   tickets Ticket[]
   leases  Lease[]
 

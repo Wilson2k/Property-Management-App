@@ -45,6 +45,7 @@ const createNewLeaseService = async (leaseContext: LeaseContexts.LeaseCreateCont
     leaseReturn.status = 422;
     return leaseReturn;
   }
+  // Check that start date and end date match months
   if (
     leaseContext.months !=
     leaseContext.endDate.getMonth() -
@@ -173,7 +174,7 @@ const deleteLeaseService = async (leaseContext: LeaseContexts.LeaseContext) => {
     // Check that user made tenant
     const user = Number(getDatabaseId('user', leaseContext.ownerId));
     if (leaseRecord.ownerId != user) {
-      leaseReturn.message = 'Not authorized to update lease';
+      leaseReturn.message = 'Not authorized to delete lease';
       leaseReturn.status = 401;
       return leaseReturn;
     }
@@ -330,7 +331,7 @@ const getLeasesByUserService = async (leaseContext: LeaseContexts.LeaseContext) 
     status: 400,
   };
   if (leaseContext.ownerId != null) {
-    // Check that ownerId string is numeric
+    // Check that ownerId string is valid
     const ownerId = Number(getDatabaseId('user', leaseContext.ownerId));
     if (isNaN(ownerId) || ownerId < 0) {
       leaseReturn.message = 'Bad owner ID';
@@ -339,7 +340,7 @@ const getLeasesByUserService = async (leaseContext: LeaseContexts.LeaseContext) 
     }
     const findLeases = await LeaseDAL.getLeasesByUser(ownerId);
     if (findLeases !== null) {
-      leaseReturn.message = 'Owner Leases found';
+      leaseReturn.message = 'Owner leases found';
       leaseReturn.data = findLeases;
       leaseReturn.status = 200;
     }

@@ -1,11 +1,11 @@
 import { Ticket } from '@prisma/client';
 
 interface TicketCreateContext {
-  openDate: Date;
   type: string;
-  details?: string;
+  details: string;
   tenantId: number;
   propertyId: number;
+  ownerId?: string;
 }
 
 interface TicketContext {
@@ -17,14 +17,14 @@ interface TicketContext {
   open?: boolean;
   tenantId?: number;
   propertyId?: number;
+  ownerId?: string;
 }
 
 interface TicketUpdateInput {
-  openDate?: Date;
-  closeDate?: Date;
   type?: string;
   details?: string;
   open?: boolean;
+  closeDate?: Date;
 }
 
 // Contexts for Ticket services
