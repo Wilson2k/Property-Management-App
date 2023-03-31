@@ -76,6 +76,7 @@ export async function seed() {
     });
     await prisma.ticket.create({
       data: {
+        id: 709,
         type: 'Maintenance',
         open: true,
         details: 'Broken heater',
@@ -88,6 +89,7 @@ export async function seed() {
     await prisma.lease.createMany({
       data: [
         {
+          id: 690,
           startDate: new Date('2023-01-01T03:24:00'),
           endDate: new Date('2023-07-01T03:24:00'),
           monthlyRent: 900.87,

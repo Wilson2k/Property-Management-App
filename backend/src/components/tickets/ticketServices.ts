@@ -86,7 +86,7 @@ const updateTicketService = async (ticketContext: TicketContexts.TicketContext) 
       updateInput.details != null
     ) {
       // Not opening or closing ticket
-      if (updateInput.open == null) {
+      if (updateInput.open == null || updateData.open === ticketRecord.open) {
         const updatedTicket = await TicketDAL.updateTicket(ticketId, updateInput);
         ticketReturn.message = 'Ticket updated';
         ticketReturn.data = updatedTicket;
