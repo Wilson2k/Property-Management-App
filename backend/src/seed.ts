@@ -100,9 +100,9 @@ export async function seed() {
         },
         {
           startDate: new Date('2023-01-01T03:24:00'),
-          endDate: new Date('2023-07-01T03:24:00'),
+          endDate: new Date('2023-03-23T03:24:00'),
           monthlyRent: 100.13,
-          months: 6,
+          months: 3,
           ownerId: user1.id,
           tenantId: tenant2.id,
           propertyId: prop1.id,

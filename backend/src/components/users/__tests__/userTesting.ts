@@ -33,7 +33,7 @@ describe('Get User income ID', () => {
     };
     const userData = await UserServices.getUserMonthlyIncomeService(user);
     expect(userData.status).toBe(200);
-    expect(userData.aggregateData).toBe(1001.0);
+    expect(userData.aggregateData).toBe(900.87);
   });
 
   test('Get seeded user income', async () => {

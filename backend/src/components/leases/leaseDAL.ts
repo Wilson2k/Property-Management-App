@@ -86,7 +86,7 @@ const getLeaseByTimeToEndDate = async (userId: number, currentDate: Date) => {
       },
     },
     orderBy: {
-      endDate: 'desc',
+      endDate: 'asc',
     },
   });
   return query;
