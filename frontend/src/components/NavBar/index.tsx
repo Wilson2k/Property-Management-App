@@ -23,8 +23,8 @@ export default function NavBar(props: NavBarProps) {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" style={{ border: "none" }} />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav activeKey={active} className="me-auto">
-                    {active === "/" ? <></> : <Nav.Link href="/">Home</Nav.Link>}
                     {active === "/about" ? <></> :<Nav.Link href="/about">About</Nav.Link>}
+                    {active === "/contact" ? <></> :<Nav.Link href="/contact">Contact</Nav.Link>}
                 </Nav>
                 <Nav activeKey={active}>
                     {active === "/login" ? <></> : <Nav.Link href="/login">Login</Nav.Link>}
