@@ -1,4 +1,5 @@
 import Container from 'react-bootstrap/Container';
+import Contact from './Contact';
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
           </h1>
         </Container>
       </div>
+      <Contact />
     </Container>
   );
 }
