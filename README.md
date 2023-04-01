@@ -30,15 +30,16 @@ DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_
 REDIS_PORT=6379
 ```
 
-Then to startup your local PostgreSQL database and Redis server.
+Then to startup your local PostgreSQL database and Redis server on Docker.
 
 ```bash
   npm install
-  npm run migrate-dev
+  npm run dev:server
+  npm run dev:migrate
 ```
 
 Finally, to run the app locally.
 
 ```bash
-  npm run dev
+  npm start
 ```

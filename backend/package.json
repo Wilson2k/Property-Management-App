@@ -7,8 +7,9 @@
     "test": "jest --runInBand",
     "prettier": "npx prettier --write .",
     "lint": "npx eslint .",
-    "migrate-dev": "npx prisma generate && docker compose up -d && npx prisma migrate dev",
-    "dev": "nodemon src/server.ts"
+    "dev:server": "docker compose up -d",
+    "dev:migrate": "npx prisma generate && npx prisma migrate dev",
+    "start": "nodemon src/server.ts"
   },
   "keywords": [],
   "author": "",

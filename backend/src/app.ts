@@ -10,7 +10,7 @@ import asyncHandler from 'express-async-handler';
 import Redis from 'ioredis';
 import connectRedis from 'connect-redis';
 // Routes and middleware
-import * as User from './components/users/UserController';
+import * as User from './components/users/userController';
 import * as Property from './components/properties/propertyController';
 import * as Tenant from './components/tenants/tenantController';
 import * as Lease from './components/leases/leaseController';
