@@ -15,7 +15,7 @@ export default function NavBar(props: NavBarProps) {
     }, [props.link])
 
     return (
-        <Navbar collapseOnSelect expand="lg" style={{ background: "white", marginInline: "2%" }}>
+        <Navbar className="shadow-lg bg-body" expand="lg" style={{ background: "white", paddingInline: "2%" , width: "100%", position: 'sticky', top:0 }}>
             <Navbar.Brand href="/" style={{ fontFamily: "Lato", fontWeight: 'bold' }}>
                 <i className="bi bi-buildings-fill" style={{ marginRight: 10 }}></i>
                 HouseConnect
