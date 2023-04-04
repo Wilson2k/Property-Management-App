@@ -9,10 +9,10 @@ export default function Profile() {
     if (status === 'loading') {
         return <span>Loading...</span>
     }
-    if(status === 'error'){
+    if (status === 'error') {
         return <span>Unexpected error</span>
     }
-    if(data?.status !== 200){
+    if (data?.status !== 200) {
         return <div>{data?.data}</div>
     }
     return (

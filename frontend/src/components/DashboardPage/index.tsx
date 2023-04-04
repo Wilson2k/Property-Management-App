@@ -4,12 +4,10 @@ import { Row, Col, Container } from "react-bootstrap";
 
 export default function DashBoardPage() {
     return (
-        <Container fluid style={{height: '100vh'}}>
+        <Container fluid style={{ height: '100vh' }}>
             <Row>
-                <Col sm={3}>
-                    <DashNav link="s" />
-                </Col>
-                <Col sm={8}>
+                <DashNav link={'/'} />
+                <Col className="px-0">
                     <Profile />
                 </Col>
             </Row>
