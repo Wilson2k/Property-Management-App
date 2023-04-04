@@ -6,7 +6,7 @@ Website for property owners to manage properties and tenants.
 Frontend built with React TypeScript. Backend built with Node.js using Express sessions. Sessions are stored in memory using Redis. Data persisted in a PostgreSQL database and managed using Prisma.
 
 
-## Backend Installation
+## Backend Setup
 
 To run backend locally, make sure you have [Docker](https://www.docker.com/) installed and running on your machine.
 
@@ -38,8 +38,30 @@ Then to startup your local PostgreSQL database and Redis server on Docker.
   npm run dev:migrate
 ```
 
-Finally, to run the app locally.
+Finally, to run the server locally.
 
 ```bash
+  npm start
+```
+
+## Frontend Setup
+
+To setup the frontend locally, make an .env file to configure the port the frontend client will run on.
+
+```bash
+  cd frontend
+  touch .env
+```
+
+In your .env file, configure the port the client will run on to your liking.
+
+```bash
+REACT_APP_API_URL=http://localhost:8080/
+```
+
+Then to run the frontend client locally.
+
+```bash
+  npm install
   npm start
 ```
