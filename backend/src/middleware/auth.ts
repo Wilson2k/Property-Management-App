@@ -12,7 +12,7 @@ export const checkSession = (req: Request, res: Response, next: NextFunction) =>
     if (req.path === '/register' || req.path === '/login') {
       next();
     } else {
-      res.redirect('/');
+      res.status(401).send('Please login');
     }
   }
 };

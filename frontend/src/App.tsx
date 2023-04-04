@@ -5,6 +5,7 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
+import DashBoardPage from './components/DashboardPage';
 import {
   QueryClient,
   QueryClientProvider,
@@ -23,6 +24,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/dashboard" element={<DashBoardPage />} />
         </Routes>
       </QueryClientProvider>
     </div>

@@ -35,7 +35,10 @@ const RedisStore = connectRedis(session);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: true,
+}));
 app.use(
   session({
     store: new RedisStore({ host: '127.0.0.1', port: 6379, client: redisClient }),

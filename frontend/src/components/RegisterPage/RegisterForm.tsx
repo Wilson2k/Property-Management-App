@@ -1,43 +1,47 @@
 import Form from 'react-bootstrap/Form';
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form';
-import { apiClient } from '../../config/ApiService';
-import { AxiosError } from 'axios';
-import { useState } from 'react';
-
-interface UserRegisterContext {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-}
+import { registerUser, getUser } from '../../config/ApiService';
+import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom"
+import * as UserTypes from '../../types/User';
 
 export default function RegisterForm() {
-    const defaultRegister: UserRegisterContext = {
+    const defaultRegister: UserTypes.UserRegisterContext = {
         firstName: '',
         lastName: '',
         email: '',
         password: ''
     }
+    const navigate = useNavigate();
     const { register, handleSubmit } = useForm({ defaultValues: defaultRegister });
     const [isLoading, setLoading] = useState(false);
     const [response, setResponse] = useState(0);
     const { mutateAsync } = useMutation({
-        mutationFn: async (newUser: UserRegisterContext) => {
-            return apiClient.post('/register', newUser).catch((error: AxiosError) => {
-                return error.response;
-            });
-        },
+        mutationFn: registerUser,
         onSettled: () => {
             setLoading(false);
         },
     });
-
-    const FormSubmit = async (data: UserRegisterContext) => {
+    const FormSubmit = async (data: UserTypes.UserRegisterContext) => {
         setLoading(true)
         const response = await mutateAsync(data);
         setResponse(response?.status || 500);
+        if(response?.status === 200){
+            navigate(`/login`);
+        }
     }
+
+    // Redirect to dashboard if already logged in
+    const { data } = useQuery({
+        queryKey: ['profile'],
+        queryFn: getUser,
+    });
+    useEffect(() => {
+        if (data?.status === 200) {
+            navigate(`/dashboard`);
+        }
+    })
 
     return (
         <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingBlock: '7rem' }}>
