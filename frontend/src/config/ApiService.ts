@@ -16,8 +16,14 @@ const registerUser = async (newUser: UserTypes.UserRegisterContext) => {
   });
 }
 
-const loginUser = async (newUser: UserTypes.UserLoginContext) => {
-  return await apiClient.post('/login', newUser).catch((error: AxiosError) => {
+const loginUser = async (user: UserTypes.UserLoginContext) => {
+  return await apiClient.post('/login', user).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
+const logoutUser = async () => {
+  return await apiClient.post('/logout').catch((error: AxiosError) => {
     return error.response;
   });
 }
@@ -28,8 +34,16 @@ const getUser = async () => {
   });
 }
 
+const getProperties = async () => {
+  return await apiClient.get('/properties').catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
 export {
   registerUser,
   loginUser,
-  getUser
+  logoutUser,
+  getUser,
+  getProperties
 }

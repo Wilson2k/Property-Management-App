@@ -6,6 +6,8 @@ import RegisterPage from './components/RegisterPage';
 import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import DashBoardPage from './components/DashboardPage';
+import ProfilePage from './components/ProfilePage';
+import PropertyPage from './components/PropertyPage';
 import {
   QueryClient,
   QueryClientProvider,
@@ -25,6 +27,8 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/dashboard" element={<DashBoardPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/properties" element={<PropertyPage />} />
         </Routes>
       </QueryClientProvider>
     </div>

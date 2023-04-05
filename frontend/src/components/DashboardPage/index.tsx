@@ -1,14 +1,13 @@
-import Profile from "./Profile";
-import DashNav from "./DashNav";
+import SideNav from "../SideNav";
 import { Row, Col, Container } from "react-bootstrap";
 
 export default function DashBoardPage() {
     return (
         <Container fluid style={{ height: '100vh' }}>
             <Row>
-                <DashNav link={'/'} />
+                <SideNav link={'/'} />
                 <Col className="px-0">
-                    <Profile />
+                    <div>DASH</div>
                 </Col>
             </Row>
         </Container>

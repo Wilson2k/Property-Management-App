@@ -1,14 +1,27 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useEffect, useState } from 'react';
-import './DashNav.css'
+import { logoutUser } from '../../config/ApiService';
+import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from "react-router-dom";
+import './SideNav.css'
 
 interface NavBarProps {
     link: string
 }
 
-export default function DashNav(props: NavBarProps) {
+export default function SideNav(props: NavBarProps) {
     const [active, setActive] = useState<string>('/');
+    const navigate = useNavigate();
+    const { mutateAsync } = useMutation({
+        mutationFn: logoutUser,
+    });
+    const FormSubmit = async () => {
+        const response = await mutateAsync();
+        if(response?.status === 200){
+            navigate(`/`);
+        }
+    }
 
     useEffect (() => {
         setActive(props.link);
@@ -40,7 +53,7 @@ export default function DashNav(props: NavBarProps) {
                 <i className="bi bi-ticket-detailed-fill" style={{ marginRight: 20 }}></i>
                 Tickets
             </Nav.Link>
-            <Nav.Link className="mt-auto" style={{ color: 'white', margin: 10 }} href="/logout">
+            <Nav.Link className="mt-auto" style={{ color: 'white', margin: 10 }} onClick={FormSubmit}>
                 <i className="bi bi-box-arrow-left" style={{ marginRight: 20 }}></i>
                 Sign Out
             </Nav.Link>
