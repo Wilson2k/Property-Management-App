@@ -84,7 +84,7 @@ export default function RegisterForm() {
                             </button>
                         </div>
                         <div>
-                            <p className="mb-0 mt-4">Already have an account? <a href="#!" className="text-white-50 fw-bold">Login</a>
+                            <p className="mb-0 mt-4">Already have an account? <a href="/login" className="text-white-50 fw-bold">Login</a>
                             </p>
                         </div>
                     </Form>

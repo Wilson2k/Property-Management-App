@@ -70,7 +70,7 @@ export default function LoginForm() {
                             </button>
                         </div>
                         <div>
-                            <p className="mb-0 mt-4">Don't have an account? <a href="#!" className="text-white-50 fw-bold">Sign Up</a>
+                            <p className="mb-0 mt-4">Don't have an account? <a href="/register" className="text-white-50 fw-bold">Sign Up</a>
                             </p>
                         </div>
 

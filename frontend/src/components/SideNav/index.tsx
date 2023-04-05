@@ -33,9 +33,9 @@ export default function SideNav(props: NavBarProps) {
                 <i className="bi bi-buildings-fill" style={{ marginRight: 10 }}></i>
                 HouseConnect
             </Navbar.Brand>
-            <Nav.Link style={{ color: 'white', margin: 10, display: 'flex' }} href="/profile">
-                <i className="bi bi-person-circle" style={{ marginRight: 20 }}></i>
-                Profile
+            <Nav.Link style={{ color: 'white', margin: 10, display: 'flex' }} href="/dashboard">
+                <i className="bi bi-ui-checks-grid" style={{ marginRight: 20 }}></i>
+                Dashboard
             </Nav.Link>
             <Nav.Link style={{ color: 'white', margin: 10, display: 'flex' }} href="/properties">
                 <i className="bi bi-houses-fill" style={{ marginRight: 20 }}></i>
@@ -52,6 +52,10 @@ export default function SideNav(props: NavBarProps) {
             <Nav.Link style={{ color: 'white', margin: 10, display: 'flex' }} href="/tickets">
                 <i className="bi bi-ticket-detailed-fill" style={{ marginRight: 20 }}></i>
                 Tickets
+            </Nav.Link>
+            <Nav.Link style={{ color: 'white', margin: 10, display: 'flex' }} href="/profile">
+                <i className="bi bi-person-circle" style={{ marginRight: 20 }}></i>
+                Profile
             </Nav.Link>
             <Nav.Link className="mt-auto" style={{ color: 'white', margin: 10 }} onClick={FormSubmit}>
                 <i className="bi bi-box-arrow-left" style={{ marginRight: 20 }}></i>

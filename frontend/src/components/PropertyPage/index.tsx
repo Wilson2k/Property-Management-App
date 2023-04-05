@@ -23,9 +23,28 @@ export default function PropertyPage() {
                 <SideNav link={'/properties'} />
                 <Col className="px-0">
                     {data?.data.length === 0 ? <div>No properties</div> :
-                    data?.data.map((property: any) => {
-                        return <li>{property.address}</li>
-                    })
+                        <div className="table-responsive">
+                            <table className="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">City</th>
+                                        <th scope="col">State</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {data?.data.map((property: any) => {
+                                        return (
+                                            <tr>
+                                                <td>{property.address}</td>
+                                                <td>{property.city}</td>
+                                                <td>{property.state}</td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                     }
                 </Col>
             </Row>
