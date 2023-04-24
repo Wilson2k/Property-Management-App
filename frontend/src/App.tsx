@@ -8,6 +8,9 @@ import ContactPage from './components/ContactPage';
 import DashBoardPage from './components/DashboardPage';
 import ProfilePage from './components/ProfilePage';
 import PropertyPage from './components/PropertyPage';
+import TenantPage from './components/TenantPage';
+import LeasePage from './components/LeasePage';
+import TicketPage from './components/TicketPage';
 import {
   QueryClient,
   QueryClientProvider,
@@ -29,6 +32,9 @@ function App() {
           <Route path="/dashboard" element={<DashBoardPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/properties" element={<PropertyPage />} />
+          <Route path="/leases" element={<LeasePage />} />
+          <Route path="/tickets" element={<TicketPage />} />
+          <Route path="/tenants" element={<TenantPage />} />
         </Routes>
       </QueryClientProvider>
     </div>
