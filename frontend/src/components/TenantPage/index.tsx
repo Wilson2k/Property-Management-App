@@ -6,7 +6,7 @@ export default function TenantPage() {
         <Container fluid style={{ height: '100vh' }}>
             <Row>
                 <SideNav link={'/tenants'} />
-                <Col className="px-0">
+                <Col className="px-0"  style={{background: '#ebecf0'}}>
                     <div>Tenant</div>
                 </Col>
             </Row>

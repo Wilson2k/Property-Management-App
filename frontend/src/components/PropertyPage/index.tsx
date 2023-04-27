@@ -2,11 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProperties } from "../../config/ApiService";
 import SideNav from "../SideNav";
 import { Row, Col, Container, Card } from "react-bootstrap";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Nav, Navbar, NavDropdown, Form, Button } from "react-bootstrap";
 import { useMediaQuery } from 'react-responsive';
 
 export default function PropertyPage() {
@@ -28,9 +24,9 @@ export default function PropertyPage() {
         <Container fluid style={{ height: '100vh' }}>
             <Row>
                 <SideNav link={'/properties'} />
-                <Col className="px-0">
+                <Col className="px-0" style={{ background: '#ebecf0' }}>
                     <Container fluid>
-                        <Navbar expand="md" className="my-2">
+                        <Navbar expand="md" className="my-2" style={{ paddingBottom: 0 }}>
                             <Container fluid>
                                 {!isDesktopOrLaptop && <Navbar.Brand href="#">Properties</Navbar.Brand>}
                                 <Navbar.Toggle aria-controls="navbarScroll" />
@@ -40,7 +36,7 @@ export default function PropertyPage() {
                                         style={{ maxHeight: '100px' }}
                                         navbarScroll
                                     >
-                                        <NavDropdown title="Sort By" id="navbarScrollingDropdown" style={{ fontWeight: 'bold' }}>
+                                        <NavDropdown menuVariant="dark" title="Sort By" id="navbarScrollingDropdown" style={{ fontWeight: 'bold' }}>
                                             <NavDropdown.Item href="#action1">City</NavDropdown.Item>
                                             <NavDropdown.Item href="#action2">State</NavDropdown.Item>
                                             <NavDropdown.Item href="#action3">Size</NavDropdown.Item>
@@ -61,7 +57,7 @@ export default function PropertyPage() {
                         </Navbar>
                         <hr style={{ border: '1px solid black' }} />
                         <Card>
-                            <div className="table-responsive">
+                            <div className="table-responsive" style={{ maxHeight: '90vh' }}>
                                 <table className="table table-striped table-hover my-0">
                                     <thead>
                                         <tr>

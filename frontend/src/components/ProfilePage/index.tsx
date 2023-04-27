@@ -22,7 +22,7 @@ export default function ProfilePage() {
         <Container fluid style={{ height: '100vh' }}>
             <Row>
                 <SideNav link={'/profile'} />
-                <Col className="px-0">
+                <Col className="px-0"  style={{background: '#ebecf0'}}>
                     <Container fluid>
                         <Col>
                             <h2>Profile </h2>

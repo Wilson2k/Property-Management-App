@@ -6,7 +6,7 @@ export default function LeasePage() {
         <Container fluid style={{ height: '100vh' }}>
             <Row>
                 <SideNav link={'/lease'} />
-                <Col className="px-0">
+                <Col className="px-0"  style={{background: '#ebecf0'}}>
                     <div>Lease</div>
                 </Col>
             </Row>
