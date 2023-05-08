@@ -1,7 +1,7 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useEffect, useState } from 'react';
-import { logoutUser } from '../../config/ApiService';
+import { logoutUser } from '../../utils/ApiService';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from 'react-responsive';

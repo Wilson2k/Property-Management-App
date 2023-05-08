@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUser } from "../../config/ApiService";
-import SideNav from "../SideNav";
+import { getUser } from "../../../utils/ApiService";
+import SideNav from "../../../components/SideNav";
 import { Row, Col, Container } from "react-bootstrap";
 
 export default function ProfilePage() {

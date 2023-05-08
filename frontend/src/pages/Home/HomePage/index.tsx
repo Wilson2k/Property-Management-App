@@ -1,10 +1,10 @@
-import NavBar from '../NavBar';
+import HomeNav from '../../../components/HomeNav';
 import Home from './Home';
 
 export default function HomePage() {
     return (
         <div>
-            <NavBar link={'/'} />
+            <HomeNav link={'/'} />
             <Home />
         </div>
     );

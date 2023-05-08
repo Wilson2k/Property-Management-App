@@ -1,9 +1,9 @@
-import NavBar from "../NavBar";
+import HomeNav from "../../../components/HomeNav";
 
 export default function AboutPage() {
     return (
         <div>
-            <NavBar link={'/about'} />
+            <HomeNav link={'/about'} />
             ABOUT
         </div>
     );

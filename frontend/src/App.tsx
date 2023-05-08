@@ -1,16 +1,17 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './components/HomePage';
-import LoginPage from './components/LoginPage';
-import RegisterPage from './components/RegisterPage';
-import AboutPage from './components/AboutPage';
-import ContactPage from './components/ContactPage';
-import DashBoardPage from './components/DashboardPage';
-import ProfilePage from './components/ProfilePage';
-import PropertyPage from './components/PropertyPage';
-import TenantPage from './components/TenantPage';
-import LeasePage from './components/LeasePage';
-import TicketPage from './components/TicketPage';
+import HomePage from './pages/Home/HomePage';
+import LoginPage from './pages/Auth/LoginPage';
+import RegisterPage from './pages/Auth/RegisterPage';
+import AboutPage from './pages/Home/AboutPage';
+import ContactPage from './pages/Home/ContactPage';
+import DashBoardPage from './pages/User/DashboardPage';
+import ProfilePage from './pages/User/ProfilePage';
+import PropertyPage from './pages/User/PropertyPage';
+import TenantPage from './pages/User/TenantPage';
+import LeasePage from './pages/User/LeasePage';
+import TicketPage from './pages/User/TicketPage';
+import NotFoundPage from './pages/NotFoundPage';
 import {
   QueryClient,
   QueryClientProvider,
@@ -35,6 +36,7 @@ function App() {
           <Route path="/leases" element={<LeasePage />} />
           <Route path="/tickets" element={<TicketPage />} />
           <Route path="/tenants" element={<TenantPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </QueryClientProvider>
     </div>

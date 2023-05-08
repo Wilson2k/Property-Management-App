@@ -1,9 +1,9 @@
-import NavBar from "../NavBar";
+import HomeNav from "../../../components/HomeNav";
 
 export default function ContactPage() {
     return (
         <div>
-            <NavBar link={'/contact'} />
+            <HomeNav link={'/contact'} />
             CONTACT
         </div>
     );

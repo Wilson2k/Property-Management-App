@@ -1,4 +1,4 @@
-import NavBar from '../NavBar';
+import NavBar from '../../../components/HomeNav';
 import LoginForm from './LoginForm';
 
 export default function LoginPage() {

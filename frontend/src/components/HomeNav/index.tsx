@@ -7,7 +7,7 @@ interface NavBarProps {
     link: string
 }
 
-export default function NavBar(props: NavBarProps) {
+export default function HomeNav(props: NavBarProps) {
     const [active, setActive] = useState<string>('/');
 
     useEffect (() => {

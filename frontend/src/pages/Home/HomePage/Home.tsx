@@ -1,5 +1,5 @@
 import Container from 'react-bootstrap/Container';
-import Contact from './Contact';
+import Contact from '../../../components/ContactBar/Contact';
 
 export default function Home() {
   return (
