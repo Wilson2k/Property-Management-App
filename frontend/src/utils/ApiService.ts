@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AxiosError } from 'axios';
 import * as UserTypes from '../types/User';
+import * as PropertyTypes from '../types/Property'
 
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -40,10 +41,17 @@ const getProperties = async () => {
   });
 }
 
+const createProperty = async (newProperty: PropertyTypes.PropertyContext) => {
+  return await apiClient.post('/property/create', newProperty).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
 export {
   registerUser,
   loginUser,
   logoutUser,
   getUser,
-  getProperties
+  getProperties,
+  createProperty
 }

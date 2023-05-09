@@ -11,6 +11,7 @@ import PropertyPage from './pages/User/PropertyPage';
 import TenantPage from './pages/User/TenantPage';
 import LeasePage from './pages/User/LeasePage';
 import TicketPage from './pages/User/TicketPage';
+import CreatePropertyPage from './pages/Property/CreateProperty';
 import NotFoundPage from './pages/NotFoundPage';
 import {
   QueryClient,
@@ -36,6 +37,7 @@ function App() {
           <Route path="/leases" element={<LeasePage />} />
           <Route path="/tickets" element={<TicketPage />} />
           <Route path="/tenants" element={<TenantPage />} />
+          <Route path="/property/create" element={<CreatePropertyPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </QueryClientProvider>

@@ -4,8 +4,10 @@ import { Row, Col, Container, Card } from "react-bootstrap";
 import { NavDropdown, Button } from "react-bootstrap";
 import PageFilter from "../../../components/PageFilter";
 import SideNav from "../../../components/SideNav";
+import { useNavigate } from "react-router-dom";
 
 export default function PropertyPage() {
+    const navigate = useNavigate();
     const { status, data } = useQuery({
         queryKey: ['properties'],
         queryFn: getProperties,
@@ -49,7 +51,7 @@ export default function PropertyPage() {
                                     <tbody>
                                         {data?.data.map((property: any) => {
                                             return (
-                                                <tr>
+                                                <tr key={property.address + property.city + property.state}>
                                                     <td>{property.address}</td>
                                                     <td>{property.city}</td>
                                                     <td>{property.state}</td>
@@ -62,7 +64,7 @@ export default function PropertyPage() {
                                     <tfoot>
                                         <tr>
                                             <td colSpan={5}>
-                                                <Button> Create new property</Button>
+                                                <Button onClick={() => navigate(`/property/create`)}>Create new property</Button>
                                             </td>
                                         </tr>
                                     </tfoot>

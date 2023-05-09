@@ -1,10 +1,10 @@
-import SideNav from "../../../components/SideNav";
 import { Row, Col, Container, Card } from "react-bootstrap";
 import { Navbar, NavDropdown } from "react-bootstrap";
 import { getUser } from "../../../utils/ApiService";
 import { useQuery } from "@tanstack/react-query";
 import { useMediaQuery } from 'react-responsive';
 import PageFilter from "../../../components/PageFilter";
+import SideNav from "../../../components/SideNav";
 
 export default function DashBoardPage() {
     const isDesktopOrLaptop = useMediaQuery({ query: '(min-width: 992px)' });
