@@ -51,7 +51,7 @@ export default function PropertyPage() {
                                     <tbody>
                                         {data?.data.map((property: any) => {
                                             return (
-                                                <tr key={property.address + property.city + property.state}>
+                                                <tr key={property.address + property.city + property.state} onClick={() => navigate(`/property/${property.id}`)}>
                                                     <td>{property.address}</td>
                                                     <td>{property.city}</td>
                                                     <td>{property.state}</td>

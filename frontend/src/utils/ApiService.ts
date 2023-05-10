@@ -41,7 +41,13 @@ const getProperties = async () => {
   });
 }
 
-const createProperty = async (newProperty: PropertyTypes.PropertyContext) => {
+const getProperty = async (propertyId: number) => {
+  return await apiClient.get(`/property/${propertyId}`).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
+const createProperty = async (newProperty: PropertyTypes.PropertyCreateContext) => {
   return await apiClient.post('/property/create', newProperty).catch((error: AxiosError) => {
     return error.response;
   });
@@ -53,5 +59,6 @@ export {
   logoutUser,
   getUser,
   getProperties,
-  createProperty
+  createProperty,
+  getProperty
 }

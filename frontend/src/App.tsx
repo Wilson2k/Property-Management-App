@@ -13,6 +13,7 @@ import LeasePage from './pages/User/LeasePage';
 import TicketPage from './pages/User/TicketPage';
 import CreatePropertyPage from './pages/Property/CreateProperty';
 import NotFoundPage from './pages/NotFoundPage';
+import PropertyInfoPage from './pages/Property/PropertyInfo';
 import {
   QueryClient,
   QueryClientProvider,
@@ -38,6 +39,7 @@ function App() {
           <Route path="/tickets" element={<TicketPage />} />
           <Route path="/tenants" element={<TenantPage />} />
           <Route path="/property/create" element={<CreatePropertyPage />} />
+          <Route path="/property/:id" element={<PropertyInfoPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </QueryClientProvider>
