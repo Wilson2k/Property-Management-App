@@ -7,6 +7,15 @@ interface PropertyCreateContext {
     size: number;
 }
 
+interface PropertyCreateForm {
+    ownerId?: string;
+    address: string;
+    city: string;
+    state: string;
+    type: string;
+    size: string;
+}
+
 interface PropertyContext {
     id?: number;
     address?: string;
@@ -35,5 +44,6 @@ export type {
     PropertyCreateContext,
     PropertyContext,
     PropertyTenantContext,
+    PropertyCreateForm,
     PropertyUpdateInput
 }

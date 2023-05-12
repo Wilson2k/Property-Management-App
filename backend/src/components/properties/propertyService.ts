@@ -95,7 +95,7 @@ const updatePropertyService = async (
         updateInput.city,
         updateInput.state
       );
-      if (propertyDuplicate != null) {
+      if (propertyDuplicate != null && propertyDuplicate.id != propertyId) {
         propertyReturn.message = 'Address already exists';
         propertyReturn.status = 409;
         return propertyReturn;

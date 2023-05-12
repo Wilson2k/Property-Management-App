@@ -12,20 +12,30 @@ import * as PropertyTypes from '../../../types/Property';
 
 
 export default function CreatePropertyPage() {
-    const { data } = useQuery({
+    const { status, data } = useQuery({
         queryKey: ['profile'],
         queryFn: getUser,
     });
-    const defaultCreateProperty: PropertyTypes.PropertyCreateContext = {
+    if (status === 'loading') {
+        return <span>Loading...</span>;
+    }
+    if (status === 'error') {
+        return <span>Unexpected error</span>;
+    }
+    const defaultCreateProperty: PropertyTypes.PropertyCreateForm = {
         ownerId: data?.data.id,
         address: '',
         city: '',
         state: '',
         type: '',
-        size: 0,
+        size: '',
     };
+    return <CreateForm data={defaultCreateProperty}/>
+}
+
+function CreateForm(props: {data: PropertyTypes.PropertyCreateForm}){
     const navigate = useNavigate();
-    const { register, handleSubmit } = useForm({ defaultValues: defaultCreateProperty });
+    const { register, handleSubmit } = useForm({ defaultValues: props.data });
     const [isLoading, setLoading] = useState(false);
     const [response, setResponse] = useState(0);
     const { mutateAsync } = useMutation({
@@ -34,15 +44,15 @@ export default function CreatePropertyPage() {
             setLoading(false);
         },
     });
-    const FormSubmit = async (property: PropertyTypes.PropertyCreateContext) => {
+    const FormSubmit = async (property: PropertyTypes.PropertyCreateForm) => {
         setLoading(true);
-        const response = await mutateAsync(property);
+        const propertyInput: PropertyTypes.PropertyCreateContext = {...property, size: +property.size}
+        const response = await mutateAsync(propertyInput);
         setResponse(response?.status || 500);
         if (response?.status === 200) {
             navigate(`/properties`);
         }
     };
-
     return (
         <Container fluid style={{ height: '100vh' }}>
             <Row>
@@ -60,7 +70,7 @@ export default function CreatePropertyPage() {
 
                                 <div className="form-outline form-white mb-4">
                                     <Form.Label>City</Form.Label>
-                                    <Form.Control disabled={isLoading} type="city" id="typelnameX" className="form-control form-control-lg" placeholder={"Enter property sity"}
+                                    <Form.Control disabled={isLoading} type="city" id="typelnameX" className="form-control form-control-lg" placeholder={"Enter property city"}
                                         {...register('city')} />
                                 </div>
 

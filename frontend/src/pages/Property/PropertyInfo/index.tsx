@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getProperty } from "../../../utils/ApiService";
 import SideNav from "../../../components/SideNav";
-import { Row, Col, Container, Button } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { Card } from "react-bootstrap";
 
@@ -29,22 +29,21 @@ export default function PropertyInfoPage() {
                 <SideNav link={'/properties'} />
                 <Col className="px-0" style={{ background: '#ebecf0' }}>
                     <Container fluid>
-                        <Col style={{marginTop: '24px', display: 'flex', justifyContent: 'center'}}>
-                            <h2>Manage Property</h2>
-                            <Button style={{marginInline: 20}}><i className="bi bi-pen"></i></Button>
+                        <Col style={{ marginTop: '24px', display: 'flex', justifyContent: 'center' }}>
+                            <h2>{data?.data.address}</h2>
                         </Col>
                         <hr />
-                        <Col>
-                            Address: {data?.data.address}
-                        </Col>
-                        <Col>
-                            City: {data?.data.city}
-                        </Col>
-                        <Col>
-                            State: {data?.data.state}
-                        </Col>
+                        <Container style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                            <h5 className="mb-3">
+                                Property Information
+                                <a href={`/property/edit/${data?.data.id}`} className="mx-3"><i className="bi bi-pen"></i></a>
+                            </h5>
+                            <p>Address: {data?.data.address}, {data?.data.city}, {data?.data.state}</p>
+                            <p>Type: {data?.data.type}</p>
+                            <p className="my-0">Size: {data?.data.size}</p>
+                        </Container>
                         <hr />
-                        <Container fluid className="overflow-auto" style={{ height: '80vh' }}>
+                        <Container fluid className="overflow-auto" style={{ maxHeight: '71vh' }}>
                             <Row lg={2} xs={1} className="gy-5">
                                 <Col style={{ height: '375px' }}>
                                     <Card className="h-100">

@@ -27,7 +27,7 @@ export default function DashBoardPage() {
                             </NavDropdown>
                         </PageFilter>
                         <hr style={{ border: '1px solid black' }} />
-                        <Container fluid className="overflow-auto" style={{ height: '90vh' }}>
+                        <Container fluid className="overflow-auto" style={{ maxHeight: '90vh' }}>
                             <Row lg={2} xs={1} className="gy-5">
                                 <Col style={{ height: '350px' }}>
                                     <Card className="h-100">

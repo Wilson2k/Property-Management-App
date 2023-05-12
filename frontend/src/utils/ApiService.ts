@@ -53,6 +53,12 @@ const createProperty = async (newProperty: PropertyTypes.PropertyCreateContext) 
   });
 }
 
+const updateProperty = async (propertyId: number, newPropertyInfo: PropertyTypes.PropertyUpdateInput) => {
+  return await apiClient.put(`/property/${propertyId}/update`, newPropertyInfo).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
 export {
   registerUser,
   loginUser,
@@ -60,5 +66,6 @@ export {
   getUser,
   getProperties,
   createProperty,
-  getProperty
+  getProperty,
+  updateProperty
 }
