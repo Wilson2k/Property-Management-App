@@ -1,14 +1,23 @@
 
 # Property Management App
 
-Website for property owners to manage properties and tenants.
+Web app for property managers/owners to manage properties and tenants.
 
 Frontend built with React TypeScript. Backend built with Node.js using Express sessions. Sessions are stored in memory using Redis. Data persisted in a PostgreSQL database and managed using Prisma.
 
+## Quickstart
+
+To run the app locally, make sure you have [Docker](https://www.docker.com/) installed and running on your machine.
+
+Then run the command below in your terminal.
+
+```bash
+  ./quickstart.sh
+```
+
+This script will create and run PostgreSQL and Redis on seperate Docker containers. Then it will start up the entire app automatically.
 
 ## Backend Setup
-
-To run backend locally, make sure you have [Docker](https://www.docker.com/) installed and running on your machine.
 
 First make an .env file to configure your local PostgreSQL database and Redis server.
 
@@ -30,12 +39,11 @@ DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_
 REDIS_PORT=6379
 ```
 
-Then to startup your local PostgreSQL database and Redis server on Docker.
+Make sure you have [Docker](https://www.docker.com/)  running on your current machine. Then to startup your local PostgreSQL database and Redis server on Docker.
 
 ```bash
   npm install
-  npm run dev:server
-  npm run dev:migrate
+  npm run setup
 ```
 
 Finally, to run the server locally.
@@ -53,10 +61,11 @@ To setup the frontend locally, make an .env file to configure the port the front
   touch .env
 ```
 
-In your .env file, configure the port the client will run on to your liking.
+In your .env file, configure the port the API and client will run on to your liking.
 
 ```bash
 REACT_APP_API_URL=http://localhost:8080/
+REACT_APP_CLIENT_URL=http://localhost:3000/
 ```
 
 Then to run the frontend client locally.
