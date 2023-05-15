@@ -14,7 +14,7 @@ const tenantSchema = Joi.object({
 
   id: Joi.number(),
 
-  propertyId: Joi.number(),
+  propertyid: Joi.number(),
 
   userId: Joi.string().max(255),
 });

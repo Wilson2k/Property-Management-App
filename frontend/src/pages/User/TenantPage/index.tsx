@@ -1,23 +1,74 @@
-import { Row, Col, Container } from "react-bootstrap";
-import { NavDropdown } from "react-bootstrap";
-import SideNav from "../../../components/SideNav";
+import { useQuery } from "@tanstack/react-query";
+import { getTenants } from "../../../utils/ApiService";
+import { Row, Col, Container, Card } from "react-bootstrap";
+import { NavDropdown, Button } from "react-bootstrap";
 import PageFilter from "../../../components/PageFilter";
+import SideNav from "../../../components/SideNav";
+import { useNavigate } from "react-router-dom";
 
 export default function TenantPage() {
+    const navigate = useNavigate();
+    const { status, data } = useQuery({
+        queryKey: ['tenants'],
+        queryFn: getTenants,
+    });
+    if (status === 'loading') {
+        return <span>Loading...</span>;
+    }
+    if (status === 'error') {
+        return <span>Unexpected error</span>;
+    }
+    if (data?.status !== 200) {
+        return <div>{data?.data}</div>;
+    }
     return (
         <Container fluid style={{ height: '100vh' }}>
             <Row>
                 <SideNav link={'/tenants'} />
                 <Col className="px-0" style={{ background: '#ebecf0' }}>
                     <Container fluid>
-                        <PageFilter title="Tenants">
+                        <PageFilter title="Properties">
                             <NavDropdown menuVariant="dark" title="Sort By" id="navbarScrollingDropdown" style={{ fontWeight: 'bold' }}>
                                 <NavDropdown.Item href="#action1">First Name</NavDropdown.Item>
                                 <NavDropdown.Item href="#action2">Last Name</NavDropdown.Item>
-                                <NavDropdown.Item href="#action3">Date</NavDropdown.Item>
+                                <NavDropdown.Item href="#action3">Email</NavDropdown.Item>
+                                <NavDropdown.Item href="#action4">Phone</NavDropdown.Item>
                             </NavDropdown>
                         </PageFilter>
                         <hr style={{ border: '1px solid black' }} />
+                        <Card>
+                            <div className="table-responsive" style={{ maxHeight: '90vh' }}>
+                                <table className="table table-striped table-hover my-0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">First Name</th>
+                                            <th scope="col">Last Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Phone</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {data?.data.map((tenant: any) => {
+                                            return (
+                                                <tr key={tenant.email} onClick={() => navigate(`/tenant/${tenant.id}`)}>
+                                                    <td>{tenant.fname}</td>
+                                                    <td>{tenant.lname}</td>
+                                                    <td>{tenant.email}</td>
+                                                    <td>{tenant.phone}</td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colSpan={5}>
+                                                <Button onClick={() => navigate(`/tenant/create`)}>Create new tenant</Button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </Card>
                     </Container>
                 </Col>
             </Row>

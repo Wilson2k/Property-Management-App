@@ -98,7 +98,7 @@ const getTenantByPhone = async (req: CustomRequest<TenantContext>, res: Response
 // Get tenants by property
 const getTenantsByProperty = async (req: CustomRequest<TenantContext>, res: Response) => {
   const tenantContext: TenantContext = {
-    propertyId: +req.params.property,
+    propertyId: +req.params.propertyid,
     userId: req.session.user,
   };
   const tenantData = await TenantServices.getTenantsByProperty(tenantContext);

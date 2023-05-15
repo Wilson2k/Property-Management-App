@@ -11,6 +11,7 @@ const apiClient = axios.create({
   withCredentials: true
 });
 
+// User routes
 const registerUser = async (newUser: UserTypes.UserRegisterContext) => {
   return await apiClient.post('/register', newUser).catch((error: AxiosError) => {
     return error.response;
@@ -35,6 +36,7 @@ const getUser = async () => {
   });
 }
 
+// Property routes
 const getProperties = async () => {
   return await apiClient.get('/properties').catch((error: AxiosError) => {
     return error.response;
@@ -59,6 +61,19 @@ const updateProperty = async (propertyId: number, newPropertyInfo: PropertyTypes
   });
 }
 
+// Tenant routes
+const getTenants = async () => {
+  return await apiClient.get('/tenants').catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
+const getTenantsByProperty = async(propertyId: number) => {
+  return await apiClient.get(`/tenants/${propertyId}`).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
 export {
   registerUser,
   loginUser,
@@ -67,5 +82,7 @@ export {
   getProperties,
   createProperty,
   getProperty,
-  updateProperty
+  updateProperty,
+  getTenants,
+  getTenantsByProperty
 }

@@ -4,6 +4,7 @@ import SideNav from "../../../components/SideNav";
 import { Row, Col, Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { Card } from "react-bootstrap";
+import TenantTable from "../../../components/TenantTable";
 
 
 export default function PropertyInfoPage() {
@@ -33,14 +34,14 @@ export default function PropertyInfoPage() {
                             <h2>{data?.data.address}</h2>
                         </Col>
                         <hr />
-                        <Container style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                        <Container fluid style={{ flexDirection: 'column', textAlign: 'left' }}>
                             <h5 className="mb-3">
                                 Property Information
                                 <a href={`/property/edit/${data?.data.id}`} className="mx-3"><i className="bi bi-pen"></i></a>
                             </h5>
                             <p>Address: {data?.data.address}, {data?.data.city}, {data?.data.state}</p>
                             <p>Type: {data?.data.type}</p>
-                            <p className="my-0">Size: {data?.data.size}</p>
+                            <p className="my-0">Size: {data?.data.size} sqft</p>
                         </Container>
                         <hr />
                         <Container fluid className="overflow-auto" style={{ maxHeight: '71vh' }}>
@@ -59,7 +60,7 @@ export default function PropertyInfoPage() {
                                         <h6 style={{ marginTop: 16, marginBottom: 0 }}>Tenants</h6>
                                         <hr style={{ border: '1px solid black' }} />
                                         <div>
-                                            Table
+                                            <TenantTable id={propertyId}/>
                                         </div>
                                     </Card>
                                 </Col>
@@ -67,14 +68,18 @@ export default function PropertyInfoPage() {
                                     <Card className="h-100">
                                         <h6 style={{ marginTop: 16, marginBottom: 0 }}>Leases</h6>
                                         <hr style={{ border: '1px solid black' }} />
-                                        <div>Table</div>
+                                        <div>
+                                            Table
+                                        </div>
                                     </Card>
                                 </Col>
                                 <Col style={{ height: '375px' }}>
                                     <Card className="h-100">
                                         <h6 style={{ marginTop: 16, marginBottom: 0 }}>Tickets</h6>
                                         <hr style={{ border: '1px solid black' }} />
-                                        <div>Table</div>
+                                        <div>
+                                            Table
+                                        </div>
                                     </Card>
                                 </Col>
                             </Row>
