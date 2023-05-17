@@ -15,6 +15,7 @@ import CreatePropertyPage from './pages/Property/CreateProperty';
 import NotFoundPage from './pages/NotFoundPage';
 import PropertyInfoPage from './pages/Property/PropertyInfo';
 import EditPropertyPage from './pages/Property/EditProperty';
+import RequireAuth from './components/RequireAuth';
 import {
   QueryClient,
   QueryClientProvider,
@@ -33,15 +34,15 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/dashboard" element={<DashBoardPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/properties" element={<PropertyPage />} />
-          <Route path="/leases" element={<LeasePage />} />
-          <Route path="/tickets" element={<TicketPage />} />
-          <Route path="/tenants" element={<TenantPage />} />
-          <Route path="/property/create" element={<CreatePropertyPage />} />
-          <Route path="/property/:id" element={<PropertyInfoPage />} />
-          <Route path="/property/edit/:id" element={<EditPropertyPage />} />
+          <Route path="/dashboard" element={<RequireAuth> <DashBoardPage /> </RequireAuth>} />
+          <Route path="/profile" element={<RequireAuth> <ProfilePage /></RequireAuth>} />
+          <Route path="/properties" element={<RequireAuth> <PropertyPage /></RequireAuth>} />
+          <Route path="/leases" element={<RequireAuth> <LeasePage /></RequireAuth>} />
+          <Route path="/tickets" element={<RequireAuth> <TicketPage /> </RequireAuth>} />
+          <Route path="/tenants" element={<RequireAuth> <TenantPage /></RequireAuth>} />
+          <Route path="/property/create" element={<RequireAuth><CreatePropertyPage /></RequireAuth>} />
+          <Route path="/property/:id" element={<RequireAuth> <PropertyInfoPage /></RequireAuth>} />
+          <Route path="/property/edit/:id" element={<RequireAuth> <EditPropertyPage /></RequireAuth>} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </QueryClientProvider>

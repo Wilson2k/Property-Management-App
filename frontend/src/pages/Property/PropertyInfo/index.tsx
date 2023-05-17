@@ -44,7 +44,7 @@ export default function PropertyInfoPage() {
                             <p className="my-0">Size: {data?.data.size} sqft</p>
                         </Container>
                         <hr />
-                        <Container fluid className="overflow-auto" style={{ maxHeight: '71vh' }}>
+                        <Container fluid className="overflow-auto" style={{ maxHeight: '60vh' }}>
                             <Row lg={2} xs={1} className="gy-5">
                                 <Col style={{ height: '375px' }}>
                                     <Card className="h-100">

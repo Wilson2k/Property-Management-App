@@ -14,10 +14,6 @@ export default function ProfilePage() {
     if (status === 'error') {
         return <span>Unexpected error</span>;
     }
-    if (data?.status !== 200) {
-        return <div>{data?.data}</div>;
-    }
-
     return (
         <Container fluid style={{ height: '100vh' }}>
             <Row>
@@ -29,16 +25,16 @@ export default function ProfilePage() {
                         </Col>
                         <hr />
                         <Col>
-                            First Name: {data?.data.firstName}
+                            <p>First Name: {data?.data.firstName}</p>
                         </Col>
                         <Col>
-                            Last Name: {data?.data.lastName}
+                            <p>Last Name: {data?.data.lastName}</p>
                         </Col>
                         <Col>
-                            Email: {data?.data.email}
+                            <p>Email: {data?.data.email}</p>
                         </Col>
                         <Col>
-                            Password: {data?.data.password}
+                            <p>Password: ••••••••</p>
                         </Col>
                         <hr />
                     </Container>

@@ -12,6 +12,12 @@ export default function DashBoardPage() {
         queryKey: ['profile'],
         queryFn: getUser,
     });
+    if (status === 'loading') {
+        return <span>Loading...</span>;
+    }
+    if (status === 'error') {
+        return <span>Unexpected error</span>;
+    }
     return (
         <Container fluid style={{ height: '100vh' }}>
             <Row>
@@ -27,14 +33,13 @@ export default function DashBoardPage() {
                             </NavDropdown>
                         </PageFilter>
                         <hr style={{ border: '1px solid black' }} />
-                        <Container fluid className="overflow-auto" style={{ maxHeight: '90vh' }}>
+                        <Container fluid className="overflow-auto" style={{ maxHeight: '85vh' }}>
                             <Row lg={2} xs={1} className="gy-5">
                                 <Col style={{ height: '350px' }}>
                                     <Card className="h-100">
                                         <h6 style={{ marginTop: 16, marginBottom: 0 }}>Profit</h6>
                                         <hr style={{ border: '1px solid black' }} />
                                         <div>
-                                            {status === 'loading' && <span className="spinner-border spinner-border-sm me-3"></span>}
                                             Graph
                                         </div>
                                     </Card>
@@ -74,7 +79,6 @@ export default function DashBoardPage() {
                                         <h6 style={{ marginTop: 16, marginBottom: 0 }}>Occupancy Rate</h6>
                                         <hr style={{ border: '1px solid black' }} />
                                         <div>
-                                            {status === 'loading' && <span className="spinner-border spinner-border-sm me-3"></span>}
                                             Graph
                                         </div>
                                     </Card>

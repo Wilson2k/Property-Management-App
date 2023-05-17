@@ -18,9 +18,6 @@ export default function PropertyPage() {
     if (status === 'error') {
         return <span>Unexpected error</span>;
     }
-    if (data?.status !== 200) {
-        return <div>{data?.data}</div>;
-    }
     return (
         <Container fluid style={{ height: '100vh' }}>
             <Row>
@@ -29,23 +26,20 @@ export default function PropertyPage() {
                     <Container fluid>
                         <PageFilter title="Properties">
                             <NavDropdown menuVariant="dark" title="Sort By" id="navbarScrollingDropdown" style={{ fontWeight: 'bold' }}>
-                                <NavDropdown.Item href="#action1">City</NavDropdown.Item>
-                                <NavDropdown.Item href="#action2">State</NavDropdown.Item>
-                                <NavDropdown.Item href="#action3">Size</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Type</NavDropdown.Item>
+                                <NavDropdown.Item href="#action1">Address</NavDropdown.Item>
+                                <NavDropdown.Item href="#action2">City</NavDropdown.Item>
+                                <NavDropdown.Item href="#action3">State</NavDropdown.Item>
                             </NavDropdown>
                         </PageFilter>
                         <hr style={{ border: '1px solid black' }} />
                         <Card>
-                            <div className="table-responsive" style={{ maxHeight: '90vh' }}>
+                            <div className="table-responsive" style={{ maxHeight: '90vh'}}>
                                 <table className="table table-striped table-hover my-0">
                                     <thead>
                                         <tr>
                                             <th scope="col">Address</th>
                                             <th scope="col">City</th>
                                             <th scope="col">State</th>
-                                            <th scope="col">Type</th>
-                                            <th scope="col">Size</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -55,8 +49,6 @@ export default function PropertyPage() {
                                                     <td>{property.address}</td>
                                                     <td>{property.city}</td>
                                                     <td>{property.state}</td>
-                                                    <td>{property.type}</td>
-                                                    <td>{property.size}</td>
                                                 </tr>
                                             );
                                         })}

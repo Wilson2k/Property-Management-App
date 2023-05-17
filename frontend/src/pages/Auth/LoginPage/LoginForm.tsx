@@ -7,12 +7,12 @@ import { loginUser, getUser } from '../../../utils/ApiService';
 import * as UserTypes from '../../../types/User';
 
 export default function LoginForm() {
-    const defualtLogin: UserTypes.UserLoginContext = {
+    const defaultLogin: UserTypes.UserLoginContext = {
         email: '',
         password: ''
     };
     const navigate = useNavigate();
-    const { register, handleSubmit } = useForm({ defaultValues: defualtLogin });
+    const { register, handleSubmit } = useForm({ defaultValues: defaultLogin });
     const [isLoading, setLoading] = useState(false);
     const [response, setResponse] = useState(0);
     const { mutateAsync } = useMutation({

@@ -74,6 +74,20 @@ const getTenantsByProperty = async(propertyId: number) => {
   });
 }
 
+// Leease Routes
+const getLeases = async () => {
+  return await apiClient.get('/leases').catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
+// Ticket Routes
+const getTickets = async () => {
+  return await apiClient.get('/tickets').catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
 export {
   registerUser,
   loginUser,
@@ -84,5 +98,7 @@ export {
   getProperty,
   updateProperty,
   getTenants,
-  getTenantsByProperty
+  getTenantsByProperty,
+  getLeases,
+  getTickets
 }

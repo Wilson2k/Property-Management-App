@@ -18,16 +18,13 @@ export default function TenantPage() {
     if (status === 'error') {
         return <span>Unexpected error</span>;
     }
-    if (data?.status !== 200) {
-        return <div>{data?.data}</div>;
-    }
     return (
         <Container fluid style={{ height: '100vh' }}>
             <Row>
                 <SideNav link={'/tenants'} />
                 <Col className="px-0" style={{ background: '#ebecf0' }}>
                     <Container fluid>
-                        <PageFilter title="Properties">
+                        <PageFilter title="Tenants">
                             <NavDropdown menuVariant="dark" title="Sort By" id="navbarScrollingDropdown" style={{ fontWeight: 'bold' }}>
                                 <NavDropdown.Item href="#action1">First Name</NavDropdown.Item>
                                 <NavDropdown.Item href="#action2">Last Name</NavDropdown.Item>
