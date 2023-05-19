@@ -1,13 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import { getUser } from "../../../utils/ApiService";
 import SideNav from "../../../components/SideNav";
 import { Row, Col, Container } from "react-bootstrap";
+import { useProfile } from "../../../components/Hooks/User/useProfile";
 
 export default function ProfilePage() {
-    const { status, data } = useQuery({
-        queryKey: ['profile'],
-        queryFn: getUser,
-    });
+    const { status, data } = useProfile();
     if (status === 'loading') {
         return <span>Loading...</span>;
     }

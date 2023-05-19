@@ -1,17 +1,14 @@
 import { Row, Col, Container, Card } from "react-bootstrap";
 import { Navbar, NavDropdown } from "react-bootstrap";
-import { getUser } from "../../../utils/ApiService";
-import { useQuery } from "@tanstack/react-query";
 import { useMediaQuery } from 'react-responsive';
+import { useProfile } from "../../../components/Hooks/User/useProfile";
 import PageFilter from "../../../components/PageFilter";
 import SideNav from "../../../components/SideNav";
 
+
 export default function DashBoardPage() {
     const isDesktopOrLaptop = useMediaQuery({ query: '(min-width: 992px)' });
-    const { status, data } = useQuery({
-        queryKey: ['profile'],
-        queryFn: getUser,
-    });
+    const { status, data } = useProfile();
     if (status === 'loading') {
         return <span>Loading...</span>;
     }
