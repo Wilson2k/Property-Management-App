@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTenants } from "../../../utils/ApiService";
-import { Row, Col, Container, Card } from "react-bootstrap";
-import { NavDropdown, Button } from "react-bootstrap";
-import PageFilter from "../../../components/PageFilter";
-import SideNav from "../../../components/SideNav";
+import { getLeases } from "../../utils/ApiService";
+import { Row, Col, Container, Card, Button } from "react-bootstrap";
+import { NavDropdown } from "react-bootstrap";
+import PageFilter from "../../components/PageFilter";
+import SideNav from "../../components/SideNav";
 import { useNavigate } from "react-router-dom";
 
-export default function TenantPage() {
+export default function LeasePage() {
     const navigate = useNavigate();
     const { status, data } = useQuery({
-        queryKey: ['tenants'],
-        queryFn: getTenants,
+        queryKey: ['leases'],
+        queryFn: getLeases,
     });
     if (status === 'loading') {
         return <span>Loading...</span>;
@@ -21,15 +21,15 @@ export default function TenantPage() {
     return (
         <Container fluid style={{ height: '100vh' }}>
             <Row>
-                <SideNav link={'/tenants'} />
+                <SideNav link={'/leases'} />
                 <Col className="px-0" style={{ background: '#ebecf0' }}>
                     <Container fluid>
-                        <PageFilter title="Tenants">
+                        <PageFilter title="Leases">
                             <NavDropdown menuVariant="dark" title="Sort By" id="navbarScrollingDropdown" style={{ fontWeight: 'bold' }}>
-                                <NavDropdown.Item href="#action1">First Name</NavDropdown.Item>
-                                <NavDropdown.Item href="#action2">Last Name</NavDropdown.Item>
-                                <NavDropdown.Item href="#action3">Email</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Phone</NavDropdown.Item>
+                                <NavDropdown.Item href="#action1">Tenant First Name</NavDropdown.Item>
+                                <NavDropdown.Item href="#action1">Tenant Last Name</NavDropdown.Item>
+                                <NavDropdown.Item href="#action3">Start Date</NavDropdown.Item>
+                                <NavDropdown.Item href="#action3">End Date</NavDropdown.Item>
                             </NavDropdown>
                         </PageFilter>
                         <hr style={{ border: '1px solid black' }} />
@@ -38,20 +38,20 @@ export default function TenantPage() {
                                 <table className="table table-striped table-hover my-0">
                                     <thead>
                                         <tr>
-                                            <th scope="col">First Name</th>
-                                            <th scope="col">Last Name</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Phone</th>
+                                            <th scope="col">Tenant First Name</th>
+                                            <th scope="col">Tenant Last Name</th>
+                                            <th scope="col">Duration</th>
+                                            <th scope="col">Rent</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data?.data.map((tenant: any) => {
+                                        {data?.data.map((lease: any) => {
                                             return (
-                                                <tr key={tenant.email} onClick={() => navigate(`/tenant/${tenant.id}`)}>
-                                                    <td>{tenant.fname}</td>
-                                                    <td>{tenant.lname}</td>
-                                                    <td>{tenant.email}</td>
-                                                    <td>{tenant.phone}</td>
+                                                <tr key={lease.tenantId+lease.propertyId} onClick={() => navigate(`/lease/${lease.id}`)}>
+                                                    <td>{lease.tenant.firstName}</td>
+                                                    <td>{lease.tenant.lastName}</td>
+                                                    <td>{lease.months}</td>
+                                                    <td>{lease.monthlyRent}</td>
                                                 </tr>
                                             );
                                         })}
@@ -59,7 +59,7 @@ export default function TenantPage() {
                                     <tfoot>
                                         <tr>
                                             <td colSpan={5}>
-                                                <Button onClick={() => navigate(`/tenant/create`)}>Create new tenant</Button>
+                                                <Button onClick={() => navigate(`/lease/create`)}>Create new lease</Button>
                                             </td>
                                         </tr>
                                     </tfoot>

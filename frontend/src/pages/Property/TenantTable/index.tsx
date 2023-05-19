@@ -1,8 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { getTenantsByProperty } from "../../utils/ApiService";
 import { Container, Card } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { usePropertyTenants } from "../../../components/Hooks/Property/usePropertyTenants";
 
 interface TenantTableProps {
     id: number;
@@ -10,10 +9,7 @@ interface TenantTableProps {
 
 export default function TenantTable(props: TenantTableProps) {
     const navigate = useNavigate();
-    const { status, data } = useQuery({
-        queryKey: [props.id],
-        queryFn: () => getTenantsByProperty(props.id),
-    });
+    const { status, data } = usePropertyTenants(props.id);
     if (status === 'loading') {
         return <span>Loading...</span>;
     }

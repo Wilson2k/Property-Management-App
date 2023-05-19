@@ -1,19 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { getProperty } from "../../../utils/ApiService";
 import SideNav from "../../../components/SideNav";
 import { Row, Col, Container } from "react-bootstrap";
-import { useParams } from "react-router-dom";
 import { Card } from "react-bootstrap";
-import TenantTable from "../../../components/TenantTable";
-
+import TenantTable from "../TenantTable";
+import { useProperty } from "../../../components/Hooks/Property/useProperty";
 
 export default function PropertyInfoPage() {
-    const { id } = useParams() as { id: string };
-    const propertyId = +id
-    const { status, data } = useQuery({
-        queryKey: ['property', propertyId],
-        queryFn: () => getProperty(propertyId),
-    });
+    const {status, data} = useProperty();
     if (status === 'loading') {
         return <span>Loading...</span>;
     }
@@ -60,7 +52,7 @@ export default function PropertyInfoPage() {
                                         <h6 style={{ marginTop: 16, marginBottom: 0 }}>Tenants</h6>
                                         <hr style={{ border: '1px solid black' }} />
                                         <div>
-                                            <TenantTable id={propertyId}/>
+                                            <TenantTable id={data.data.id}/>
                                         </div>
                                     </Card>
                                 </Col>

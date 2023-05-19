@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTickets } from "../../../utils/ApiService";
-import { Row, Col, Container, Card, Button } from "react-bootstrap";
-import { NavDropdown } from "react-bootstrap";
-import PageFilter from "../../../components/PageFilter";
-import SideNav from "../../../components/SideNav";
+import { getTenants } from "../../utils/ApiService";
+import { Row, Col, Container, Card } from "react-bootstrap";
+import { NavDropdown, Button } from "react-bootstrap";
+import PageFilter from "../../components/PageFilter";
+import SideNav from "../../components/SideNav";
 import { useNavigate } from "react-router-dom";
 
-export default function TicketPage() {
+export default function TenantPage() {
     const navigate = useNavigate();
     const { status, data } = useQuery({
-        queryKey: ['tickets'],
-        queryFn: getTickets,
+        queryKey: ['tenants'],
+        queryFn: getTenants,
     });
     if (status === 'loading') {
         return <span>Loading...</span>;
@@ -21,13 +21,15 @@ export default function TicketPage() {
     return (
         <Container fluid style={{ height: '100vh' }}>
             <Row>
-                <SideNav link={'/tickets'} />
+                <SideNav link={'/tenants'} />
                 <Col className="px-0" style={{ background: '#ebecf0' }}>
                     <Container fluid>
-                        <PageFilter title="Tickets">
+                        <PageFilter title="Tenants">
                             <NavDropdown menuVariant="dark" title="Sort By" id="navbarScrollingDropdown" style={{ fontWeight: 'bold' }}>
-                                <NavDropdown.Item href="#action3">Start Date</NavDropdown.Item>
-                                <NavDropdown.Item href="#action3">End Date</NavDropdown.Item>
+                                <NavDropdown.Item href="#action1">First Name</NavDropdown.Item>
+                                <NavDropdown.Item href="#action2">Last Name</NavDropdown.Item>
+                                <NavDropdown.Item href="#action3">Email</NavDropdown.Item>
+                                <NavDropdown.Item href="#action4">Phone</NavDropdown.Item>
                             </NavDropdown>
                         </PageFilter>
                         <hr style={{ border: '1px solid black' }} />
@@ -36,20 +38,20 @@ export default function TicketPage() {
                                 <table className="table table-striped table-hover my-0">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Tenant</th>
-                                            <th scope="col">Open Date</th>
-                                            <th scope="col">Property</th>
-                                            <th scope="col">Open</th>
+                                            <th scope="col">First Name</th>
+                                            <th scope="col">Last Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Phone</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data?.data.map((ticket: any) => {
+                                        {data?.data.map((tenant: any) => {
                                             return (
-                                                <tr key={ticket.id} onClick={() => navigate(`/ticket/${ticket.id}`)}>
-                                                    <td>{ticket.tenant.firstName}</td>
-                                                    <td>{ticket.openDate}</td>
-                                                    <td>{ticket.property.address}</td>
-                                                    <td>{ticket.open}</td>
+                                                <tr key={tenant.email} onClick={() => navigate(`/tenant/${tenant.id}`)}>
+                                                    <td>{tenant.fname}</td>
+                                                    <td>{tenant.lname}</td>
+                                                    <td>{tenant.email}</td>
+                                                    <td>{tenant.phone}</td>
                                                 </tr>
                                             );
                                         })}
@@ -57,7 +59,7 @@ export default function TicketPage() {
                                     <tfoot>
                                         <tr>
                                             <td colSpan={5}>
-                                                <Button onClick={() => navigate(`/ticket/create`)}>Create new ticket</Button>
+                                                <Button onClick={() => navigate(`/tenant/create`)}>Create new tenant</Button>
                                             </td>
                                         </tr>
                                     </tfoot>

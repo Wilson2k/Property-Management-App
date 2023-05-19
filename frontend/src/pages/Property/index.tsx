@@ -1,17 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import { getProperties } from "../../../utils/ApiService";
 import { Row, Col, Container, Card } from "react-bootstrap";
 import { NavDropdown, Button } from "react-bootstrap";
-import PageFilter from "../../../components/PageFilter";
-import SideNav from "../../../components/SideNav";
 import { useNavigate } from "react-router-dom";
+import { useProperties } from "../../components/Hooks/Property/useProperties";
+import PageFilter from "../../components/PageFilter";
+import SideNav from "../../components/SideNav";
 
 export default function PropertyPage() {
     const navigate = useNavigate();
-    const { status, data } = useQuery({
-        queryKey: ['properties'],
-        queryFn: getProperties,
-    });
+    const { status, data } = useProperties();
     if (status === 'loading') {
         return <span>Loading...</span>;
     }

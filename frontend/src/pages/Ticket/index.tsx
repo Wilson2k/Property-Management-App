@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { getLeases } from "../../../utils/ApiService";
+import { getTickets } from "../../utils/ApiService";
 import { Row, Col, Container, Card, Button } from "react-bootstrap";
 import { NavDropdown } from "react-bootstrap";
-import PageFilter from "../../../components/PageFilter";
-import SideNav from "../../../components/SideNav";
+import PageFilter from "../../components/PageFilter";
+import SideNav from "../../components/SideNav";
 import { useNavigate } from "react-router-dom";
 
-export default function LeasePage() {
+export default function TicketPage() {
     const navigate = useNavigate();
     const { status, data } = useQuery({
-        queryKey: ['leases'],
-        queryFn: getLeases,
+        queryKey: ['tickets'],
+        queryFn: getTickets,
     });
     if (status === 'loading') {
         return <span>Loading...</span>;
@@ -21,13 +21,11 @@ export default function LeasePage() {
     return (
         <Container fluid style={{ height: '100vh' }}>
             <Row>
-                <SideNav link={'/leases'} />
+                <SideNav link={'/tickets'} />
                 <Col className="px-0" style={{ background: '#ebecf0' }}>
                     <Container fluid>
-                        <PageFilter title="Leases">
+                        <PageFilter title="Tickets">
                             <NavDropdown menuVariant="dark" title="Sort By" id="navbarScrollingDropdown" style={{ fontWeight: 'bold' }}>
-                                <NavDropdown.Item href="#action1">Tenant First Name</NavDropdown.Item>
-                                <NavDropdown.Item href="#action1">Tenant Last Name</NavDropdown.Item>
                                 <NavDropdown.Item href="#action3">Start Date</NavDropdown.Item>
                                 <NavDropdown.Item href="#action3">End Date</NavDropdown.Item>
                             </NavDropdown>
@@ -38,20 +36,20 @@ export default function LeasePage() {
                                 <table className="table table-striped table-hover my-0">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Tenant First Name</th>
-                                            <th scope="col">Tenant Last Name</th>
-                                            <th scope="col">Duration</th>
-                                            <th scope="col">Rent</th>
+                                            <th scope="col">Tenant</th>
+                                            <th scope="col">Open Date</th>
+                                            <th scope="col">Property</th>
+                                            <th scope="col">Open</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data?.data.map((lease: any) => {
+                                        {data?.data.map((ticket: any) => {
                                             return (
-                                                <tr key={lease.tenantId+lease.propertyId} onClick={() => navigate(`/lease/${lease.id}`)}>
-                                                    <td>{lease.tenant.firstName}</td>
-                                                    <td>{lease.tenant.lastName}</td>
-                                                    <td>{lease.months}</td>
-                                                    <td>{lease.monthlyRent}</td>
+                                                <tr key={ticket.id} onClick={() => navigate(`/ticket/${ticket.id}`)}>
+                                                    <td>{ticket.tenant.firstName}</td>
+                                                    <td>{ticket.openDate}</td>
+                                                    <td>{ticket.property.address}</td>
+                                                    <td>{ticket.open}</td>
                                                 </tr>
                                             );
                                         })}
@@ -59,7 +57,7 @@ export default function LeasePage() {
                                     <tfoot>
                                         <tr>
                                             <td colSpan={5}>
-                                                <Button onClick={() => navigate(`/lease/create`)}>Create new lease</Button>
+                                                <Button onClick={() => navigate(`/ticket/create`)}>Create new ticket</Button>
                                             </td>
                                         </tr>
                                     </tfoot>
