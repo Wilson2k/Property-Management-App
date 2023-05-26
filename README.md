@@ -3,7 +3,7 @@
 
 Web app for property managers/owners to manage properties and tenants.
 
-Frontend built with React TypeScript. Backend built with Node.js using Express sessions. Sessions are stored in memory using Redis. Data persisted in a PostgreSQL database and managed using Prisma.
+This app is containerized using [Docker](https://www.docker.com/). Frontend is built with React TypeScript. Backend built with Node TypeScript using Express sessions. Sessions are stored in memory using Redis. Data persisted in a PostgreSQL database and managed using [Prisma](https://www.prisma.io/).
 
 ## Quickstart
 
@@ -12,10 +12,8 @@ To run the app locally, make sure you have [Docker](https://www.docker.com/) ins
 Then run the command below in your terminal.
 
 ```bash
-  ./quickstart.sh
+  docker compose up -d
 ```
-
-This script will create and run PostgreSQL and Redis on seperate Docker containers. Then it will start up the entire app automatically.
 
 ## Backend Setup
 

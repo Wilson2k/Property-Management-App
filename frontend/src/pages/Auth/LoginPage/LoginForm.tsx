@@ -30,16 +30,6 @@ export default function LoginForm() {
         }
     }
 
-    // Redirect to dashboard if already logged in
-    const { data } = useQuery({
-        queryKey: ['profile'],
-        queryFn: getUser,
-    });
-    useEffect(() => {
-        if (data?.status === 200) {
-            navigate(`/dashboard`);
-        }
-    })
     return (
         <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingBlock: '11rem' }}>
             <div className="row d-flex justify-content-center align-items-center h-100">

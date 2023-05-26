@@ -1,0 +1,52 @@
+version: "3.8"
+
+volumes:
+  houseconnectdata:
+
+# Define the services/containers to be run
+services:
+  react: # Name for frontend service
+    build: frontend # Specify the directory of the Dockerfile
+    restart: always
+    expose:
+      - 3000
+
+  express: # Name for backend service (API)
+    build: backend # Specify the directory of the Dockerfile
+    restart: always
+    expose:
+      - 8080
+    depends_on:
+      - redis
+      - postgres
+    
+  redis: # Name for redis container
+    image: redis:latest
+    command: redis-server
+    restart: always
+    expose:
+      - 6379
+    volumes:
+      - houseconnectdata:/var/lib/redis
+
+  postgres: # Name for postgres container
+    image: postgres:latest # Specify image to build container from
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    expose:
+      - 5432
+    volumes:
+      - houseconnectdata:/var/lib/postgresql
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - react
+      - express

@@ -29,7 +29,7 @@ declare module 'express-session' {
 dotenv.config();
 
 const app = express();
-const redisClient = new Redis();
+const redisClient = new Redis(6379, "redis");
 const RedisStore = connectRedis(session);
 
 app.use(bodyParser.json());
@@ -41,7 +41,7 @@ app.use(cors({
 }));
 app.use(
   session({
-    store: new RedisStore({ host: '127.0.0.1', port: 6379, client: redisClient }),
+    store: new RedisStore({ host: 'redis', port: 6379, client: redisClient }),
     cookie: {
       // Set true on production
       secure: false,
@@ -55,281 +55,281 @@ app.use(
 );
 
 // Home page
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('Welcome to the property management app!');
 });
 // User Routes
-app.post('/login', checkSession, validator('user'), asyncHandler(User.loginUser));
-app.post('/register', checkSession, validator('user'), asyncHandler(User.registerUser));
-app.get('/profile', checkSession, validator('user'), asyncHandler(User.getUser));
+app.post('/api/login', checkSession, validator('user'), asyncHandler(User.loginUser));
+app.post('/api/register', checkSession, validator('user'), asyncHandler(User.registerUser));
+app.get('/api/profile', checkSession, validator('user'), asyncHandler(User.getUser));
 app.get(
-  '/user/income',
+  '/api/user/income',
   checkSession,
   validator('user'),
   asyncHandler(User.getUserIncome)
 );
-app.post('/logout', checkSession, validator('user'), asyncHandler(User.logoutUser));
-app.put('/user/update', checkSession, validator('user'), asyncHandler(User.updateUser));
+app.post('/api/logout', checkSession, validator('user'), asyncHandler(User.logoutUser));
+app.put('/api/user/update', checkSession, validator('user'), asyncHandler(User.updateUser));
 app.delete(
-  '/user/delete',
+  '/api/user/delete',
   checkSession,
   validator('user'),
   asyncHandler(User.deleteUser)
 );
 // Property routes
 app.post(
-  '/property/create',
+  '/api/property/create',
   checkSession,
   validator('property'),
   asyncHandler(Property.createNewUserProperty)
 );
 app.get(
-  '/property/:id',
+  '/api/property/:id',
   checkSession,
   validator('property'),
   asyncHandler(Property.getPropertyById)
 );
 app.get(
-  '/property/:id/income',
+  '/api/property/:id/income',
   checkSession,
   validator('property'),
   asyncHandler(Property.getPropertyIncomeById)
 );
 app.put(
-  '/property/:id/update',
+  '/api/property/:id/update',
   checkSession,
   validator('property'),
   asyncHandler(Property.updateProperty)
 );
 app.put(
-  '/property/:id/add/:tenantid',
+  '/api/property/:id/add/:tenantid',
   checkSession,
   validator('property'),
   asyncHandler(Property.addPropertyTenant)
 );
 app.put(
-  '/property/:id/remove/:tenantid',
+  '/api/property/:id/remove/:tenantid',
   checkSession,
   validator('property'),
   asyncHandler(Property.removePropertyTenant)
 );
 app.delete(
-  '/property/:id/delete',
+  '/api/property/:id/delete',
   checkSession,
   validator('property'),
   asyncHandler(Property.deleteUserProperty)
 );
 app.get(
-  '/properties',
+  '/api/properties',
   checkSession,
   validator('property'),
   asyncHandler(Property.getAllUserProperties)
 );
 app.get(
-  '/properties/address',
+  '/api/properties/address',
   checkSession,
   validator('property'),
   asyncHandler(Property.getPropertyByAddress)
 );
 app.get(
-  '/properties/maxsize',
+  '/api/properties/maxsize',
   checkSession,
   validator('property'),
   asyncHandler(Property.getUserPropertiesByMaxSize)
 );
 app.get(
-  '/properties/minsize',
+  '/api/properties/minsize',
   checkSession,
   validator('property'),
   asyncHandler(Property.getUserPropertiesByMinSize)
 );
 app.get(
-  '/properties/city',
+  '/api/properties/city',
   checkSession,
   validator('property'),
   asyncHandler(Property.getUserPropertiesByCity)
 );
 app.get(
-  '/properties/state',
+  '/api/properties/state',
   checkSession,
   validator('property'),
   asyncHandler(Property.getUserPropertiesByState)
 );
 app.get(
-  '/properties/type',
+  '/api/properties/type',
   checkSession,
   validator('property'),
   asyncHandler(Property.getUserPropertiesByType)
 );
 app.get(
-  '/properties/:tenantid',
+  '/api/properties/:tenantid',
   checkSession,
   validator('property'),
   asyncHandler(Property.getUserPropertiesByTenant)
 );
 app.get(
-  '/properties/opentickets',
+  '/api/properties/opentickets',
   checkSession,
   validator('property'),
   asyncHandler(Property.getAllUserOpenTicketProperties)
 );
 // Tenant routes
 app.post(
-  '/tenant/create',
+  '/api/tenant/create',
   checkSession,
   validator('tenant'),
   asyncHandler(Tenant.createTenant)
 );
 app.put(
-  '/tenant/:id/update',
+  '/api/tenant/:id/update',
   checkSession,
   validator('tenant'),
   asyncHandler(Tenant.updateTenant)
 );
 app.delete(
-  '/tenant/:id/delete',
+  '/api/tenant/:id/delete',
   checkSession,
   validator('tenant'),
   asyncHandler(Tenant.deleteTenant)
 );
 app.get(
-  '/tenant/:id',
+  '/api/tenant/:id',
   checkSession,
   validator('tenant'),
   asyncHandler(Tenant.getTenantById)
 );
 app.get(
-  '/tenant/email',
+  '/api/tenant/email',
   checkSession,
   validator('tenant'),
   asyncHandler(Tenant.getTenantByEmail)
 );
 app.get(
-  '/tenant/phone',
+  '/api/tenant/phone',
   checkSession,
   validator('tenant'),
   asyncHandler(Tenant.getTenantByPhone)
 );
 app.get(
-  '/tenants/:propertyid',
+  '/api/tenants/:propertyid',
   checkSession,
   validator('tenant'),
   asyncHandler(Tenant.getTenantsByProperty)
 );
 app.get(
-  '/tenants',
+  '/api/tenants',
   checkSession,
   validator('tenant'),
   asyncHandler(Tenant.getTenantsByUser)
 );
 // Lease routes
 app.post(
-  '/lease/create/:tenantid/:propertyid',
+  '/api/lease/create/:tenantid/:propertyid',
   checkSession,
   validator('lease'),
   asyncHandler(Lease.createNewLease)
 );
 app.put(
-  '/lease/:id/update',
+  '/api/lease/:id/update',
   checkSession,
   validator('lease'),
   asyncHandler(Lease.updateLease)
 );
 app.delete(
-  '/lease/:id/delete',
+  '/api/lease/:id/delete',
   validator('lease'),
   checkSession,
   asyncHandler(Lease.deleteLease)
 );
-app.get('/lease/:id', checkSession, validator('lease'), asyncHandler(Lease.getLeaseById));
-app.get('/leases', checkSession, validator('lease'), asyncHandler(Lease.getLeasesByUser));
+app.get('/api/lease/:id', checkSession, validator('lease'), asyncHandler(Lease.getLeaseById));
+app.get('/api/leases', checkSession, validator('lease'), asyncHandler(Lease.getLeasesByUser));
 app.get(
-  '/leases/minrent',
+  '/api/leases/minrent',
   checkSession,
   validator('lease'),
   asyncHandler(Lease.getLeasesByMinRent)
 );
 app.get(
-  '/leases/maxrent',
+  '/api/leases/maxrent',
   checkSession,
   validator('lease'),
   asyncHandler(Lease.getLeasesByMaxRent)
 );
 app.get(
-  '/leases/time',
+  '/api/leases/time',
   checkSession,
   validator('lease'),
   asyncHandler(Lease.getLeaseByTimeToEndDate)
 );
 app.get(
-  '/leases/expired',
+  '/api/leases/expired',
   checkSession,
   validator('lease'),
   asyncHandler(Lease.getExpiredLeases)
 );
 app.get(
-  '/leases/tenant/:tenantid',
+  '/api/leases/tenant/:tenantid',
   checkSession,
   validator('lease'),
   asyncHandler(Lease.getLeasesByTenant)
 );
 app.get(
-  '/leases/property/:propertyid',
+  '/api/leases/property/:propertyid',
   checkSession,
   validator('lease'),
   asyncHandler(Lease.getLeasesByTenant)
 );
 // Ticket routes
 app.post(
-  '/ticket/create/:tenantid/:propertyid',
+  '/api/ticket/create/:tenantid/:propertyid',
   checkSession,
   validator('ticket'),
   asyncHandler(Ticket.createNewTicket)
 );
 app.put(
-  '/ticket/:id/update',
+  '/api/ticket/:id/update',
   checkSession,
   validator('ticket'),
   asyncHandler(Ticket.updateTicket)
 );
 app.delete(
-  '/ticket/:id/delete',
+  '/api/ticket/:id/delete',
   checkSession,
   validator('ticket'),
   asyncHandler(Ticket.deleteTicket)
 );
 app.get(
-  '/ticket/:id',
+  '/api/ticket/:id',
   checkSession,
   validator('ticket'),
   asyncHandler(Ticket.getTicketById)
 );
 app.get(
-  '/tickets',
+  '/api/tickets',
   checkSession,
   validator('ticket'),
   asyncHandler(Ticket.getTicketsByUser)
 );
 app.get(
-  '/tickets/property/:propertyid',
+  '/api/tickets/property/:propertyid',
   checkSession,
   validator('ticket'),
   asyncHandler(Ticket.getTicketsByProperty)
 );
 app.get(
-  '/tickets/tenant/:tenantid',
+  '/api/tickets/tenant/:tenantid',
   checkSession,
   validator('ticket'),
   asyncHandler(Ticket.getTicketsByTenant)
 );
 app.get(
-  '/tickets/closed',
+  '/api/tickets/closed',
   checkSession,
   validator('ticket'),
   asyncHandler(Ticket.getClosedTickets)
 );
 app.get(
-  '/tickets/open',
+  '/api/tickets/open',
   checkSession,
   validator('ticket'),
   asyncHandler(Ticket.getOpenTickets)
