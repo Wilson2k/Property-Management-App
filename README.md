@@ -15,60 +15,12 @@ Then run the command below in your terminal.
   docker compose up -d
 ```
 
-## Backend Setup
+Then go to localhost on any browser on your machine.
 
-First make an .env file to configure your local PostgreSQL database and Redis server.
+## Backend Testing
 
-```bash
-  cd backend
-  touch .env
-```
+Unit tests written, need to mock Prisma client.
 
-In your .env file, configure your [Prisma connection URL](https://www.prisma.io/docs/reference/database-reference/connection-urls) to your liking or leave as is.
+## Frontend Testing
 
-```bash
-DB_USER=postgres
-DB_PASSWORD=postgrespw
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=testdb
-DB_SCHEMA=test
-DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?schema=${DB_SCHEMA}"
-REDIS_PORT=6379
-```
-
-Make sure you have [Docker](https://www.docker.com/)  running on your current machine. Then to startup your local PostgreSQL database and Redis server on Docker.
-
-```bash
-  npm install
-  npm run setup
-```
-
-Finally, to run the server locally.
-
-```bash
-  npm start
-```
-
-## Frontend Setup
-
-To setup the frontend locally, make an .env file to configure the port the frontend client will run on.
-
-```bash
-  cd frontend
-  touch .env
-```
-
-In your .env file, configure the port the API and client will run on to your liking.
-
-```bash
-REACT_APP_API_URL=http://localhost:8080/
-REACT_APP_CLIENT_URL=http://localhost:3000/
-```
-
-Then to run the frontend client locally.
-
-```bash
-  npm install
-  npm start
-```
+Coming soon.
