@@ -68,6 +68,12 @@ const getTenants = async () => {
   });
 }
 
+const getTenant = async (tenantId: number) => {
+  return await apiClient.get(`/tenant/${tenantId}`).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
 const getTenantsByProperty = async(propertyId: number) => {
   return await apiClient.get(`/tenants/${propertyId}`).catch((error: AxiosError) => {
     return error.response;
@@ -97,6 +103,7 @@ export {
   createProperty,
   getProperty,
   updateProperty,
+  getTenant,
   getTenants,
   getTenantsByProperty,
   getLeases,
