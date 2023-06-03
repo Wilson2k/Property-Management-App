@@ -49,6 +49,12 @@ const getProperty = async (propertyId: number) => {
   });
 }
 
+const getPropertyIncome = async (propertyId: number) => {
+  return await apiClient.get(`/property/${propertyId}/income`).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
 const createProperty = async (newProperty: PropertyTypes.PropertyCreateContext) => {
   return await apiClient.post('/property/create', newProperty).catch((error: AxiosError) => {
     return error.response;
@@ -87,9 +93,21 @@ const getLeases = async () => {
   });
 }
 
+const getLease = async (leaseId: number) => {
+  return await apiClient.get(`/lease/${leaseId}`).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
 // Ticket Routes
 const getTickets = async () => {
   return await apiClient.get('/tickets').catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
+const getTicket = async (ticketId: number) => {
+  return await apiClient.get(`/lease/${ticketId}`).catch((error: AxiosError) => {
     return error.response;
   });
 }
@@ -102,10 +120,13 @@ export {
   getProperties,
   createProperty,
   getProperty,
+  getPropertyIncome,
   updateProperty,
   getTenant,
   getTenants,
   getTenantsByProperty,
   getLeases,
-  getTickets
+  getLease,
+  getTickets,
+  getTicket
 }
