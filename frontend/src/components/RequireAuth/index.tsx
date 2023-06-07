@@ -1,14 +1,9 @@
-
-import { useQuery } from "@tanstack/react-query";
-import { getUser } from "../../utils/ApiService";
 import { Navigate } from "react-router-dom";
 import React from "react";
+import { useProfile } from "../Hooks/User/useProfile";
 
 export default function RequireAuth({ children }: { children: React.ReactNode }) {
-    const { status, data } = useQuery({
-        queryKey: ['profile'],
-        queryFn: getUser,
-    });
+    const { status, data } = useProfile();
     if (status === 'loading') {
         return <span>Loading...</span>;
     }

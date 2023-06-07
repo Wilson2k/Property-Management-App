@@ -1,17 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import { getLeases } from "../../utils/ApiService";
 import { Row, Col, Container, Card, Button } from "react-bootstrap";
 import { NavDropdown } from "react-bootstrap";
 import PageFilter from "../../components/PageFilter";
 import SideNav from "../../components/SideNav";
 import { useNavigate } from "react-router-dom";
+import { useLeases } from "../../components/Hooks/Leases/useLeases";
 
 export default function LeasePage() {
     const navigate = useNavigate();
-    const { status, data } = useQuery({
-        queryKey: ['leases'],
-        queryFn: getLeases,
-    });
+    const { status, data } = useLeases();
     if (status === 'loading') {
         return <span>Loading...</span>;
     }

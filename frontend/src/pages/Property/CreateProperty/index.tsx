@@ -1,13 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import { getUser } from "../../../utils/ApiService";
 import * as PropertyTypes from '../../../types/Property';
 import CreatePropertyForm from "./createForm";
+import { useProfile } from "../../../components/Hooks/User/useProfile";
 
 export default function CreatePropertyPage() {
-    const { status, data } = useQuery({
-        queryKey: ['profile'],
-        queryFn: getUser,
-    });
+    const { status, data } = useProfile();
     if (status === 'loading') {
         return <span>Loading...</span>;
     }

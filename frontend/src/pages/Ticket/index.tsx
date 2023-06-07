@@ -1,17 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import { getTickets } from "../../utils/ApiService";
 import { Row, Col, Container, Card, Button } from "react-bootstrap";
 import { NavDropdown } from "react-bootstrap";
 import PageFilter from "../../components/PageFilter";
 import SideNav from "../../components/SideNav";
 import { useNavigate } from "react-router-dom";
+import { useTickets } from "../../components/Hooks/Tickets/useTickets";
 
 export default function TicketPage() {
     const navigate = useNavigate();
-    const { status, data } = useQuery({
-        queryKey: ['tickets'],
-        queryFn: getTickets,
-    });
+    const { status, data } = useTickets();
     if (status === 'loading') {
         return <span>Loading...</span>;
     }

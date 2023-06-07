@@ -1,17 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import { getTenants } from "../../utils/ApiService";
 import { Row, Col, Container, Card } from "react-bootstrap";
 import { NavDropdown, Button } from "react-bootstrap";
 import PageFilter from "../../components/PageFilter";
 import SideNav from "../../components/SideNav";
 import { useNavigate } from "react-router-dom";
+import { useTenants } from "../../components/Hooks/Tenants/useTenants";
 
 export default function TenantPage() {
     const navigate = useNavigate();
-    const { status, data } = useQuery({
-        queryKey: ['tenants'],
-        queryFn: getTenants,
-    });
+    const { status, data } = useTenants();
     if (status === 'loading') {
         return <span>Loading...</span>;
     }
