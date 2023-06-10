@@ -9,6 +9,7 @@ import DashBoardPage from './pages/User/DashboardPage';
 import ProfilePage from './pages/User/ProfilePage';
 import PropertyPage from './pages/Property';
 import TenantPage from './pages/Tenant';
+import CreateTenantPage from './pages/Tenant/CreateTenant';
 import LeasePage from './pages/Lease';
 import TicketPage from './pages/Ticket';
 import CreatePropertyPage from './pages/Property/CreateProperty';
@@ -40,6 +41,7 @@ function App() {
           <Route path="/leases" element={<RequireAuth> <LeasePage /></RequireAuth>} />
           <Route path="/tickets" element={<RequireAuth> <TicketPage /> </RequireAuth>} />
           <Route path="/tenants" element={<RequireAuth> <TenantPage /></RequireAuth>} />
+          <Route path="/tenant/create" element={<RequireAuth> <CreateTenantPage /></RequireAuth>} />
           <Route path="/property/create" element={<RequireAuth><CreatePropertyPage /></RequireAuth>} />
           <Route path="/property/:id" element={<RequireAuth> <PropertyInfoPage /></RequireAuth>} />
           <Route path="/property/edit/:id" element={<RequireAuth> <EditPropertyPage /></RequireAuth>} />

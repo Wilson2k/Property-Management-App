@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useProperties } from "../../components/Hooks/Property/useProperties";
 import PageFilter from "../../components/PageFilter";
 import SideNav from "../../components/SideNav";
+import { PropertyContext } from "../../types/Property";
 
 export default function PropertyPage() {
     const navigate = useNavigate();
@@ -39,9 +40,9 @@ export default function PropertyPage() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data?.data.map((property: any) => {
+                                        {data?.data.map((property: PropertyContext) => {
                                             return (
-                                                <tr key={property.address + property.city + property.state} onClick={() => navigate(`/property/${property.id}`)}>
+                                                <tr key={property.id} onClick={() => navigate(`/property/${property.id}`)}>
                                                     <td>{property.address}</td>
                                                     <td>{property.city}</td>
                                                     <td>{property.state}</td>

@@ -1,8 +1,8 @@
 import Form from 'react-bootstrap/Form';
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form';
-import { registerUser, getUser } from '../../../utils/ApiService';
-import { useEffect, useState } from 'react';
+import { registerUser } from '../../../utils/ApiService';
+import { useState } from 'react';
 import { useNavigate } from "react-router-dom"
 import * as UserTypes from '../../../types/User';
 

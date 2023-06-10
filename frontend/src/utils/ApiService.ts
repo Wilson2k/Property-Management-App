@@ -2,6 +2,7 @@ import axios from "axios";
 import { AxiosError } from 'axios';
 import * as UserTypes from '../types/User';
 import * as PropertyTypes from '../types/Property'
+import * as TenantTypes from '../types/Tenant'
 
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -80,6 +81,12 @@ const getTenant = async (tenantId: number) => {
   });
 }
 
+const createTenant = async (newTenant: TenantTypes.TenantCreateContext) => {
+  return await apiClient.post('/tenant/create', newTenant).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
 const getTenantsByProperty = async(propertyId: number) => {
   return await apiClient.get(`/tenants/${propertyId}`).catch((error: AxiosError) => {
     return error.response;
@@ -124,6 +131,7 @@ export {
   updateProperty,
   getTenant,
   getTenants,
+  createTenant,
   getTenantsByProperty,
   getLeases,
   getLease,

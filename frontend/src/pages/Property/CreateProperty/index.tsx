@@ -1,6 +1,6 @@
 import * as PropertyTypes from '../../../types/Property';
-import CreatePropertyForm from "./createForm";
-import { useProfile } from "../../../components/Hooks/User/useProfile";
+import CreatePropertyForm from './createForm';
+import { useProfile } from '../../../components/Hooks/User/useProfile';
 
 export default function CreatePropertyPage() {
     const { status, data } = useProfile();

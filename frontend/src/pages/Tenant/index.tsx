@@ -4,6 +4,7 @@ import PageFilter from "../../components/PageFilter";
 import SideNav from "../../components/SideNav";
 import { useNavigate } from "react-router-dom";
 import { useTenants } from "../../components/Hooks/Tenants/useTenants";
+import { TenantContext } from "../../types/Tenant";
 
 export default function TenantPage() {
     const navigate = useNavigate();
@@ -41,11 +42,11 @@ export default function TenantPage() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data?.data.map((tenant: any) => {
+                                        {data?.data.map((tenant: TenantContext) => {
                                             return (
-                                                <tr key={tenant.email} onClick={() => navigate(`/tenant/${tenant.id}`)}>
-                                                    <td>{tenant.fname}</td>
-                                                    <td>{tenant.lname}</td>
+                                                <tr key={tenant.id} onClick={() => navigate(`/tenant/${tenant.id}`)}>
+                                                    <td>{tenant.firstName}</td>
+                                                    <td>{tenant.lastName}</td>
                                                     <td>{tenant.email}</td>
                                                     <td>{tenant.phone}</td>
                                                 </tr>
