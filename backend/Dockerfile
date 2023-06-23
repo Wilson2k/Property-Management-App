@@ -11,6 +11,8 @@ RUN npm ci
 # Copy the application source
 COPY . .
 
+RUN apt-get -qy update && apt-get -qy install openssl
+
 # Generate Prisma schema onto postgres
 RUN npx prisma generate
 
