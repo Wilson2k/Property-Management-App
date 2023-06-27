@@ -39,7 +39,7 @@ export default function PropertyInfoPage() {
                         <Container fluid className="overflow-auto" style={{ maxHeight: '60vh' }}>
                             <Row lg={2} xs={1} className="gy-5">
                                 <Col style={{ height: '375px' }}>
-                                    <Card className="h-100">
+                                    <Card className="h-100" style={{overflow: 'auto'}}>
                                         <h6 style={{ marginTop: 16, marginBottom: 0 }}>Monthly Revenue</h6>
                                         <hr style={{ border: '1px solid black' }} />
                                         <div>
@@ -48,7 +48,7 @@ export default function PropertyInfoPage() {
                                     </Card>
                                 </Col>
                                 <Col style={{ height: '375px' }}>
-                                    <Card className="h-100">
+                                    <Card className="h-100" style={{overflow: 'auto'}}>
                                         <h6 style={{ marginTop: 16, marginBottom: 0 }}>Tenants</h6>
                                         <hr style={{ border: '1px solid black' }} />
                                         <div>
@@ -57,7 +57,7 @@ export default function PropertyInfoPage() {
                                     </Card>
                                 </Col>
                                 <Col style={{ height: '375px' }}>
-                                    <Card className="h-100">
+                                    <Card className="h-100" style={{overflow: 'auto'}}>
                                         <h6 style={{ marginTop: 16, marginBottom: 0 }}>Leases</h6>
                                         <hr style={{ border: '1px solid black' }} />
                                         <div>
@@ -66,7 +66,7 @@ export default function PropertyInfoPage() {
                                     </Card>
                                 </Col>
                                 <Col style={{ height: '375px' }}>
-                                    <Card className="h-100">
+                                    <Card className="h-100" style={{overflow: 'auto'}}>
                                         <h6 style={{ marginTop: 16, marginBottom: 0 }}>Tickets</h6>
                                         <hr style={{ border: '1px solid black' }} />
                                         <div>

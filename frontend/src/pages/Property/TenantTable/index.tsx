@@ -22,7 +22,7 @@ export default function TenantTable(props: TenantTableProps) {
     }
     return (
         <Container fluid>
-            <Card>
+            <Card style={{marginBottom: 16}}>
                 <div className="table-responsive" style={{ maxHeight: '90vh' }}>
                     <table className="table table-striped table-hover my-0">
                         <thead>

@@ -33,8 +33,8 @@ export default function PropertyAddTenantPage() {
     };
 
     const FormSubmit = async () => {
-        const response = await addPropertyMultTenants(propertyId,{tenantIds: tenantIds})
-        console.log(response)
+        const response = await addPropertyMultTenants(propertyId, { tenantIds: tenantIds });
+        console.log(response);
         if (response?.status === 200) {
             navigate(`/property/${propertyId}`);
         }
@@ -83,9 +83,14 @@ export default function PropertyAddTenantPage() {
                                     <tfoot>
                                         <tr>
                                             <td colSpan={5}>
-                                                <Button onClick={FormSubmit}>
-                                                    Add Selected Tenants
-                                                </Button>
+                                                {tenantIds.length === 0 ?
+                                                    <Button onClick={() => navigate(`/tenant/create`)}>
+                                                        Create a new tenant
+                                                    </Button> :
+                                                    <Button onClick={FormSubmit}>
+                                                        Add Selected Tenants
+                                                    </Button>
+                                                }
                                             </td>
                                         </tr>
                                     </tfoot>
