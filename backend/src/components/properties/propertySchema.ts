@@ -1,9 +1,11 @@
-import Joi from 'joi';
+import Joi, { number } from 'joi';
 
 const propertySchema = Joi.object({
   id: Joi.number(),
 
   tenantId: Joi.number(),
+
+  tenantIds: Joi.array().items(Joi.number()),
 
   ownerId: Joi.string().max(255),
 

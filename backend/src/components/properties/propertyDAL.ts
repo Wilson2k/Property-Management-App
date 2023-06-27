@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, Property } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PropertyCreateContext, PropertyUpdateInput } from './property';
 const prisma = new PrismaClient();
@@ -81,6 +81,27 @@ const addPropertyTenant = async (propertyId: number, tenantId: number) => {
     data: {
       tenants: {
         connect: [{ id: tenantId }],
+      },
+    },
+    include: {
+      tenants: true,
+      leases: true,
+    },
+  });
+  return query;
+};
+
+const addPropertyMultTenants = async (propertyId: number, tenantIds: number[]) => {
+  const tenantIdInput = tenantIds.map((tenantId: number) => {
+    return {
+      id: tenantId
+    };
+  })
+  const query = await prisma.property.update({
+    where: { id: propertyId },
+    data: {
+      tenants: {
+        connect: tenantIdInput,
       },
     },
     include: {
@@ -264,5 +285,6 @@ export {
   updateProperty,
   removePropertyTenant,
   addPropertyTenant,
+  addPropertyMultTenants,
   deleteProperty,
 };

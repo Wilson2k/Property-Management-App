@@ -27,6 +27,7 @@ interface PropertyContext {
   size?: number;
   ownerId?: string;
   tenantId?: number;
+  tenantIds?: number[];
 }
 
 interface PropertyTenantContext {

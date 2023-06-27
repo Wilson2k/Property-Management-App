@@ -68,6 +68,18 @@ const updateProperty = async (propertyId: number, newPropertyInfo: PropertyTypes
   });
 }
 
+const addPropertyTenant = async(propertyId: number, tenantId: number) => {
+  return await apiClient.put(`/property/${propertyId}/add/${tenantId}`).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
+const addPropertyMultTenants = async(propertyId: number, newTenants: PropertyTypes.PropertyContext) => {
+  return await apiClient.put(`/property/${propertyId}/add_tenants`, newTenants).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
 // Tenant routes
 const getTenants = async () => {
   return await apiClient.get('/tenants').catch((error: AxiosError) => {
@@ -89,6 +101,12 @@ const createTenant = async (newTenant: TenantTypes.TenantCreateContext) => {
 
 const getTenantsByProperty = async(propertyId: number) => {
   return await apiClient.get(`/tenants/${propertyId}`).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
+const getTenantsNotOnProperty = async(propertyId: number) => {
+  return await apiClient.get(`/tenants/not/${propertyId}`).catch((error: AxiosError) => {
     return error.response;
   });
 }
@@ -129,10 +147,13 @@ export {
   getProperty,
   getPropertyIncome,
   updateProperty,
+  addPropertyTenant,
+  addPropertyMultTenants,
   getTenant,
   getTenants,
   createTenant,
   getTenantsByProperty,
+  getTenantsNotOnProperty,
   getLeases,
   getLease,
   getTickets,

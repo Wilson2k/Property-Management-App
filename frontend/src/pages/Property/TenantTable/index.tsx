@@ -2,6 +2,7 @@ import { Container, Card } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { usePropertyTenants } from "../../../components/Hooks/Property/usePropertyTenants";
+import { TenantContext } from "../../../types/Tenant";
 
 interface TenantTableProps {
     id: number;
@@ -33,7 +34,7 @@ export default function TenantTable(props: TenantTableProps) {
                             </tr>
                         </thead>
                         <tbody>
-                            {data?.data.map((tenant: any) => {
+                            {data?.data.map((tenant: TenantContext) => {
                                 return (
                                     <tr key={tenant.email} onClick={() => navigate(`/tenant/${tenant.id}`)}>
                                         <td>{tenant.firstName}</td>
@@ -47,7 +48,7 @@ export default function TenantTable(props: TenantTableProps) {
                         <tfoot>
                             <tr>
                                 <td colSpan={5}>
-                                    <Button onClick={() => navigate(`/tenant/create`)}>Add a tenant</Button>
+                                    <Button onClick={() => navigate(`/property/${props.id}/add_tenants`)}>Add a tenant</Button>
                                 </td>
                             </tr>
                         </tfoot>

@@ -21,7 +21,6 @@ export default function UpdatePropertyForm(props: {id: number, oldData: Property
         },
     });
     const FormSubmit = async (property: PropertyTypes.PropertyUpdateInput) => {
-        console.log(property)
         setLoading(true);
         const response = await mutateAsync(property);
         setResponse(response?.status || 500);

@@ -77,10 +77,26 @@ const getTenantsByProperty = async (propertyId: number) => {
   return query;
 };
 
+const getTenantsByNotProperty = async (propertyId: number) => {
+  const query = await prisma.tenant.findMany({
+    where: {
+      NOT: {
+        properties: {
+          some: {
+            id: propertyId,
+          },
+        },
+      },
+    },
+  });
+  return query;
+};
+
 export {
   createNewTenant,
   getTenantByEmail,
   getTenantsByProperty,
+  getTenantsByNotProperty,
   getTenantById,
   getTenantsByUser,
   updateTenant,

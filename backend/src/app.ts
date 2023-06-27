@@ -108,6 +108,12 @@ app.put(
   asyncHandler(Property.addPropertyTenant)
 );
 app.put(
+  '/api/property/:id/add_tenants',
+  checkSession,
+  validator('property'),
+  asyncHandler(Property.addPropertyTenants)
+);
+app.put(
   '/api/property/:id/remove/:tenantid',
   checkSession,
   validator('property'),
@@ -215,6 +221,12 @@ app.get(
   checkSession,
   validator('tenant'),
   asyncHandler(Tenant.getTenantsByProperty)
+);
+app.get(
+  '/api/tenants/not/:propertyid',
+  checkSession,
+  validator('tenant'),
+  asyncHandler(Tenant.getTenantsByNotProperty)
 );
 app.get(
   '/api/tenants',

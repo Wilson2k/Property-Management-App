@@ -293,6 +293,77 @@ const addPropertyTenantService = async (
   return propertyReturn;
 };
 
+const addPropertyMultTenantsService = async (
+  propertyContext: PropertyContexts.PropertyContext
+) => {
+  const propertyReturn: PropertyContexts.PropertyReturnContext = {
+    message: 'Error adding tenants to property',
+    status: 400,
+  };
+  if (
+    propertyContext.id != null &&
+    propertyContext.tenantIds != null &&
+    propertyContext.tenantIds.length != 0 &&
+    propertyContext.ownerId != null
+  ) {
+    console.log(propertyContext.tenantIds)
+    // Check that inputs are numeric
+    const propertyId = +propertyContext.id;
+    if (isNaN(propertyId) || propertyId < 0) {
+      propertyReturn.message = 'Bad property id';
+      propertyReturn.status = 422;
+      return propertyReturn;
+    }
+    // Check all tenant ids are numeric
+    for (const tenantId of propertyContext.tenantIds) {
+      if (isNaN(tenantId) || tenantId < 0) {
+        propertyReturn.message = 'Bad tenant id';
+        propertyReturn.status = 422;
+        return propertyReturn;
+      }
+    }
+    console.log('Pass Numeric')
+    // Check that user made property
+    const ownerId = Number(getDatabaseId('user', propertyContext.ownerId));
+    const propertyRecord = await PropertyDAL.getPropertyById(propertyId);
+    if (propertyRecord == null) {
+      propertyReturn.message = 'Property not found';
+      propertyReturn.status = 404;
+      return propertyReturn;
+    }
+    if (propertyRecord.ownerId != ownerId) {
+      propertyReturn.message = 'Not authorized to get property';
+      propertyReturn.status = 401;
+      return propertyReturn;
+    }
+    // Check that user made all tenants
+    for (const tenantId of propertyContext.tenantIds) {
+      const tenantRecord = await TenantDAL.getTenantById(tenantId);
+      if (tenantRecord == null) {
+        propertyReturn.message = 'Tenant not found';
+        propertyReturn.status = 404;
+        return propertyReturn;
+      }
+      if (tenantRecord.userId != ownerId) {
+        propertyReturn.message = 'Not authorized to get tenant';
+        propertyReturn.status = 401;
+        return propertyReturn;
+      }
+    }
+    console.log('Pass made all tenants')
+    // Add tenants to property after verifying info
+    const updateProperty = await PropertyDAL.addPropertyMultTenants(propertyId, propertyContext.tenantIds);
+    console.log(updateProperty)
+    if (updateProperty != null) {
+      console.log('Updated prop')
+      propertyReturn.message = 'Tenants added to property';
+      propertyReturn.fullData = updateProperty;
+      propertyReturn.status = 200;
+    }
+  }
+  return propertyReturn;
+};
+
 const deletePropertyService = async (
   propertyContext: PropertyContexts.PropertyContext
 ) => {
@@ -709,4 +780,5 @@ export {
   deletePropertyService,
   removePropertyTenantService,
   addPropertyTenantService,
+  addPropertyMultTenantsService,
 };

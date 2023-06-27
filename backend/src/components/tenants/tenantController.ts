@@ -109,6 +109,20 @@ const getTenantsByProperty = async (req: CustomRequest<TenantContext>, res: Resp
   }
 };
 
+// Get tenants that are not associated with property
+const getTenantsByNotProperty = async (req: CustomRequest<TenantContext>, res: Response) => {
+  const tenantContext: TenantContext = {
+    propertyId: +req.params.propertyid,
+    userId: req.session.user,
+  };
+  const tenantData = await TenantServices.getTenantsByNotProperty(tenantContext);
+  if (tenantData.status === 200 && tenantData.data !== undefined) {
+    res.status(tenantData.status).send(tenantData.data);
+  } else {
+    res.status(tenantData.status).send(tenantData.message);
+  }
+};
+
 // Get tenants by user
 const getTenantsByUser = async (req: CustomRequest<TenantContext>, res: Response) => {
   const tenantContext: TenantContext = {
@@ -127,6 +141,7 @@ export {
   getTenantByEmail,
   getTenantByPhone,
   getTenantsByProperty,
+  getTenantsByNotProperty,
   getTenantsByUser,
   createTenant,
   updateTenant,

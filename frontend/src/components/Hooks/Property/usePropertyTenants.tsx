@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { getTenantsByProperty } from "../../../utils/ApiService";
 
-export const usePropertyTenants = (id: number) => {
+export const usePropertyTenants = (propertyId: number) => {
     const { status, data } = useQuery({
-        queryKey: [id],
-        queryFn: () => getTenantsByProperty(id),
+        queryKey: [propertyId],
+        queryFn: () => getTenantsByProperty(propertyId),
     });
     return {status, data}
 }

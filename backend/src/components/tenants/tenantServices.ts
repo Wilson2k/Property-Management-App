@@ -122,6 +122,48 @@ const getTenantsByProperty = async (tenantContext: TenantContexts.TenantContext)
   return tenantReturn;
 };
 
+// Returns list of tenants that don't within a specific property
+const getTenantsByNotProperty = async (tenantContext: TenantContexts.TenantContext) => {
+  const tenantReturn: TenantContexts.MultTenantReturnContext = {
+    message: 'Error getting tenants',
+    status: 400,
+  };
+  if (tenantContext.propertyId != null && tenantContext.userId != null) {
+    const propertyId = +tenantContext.propertyId;
+    if (isNaN(propertyId) || propertyId < 0) {
+      tenantReturn.status = 422;
+      tenantReturn.message = 'Bad property id';
+      return tenantReturn;
+    }
+    // Check property exists
+    const propertyRecord = await getPropertyById(propertyId);
+    if (propertyRecord == null) {
+      tenantReturn.status = 404;
+      tenantReturn.message = 'Property not found';
+      return tenantReturn;
+    }
+    // Check user owns property
+    const user = Number(getDatabaseId('user', tenantContext.userId));
+    if (propertyRecord.ownerId != user) {
+      tenantReturn.status = 401;
+      tenantReturn.message = 'Not authorized to get property';
+      return tenantReturn;
+    }
+    const tenants = await TenantDAL.getTenantsByNotProperty(propertyId);
+    if (tenants !== null) {
+      if (tenants.length === 0) {
+        tenantReturn.message = 'All tenants are associated with this property';
+      } else {
+        tenantReturn.message = 'Tenants found';
+      }
+      tenantReturn.status = 200;
+      tenantReturn.data = tenants;
+      return tenantReturn;
+    }
+  }
+  return tenantReturn;
+};
+
 // Returns list of tenants that specific user made
 const getTenantsByUser = async (tenantContext: TenantContexts.TenantContext) => {
   const tenantReturn: TenantContexts.MultTenantReturnContext = {
@@ -297,5 +339,6 @@ export {
   getTenantByIdService,
   getTenantByPhoneService,
   getTenantsByProperty,
+  getTenantsByNotProperty,
   getTenantsByUser,
 };

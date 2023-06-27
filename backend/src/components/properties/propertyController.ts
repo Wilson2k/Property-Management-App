@@ -84,6 +84,23 @@ const addPropertyTenant = async (req: CustomRequest<PropertyContext>, res: Respo
   }
 };
 
+// Add property multiple tenant
+const addPropertyTenants = async (req: CustomRequest<PropertyContext>, res: Response) => {
+  const propertyContext: PropertyContext = {
+    id: +req.params.id,
+    tenantIds: req.body.tenantIds,
+    ownerId: req.session.user,
+  };
+  const updatedProperty = await PropertyServices.addPropertyMultTenantsService(
+    propertyContext
+  );
+  if (updatedProperty.status === 200 && updatedProperty.fullData !== undefined) {
+    res.status(updatedProperty.status).send(updatedProperty.fullData);
+  } else {
+    res.status(updatedProperty.status).send(updatedProperty.message);
+  }
+};
+
 // Delete property
 const deleteUserProperty = async (req: CustomRequest<PropertyContext>, res: Response) => {
   const propertyContext: PropertyContext = {
@@ -324,6 +341,7 @@ export {
   createNewUserProperty,
   updateProperty,
   addPropertyTenant,
+  addPropertyTenants,
   removePropertyTenant,
   deleteUserProperty,
 };
