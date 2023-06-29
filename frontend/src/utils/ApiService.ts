@@ -80,6 +80,12 @@ const addPropertyMultTenants = async(propertyId: number, newTenants: PropertyTyp
   });
 }
 
+const getPropertyLeases = async(propertyId: number) => {
+  return await apiClient.put(`/leases/property/${propertyId}`).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
 // Tenant routes
 const getTenants = async () => {
   return await apiClient.get('/tenants').catch((error: AxiosError) => {
@@ -146,6 +152,7 @@ export {
   createProperty,
   getProperty,
   getPropertyIncome,
+  getPropertyLeases,
   updateProperty,
   addPropertyTenant,
   addPropertyMultTenants,

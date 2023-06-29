@@ -1,7 +1,8 @@
 import SideNav from "../../../components/SideNav";
 import { Row, Col, Container } from "react-bootstrap";
 import { Card } from "react-bootstrap";
-import TenantTable from "../TenantTable";
+import TenantTable from "../InfoBoxes/TenantTable";
+import LeaseTable from "../InfoBoxes/LeaseTable";
 import { useProperty } from "../../../components/Hooks/Property/useProperty";
 
 export default function PropertyInfoPage() {
@@ -61,7 +62,7 @@ export default function PropertyInfoPage() {
                                         <h6 style={{ marginTop: 16, marginBottom: 0 }}>Leases</h6>
                                         <hr style={{ border: '1px solid black' }} />
                                         <div>
-                                            Table
+                                            <LeaseTable id={data.data.id}/>
                                         </div>
                                     </Card>
                                 </Col>

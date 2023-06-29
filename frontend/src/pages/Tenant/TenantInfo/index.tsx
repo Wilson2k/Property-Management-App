@@ -1,10 +1,13 @@
+import { useParams } from "react-router-dom";
 import SideNav from "../../../components/SideNav";
 import { Row, Col, Container } from "react-bootstrap";
 import { Card } from "react-bootstrap";
 import { useTenant } from "../../../components/Hooks/Tenants/useTenant";
 
 export default function TenantInfoPage() {
-    const {status, data} = useTenant();
+    const { id } = useParams() as { id: string };
+    const tenantId = +id
+    const {status, data} = useTenant(tenantId);
     if (status === 'loading') {
         return <span>Loading...</span>;
     }

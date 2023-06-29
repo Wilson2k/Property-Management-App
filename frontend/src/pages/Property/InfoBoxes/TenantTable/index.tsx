@@ -1,8 +1,8 @@
 import { Container, Card } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { usePropertyTenants } from "../../../components/Hooks/Property/usePropertyTenants";
-import { TenantContext } from "../../../types/Tenant";
+import { usePropertyTenants } from "../../../../components/Hooks/Property/usePropertyTenants";
+import { TenantContext } from "../../../../types/Tenant";
 
 interface TenantTableProps {
     id: number;
