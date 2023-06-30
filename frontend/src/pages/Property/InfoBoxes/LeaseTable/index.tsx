@@ -38,7 +38,7 @@ export default function LeaseTable(props: LeaseTableProps) {
                             {propertyLeaseData.data.data.map((lease: LeaseContext) => {
                                 return (
                                     <tr key={lease.id} onClick={() => navigate(`/lease/${lease.id}`)}>
-                                        <td>{lease.tenantId}</td>
+                                        <td>{lease.tenant?.firstName} {lease.tenant?.lastName}</td>
                                         <td>{lease.startDate?.toDateString()}</td>
                                         <td>{lease.endDate?.toDateString()}</td>
                                         <td>{lease.monthlyRent}</td>

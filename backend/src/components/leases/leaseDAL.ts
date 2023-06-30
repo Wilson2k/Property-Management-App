@@ -145,6 +145,9 @@ const getLeasesByProperty = async (userId: number, propertyId: number) => {
         address: 'asc',
       },
     },
+    include: {
+      tenant: true
+    }
   });
   return query;
 };

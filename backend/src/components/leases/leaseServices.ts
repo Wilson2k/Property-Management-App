@@ -423,7 +423,7 @@ const getLeasesByPropertyService = async (leaseContext: LeaseContexts.LeaseConte
     const findLeases = await LeaseDAL.getLeasesByProperty(ownerId, propertyId);
     if (findLeases !== null) {
       leaseReturn.message = 'Owner Leases found';
-      leaseReturn.data = findLeases;
+      leaseReturn.tenantData = findLeases;
       leaseReturn.status = 200;
     }
   }

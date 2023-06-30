@@ -147,8 +147,8 @@ const getLeasesByProperty = async (req: CustomRequest<LeaseContext>, res: Respon
     propertyId: +req.params.propertyid,
   };
   const leaseData = await LeaseServices.getLeasesByPropertyService(leaseContext);
-  if (leaseData.status === 200 && leaseData.data !== undefined) {
-    res.status(leaseData.status).send(leaseData.data);
+  if (leaseData.status === 200 && leaseData.tenantData !== undefined) {
+    res.status(leaseData.status).send(leaseData.tenantData);
   } else {
     res.status(leaseData.status).send(leaseData.message);
   }

@@ -1,3 +1,5 @@
+import { TenantContext } from "./Tenant";
+
 interface LeaseCreateContext {
     startDate: Date;
     endDate: Date;
@@ -15,6 +17,7 @@ interface LeaseContext {
     months?: number;
     monthlyRent?: number;
     tenantId?: number;
+    tenant?: TenantContext;
     propertyId?: number;
     ownerId?: string;
 }

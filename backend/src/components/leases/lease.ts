@@ -1,4 +1,12 @@
-import { Lease } from '@prisma/client';
+import { Lease, Prisma } from '@prisma/client';
+
+const leaseIncludeTenant = Prisma.validator<Prisma.LeaseInclude>()({
+  tenant: true,
+});
+
+type LeaseIncludeTenantType = Prisma.LeaseGetPayload<{
+  include: typeof leaseIncludeTenant;
+}>;
 
 interface LeaseCreateContext {
   startDate: Date;
@@ -39,6 +47,7 @@ interface LeaseReturnContext {
 interface MultLeaseReturnContext {
   status: number;
   data?: Lease[];
+  tenantData?: LeaseIncludeTenantType[];
   message: string;
 }
 

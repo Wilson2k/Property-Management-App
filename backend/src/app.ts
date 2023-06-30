@@ -50,6 +50,7 @@ app.use(
     },
     resave: false,
     saveUninitialized: false,
+    // Place secret somewhere else in prod
     secret: 'secret',
   })
 );
