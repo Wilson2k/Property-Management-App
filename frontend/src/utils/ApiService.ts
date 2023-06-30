@@ -4,8 +4,10 @@ import * as UserTypes from '../types/User';
 import * as PropertyTypes from '../types/Property'
 import * as TenantTypes from '../types/Tenant'
 
+
+const apiURL = process.env.NODE_ENV === "production" ? 'http://localhost/api/' : 'http://localhost:8080/api/';
 const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: apiURL,
   headers: {
     "Content-type": "application/json",
   },

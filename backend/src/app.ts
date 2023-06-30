@@ -29,7 +29,7 @@ declare module 'express-session' {
 dotenv.config();
 
 const app = express();
-const redisClient = new Redis(6379, "redis");
+const redisClient = new Redis(6379, `${process.env.REDIS_HOST}`);
 const RedisStore = connectRedis(session);
 
 app.use(bodyParser.json());
@@ -41,7 +41,7 @@ app.use(cors({
 }));
 app.use(
   session({
-    store: new RedisStore({ host: 'redis', port: 6379, client: redisClient }),
+    store: new RedisStore({ host: `${process.env.REDIS_HOST}`, port: 6379, client: redisClient }),
     cookie: {
       // Set true on production
       secure: false,
