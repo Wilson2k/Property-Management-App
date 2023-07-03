@@ -290,7 +290,7 @@ app.get(
   '/api/leases/property/:propertyid',
   checkSession,
   validator('lease'),
-  asyncHandler(Lease.getLeasesByTenant)
+  asyncHandler(Lease.getLeasesByProperty)
 );
 // Ticket routes
 app.post(

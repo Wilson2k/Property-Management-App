@@ -306,7 +306,6 @@ const addPropertyMultTenantsService = async (
     propertyContext.tenantIds.length != 0 &&
     propertyContext.ownerId != null
   ) {
-    console.log(propertyContext.tenantIds)
     // Check that inputs are numeric
     const propertyId = +propertyContext.id;
     if (isNaN(propertyId) || propertyId < 0) {
@@ -322,7 +321,6 @@ const addPropertyMultTenantsService = async (
         return propertyReturn;
       }
     }
-    console.log('Pass Numeric')
     // Check that user made property
     const ownerId = Number(getDatabaseId('user', propertyContext.ownerId));
     const propertyRecord = await PropertyDAL.getPropertyById(propertyId);
@@ -350,12 +348,9 @@ const addPropertyMultTenantsService = async (
         return propertyReturn;
       }
     }
-    console.log('Pass made all tenants')
     // Add tenants to property after verifying info
     const updateProperty = await PropertyDAL.addPropertyMultTenants(propertyId, propertyContext.tenantIds);
-    console.log(updateProperty)
     if (updateProperty != null) {
-      console.log('Updated prop')
       propertyReturn.message = 'Tenants added to property';
       propertyReturn.fullData = updateProperty;
       propertyReturn.status = 200;

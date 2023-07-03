@@ -3,7 +3,7 @@ import { getPropertyLeases } from "../../../utils/ApiService";
 
 export const usePropertyLeases = (propertyId: number) => {
     const { status, data } = useQuery({
-        queryKey: [propertyId],
+        queryKey: ['propertyLease', propertyId],
         queryFn: () => getPropertyLeases(propertyId),
     });
     return {status, data}

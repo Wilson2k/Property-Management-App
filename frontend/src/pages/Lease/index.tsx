@@ -14,6 +14,10 @@ export default function LeasePage() {
     if (status === 'error') {
         return <span>Unexpected error</span>;
     }
+    if (data?.status !== 200) {
+        return <div>{data?.data}</div>;
+    }
+    
     return (
         <Container fluid style={{ height: '100vh' }}>
             <Row>

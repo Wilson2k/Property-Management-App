@@ -3,7 +3,7 @@ import { getTenantsByProperty } from "../../../utils/ApiService";
 
 export const usePropertyTenants = (propertyId: number) => {
     const { status, data } = useQuery({
-        queryKey: [propertyId],
+        queryKey: ['propertyTenant', propertyId],
         queryFn: () => getTenantsByProperty(propertyId),
     });
     return {status, data}

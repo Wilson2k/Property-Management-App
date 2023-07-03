@@ -149,7 +149,7 @@ const getTenantsByNotProperty = async (tenantContext: TenantContexts.TenantConte
       tenantReturn.message = 'Not authorized to get property';
       return tenantReturn;
     }
-    const tenants = await TenantDAL.getTenantsByNotProperty(propertyId);
+    const tenants = await TenantDAL.getTenantsByNotProperty(propertyId, user);
     if (tenants !== null) {
       if (tenants.length === 0) {
         tenantReturn.message = 'All tenants are associated with this property';

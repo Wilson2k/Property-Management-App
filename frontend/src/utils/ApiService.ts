@@ -3,6 +3,7 @@ import { AxiosError } from 'axios';
 import * as UserTypes from '../types/User';
 import * as PropertyTypes from '../types/Property'
 import * as TenantTypes from '../types/Tenant'
+import * as LeaseTypes from '../types/Lease'
 
 
 const apiURL = process.env.NODE_ENV === "production" ? 'http://localhost/api/' : 'http://localhost:8080/api/';
@@ -83,7 +84,7 @@ const addPropertyMultTenants = async(propertyId: number, newTenants: PropertyTyp
 }
 
 const getPropertyLeases = async(propertyId: number) => {
-  return await apiClient.put(`/leases/property/${propertyId}`).catch((error: AxiosError) => {
+  return await apiClient.get(`/leases/property/${propertyId}`).catch((error: AxiosError) => {
     return error.response;
   });
 }
@@ -119,9 +120,15 @@ const getTenantsNotOnProperty = async(propertyId: number) => {
   });
 }
 
-// Leease Routes
+// Lease Routes
 const getLeases = async () => {
   return await apiClient.get('/leases').catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
+const createLease = async (propertyId: number,  tenantId: number, newLease: LeaseTypes.LeaseCreateContext) => {
+  return await apiClient.post(`lease/create/${tenantId}/${propertyId}`, newLease).catch((error: AxiosError) => {
     return error.response;
   });
 }
@@ -165,6 +172,7 @@ export {
   getTenantsNotOnProperty,
   getLeases,
   getLease,
+  createLease,
   getTickets,
   getTicket
 }

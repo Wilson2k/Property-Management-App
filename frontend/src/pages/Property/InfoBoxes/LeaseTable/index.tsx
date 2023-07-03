@@ -10,15 +10,15 @@ interface LeaseTableProps {
 
 export default function LeaseTable(props: LeaseTableProps) {
     const navigate = useNavigate();
-    const propertyLeaseData = usePropertyLeases(props.id);
-    if (propertyLeaseData.status === 'loading') {
+    const { status, data } = usePropertyLeases(props.id);
+    if (status === 'loading') {
         return <span>Loading...</span>;
     }
-    if (propertyLeaseData.status === 'error') {
+    if (status === 'error') {
         return <span>Unexpected error</span>;
     }
-    if (propertyLeaseData.data?.status !== 200) {
-        return <div>{propertyLeaseData.data?.data}</div>;
+    if (data?.status !== 200) {
+        return <div>{data?.data}</div>;
     }
     
     return (
@@ -35,7 +35,7 @@ export default function LeaseTable(props: LeaseTableProps) {
                             </tr>
                         </thead>
                         <tbody>
-                            {propertyLeaseData.data.data.map((lease: LeaseContext) => {
+                            {data?.data.map((lease: LeaseContext) => {
                                 return (
                                     <tr key={lease.id} onClick={() => navigate(`/lease/${lease.id}`)}>
                                         <td>{lease.tenant?.firstName} {lease.tenant?.lastName}</td>
@@ -49,7 +49,7 @@ export default function LeaseTable(props: LeaseTableProps) {
                         <tfoot>
                             <tr>
                                 <td colSpan={5}>
-                                    <Button onClick={() => navigate(`/property/${props.id}/add_tenants`)}>Create a lease</Button>
+                                    <Button onClick={() => navigate(`/lease/create`)}>Create a lease</Button>
                                 </td>
                             </tr>
                         </tfoot>

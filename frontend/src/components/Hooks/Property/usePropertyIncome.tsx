@@ -6,7 +6,7 @@ export const usePropertyIncome = () => {
     const { id } = useParams() as { id: string };
     const propertyId = +id
     const { status, data } = useQuery({
-        queryKey: ['property', propertyId],
+        queryKey: ['propertyIncome', propertyId],
         queryFn: () => getPropertyIncome(propertyId),
     });
     return {status, data}
