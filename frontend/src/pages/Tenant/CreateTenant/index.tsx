@@ -1,5 +1,7 @@
 import * as TenantTypes from '../../../types/Tenant';
 import CreateTenantForm from './createForm';
+import SideNav from "../../../components/SideNav";
+import { Row, Container } from "react-bootstrap";
 import { useProfile } from '../../../components/Hooks/User/useProfile';
 
 export default function CreateTenantPage() {
@@ -17,5 +19,12 @@ export default function CreateTenantPage() {
         email: '',
         phone: '',
     };
-    return <CreateTenantForm data={defaultCreateTenant}/>
+    return (
+        <Container fluid style={{ height: '100vh' }}>
+            <Row>
+                <SideNav link={'/tenants'} />
+                <CreateTenantForm data={defaultCreateTenant} />
+            </Row>
+        </Container>
+    );
 }

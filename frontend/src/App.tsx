@@ -18,6 +18,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import PropertyInfoPage from './pages/Property/PropertyInfo';
 import EditPropertyPage from './pages/Property/EditProperty';
 import PropertyAddTenantPage from './pages/Property/AddTenant';
+import CreateLeasePage from './pages/Lease/CreateLease';
 import RequireAuth from './components/RequireAuth';
 import {
   QueryClient,
@@ -49,6 +50,7 @@ function App() {
           <Route path="/property/:id" element={<RequireAuth> <PropertyInfoPage /></RequireAuth>} />
           <Route path="/property/edit/:id" element={<RequireAuth> <EditPropertyPage /></RequireAuth>} />
           <Route path="/property/:id/add_tenants" element={<RequireAuth> <PropertyAddTenantPage /></RequireAuth>} />
+          <Route path="/lease/create" element={<RequireAuth> <CreateLeasePage /></RequireAuth>} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </QueryClientProvider>
