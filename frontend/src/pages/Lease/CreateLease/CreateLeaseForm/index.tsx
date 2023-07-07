@@ -48,12 +48,10 @@ export default function CreateLeaseForm() {
                     style={{
                         position: "relative",
                         background: "white",
-                        border: "1px solid black",
                         padding: "2rem",
                         margin: "1rem",
                         borderRadius: ".5rem",
                         fontFamily: "Arial",
-                        maxWidth: "max-content",
                     }}
                 >
                     <form onSubmit={onSubmit}>
@@ -75,7 +73,7 @@ export default function CreateLeaseForm() {
                                     Back
                                 </button>
                             )}
-                            <button className="btn btn-outline-dark btn-lg px-5 mt-4" type="submit">{isLastStep ? "Finish" : "Next"}</button>
+                            <button className="btn btn-outline-success btn-lg px-5 mt-4" type="submit">{isLastStep ? "Finish" : "Next"}</button>
                         </div>
                     </form>
                 </div>
