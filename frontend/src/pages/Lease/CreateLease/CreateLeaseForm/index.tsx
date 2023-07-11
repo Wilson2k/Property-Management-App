@@ -39,7 +39,24 @@ export default function CreateLeaseForm() {
 
     function onSubmit(e: FormEvent) {
         e.preventDefault();
-        if (!isLastStep) return nextStep();
+        switch(currentStepIndex){
+            case 0: {
+                if(data.propertyId){
+                    nextStep();
+                }
+                break;
+            }
+            case 1: {
+                if(data.tenantId){
+                    nextStep();
+                }
+                break;
+            }
+            case 2: {
+                // Call api here
+                break;
+            }
+        }
     }
     return (
         <Col className="px-0" style={{ background: '#ebecf0' }}>
@@ -55,9 +72,8 @@ export default function CreateLeaseForm() {
                     }}
                 >
                     <form onSubmit={onSubmit}>
-                        
                         <div className="progress">
-                            <div className="progress-bar" role="progressbar" style={{width: `${100 / steps.length * (currentStepIndex + 1)}%`}} aria-valuenow={currentStepIndex + 1 / steps.length} aria-valuemin={0} aria-valuemax={100}></div>
+                            <div className="progress-bar" role="progressbar" style={{width: `${100 / steps.length * (currentStepIndex )}%`}} aria-valuenow={currentStepIndex + 1 / steps.length} aria-valuemin={0} aria-valuemax={100}></div>
                         </div>
                         {step}
                         <div
