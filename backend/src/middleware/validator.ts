@@ -37,6 +37,7 @@ export const validator =
       next();
     } catch (err) {
       if (Joi.isError(err)) {
+        console.log(err);
         return res.status(422).send(err.message);
       }
       return res.status(500).send('Server error');

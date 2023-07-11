@@ -103,7 +103,7 @@ app.put(
   asyncHandler(Property.updateProperty)
 );
 app.put(
-  '/api/property/:id/add/:tenantid',
+  '/api/property/:id/add/:tenantId',
   checkSession,
   validator('property'),
   asyncHandler(Property.addPropertyTenant)
@@ -115,7 +115,7 @@ app.put(
   asyncHandler(Property.addPropertyTenants)
 );
 app.put(
-  '/api/property/:id/remove/:tenantid',
+  '/api/property/:id/remove/:tenantId',
   checkSession,
   validator('property'),
   asyncHandler(Property.removePropertyTenant)
@@ -169,7 +169,7 @@ app.get(
   asyncHandler(Property.getUserPropertiesByType)
 );
 app.get(
-  '/api/properties/:tenantid',
+  '/api/properties/:tenantId',
   checkSession,
   validator('property'),
   asyncHandler(Property.getUserPropertiesByTenant)
@@ -218,13 +218,13 @@ app.get(
   asyncHandler(Tenant.getTenantByPhone)
 );
 app.get(
-  '/api/tenants/:propertyid',
+  '/api/tenants/:propertyId',
   checkSession,
   validator('tenant'),
   asyncHandler(Tenant.getTenantsByProperty)
 );
 app.get(
-  '/api/tenants/not/:propertyid',
+  '/api/tenants/not/:propertyId',
   checkSession,
   validator('tenant'),
   asyncHandler(Tenant.getTenantsByNotProperty)
@@ -237,7 +237,7 @@ app.get(
 );
 // Lease routes
 app.post(
-  '/api/lease/create/:tenantid/:propertyid',
+  '/api/lease/create',
   checkSession,
   validator('lease'),
   asyncHandler(Lease.createNewLease)
@@ -281,20 +281,20 @@ app.get(
   asyncHandler(Lease.getExpiredLeases)
 );
 app.get(
-  '/api/leases/tenant/:tenantid',
+  '/api/leases/tenant/:tenantId',
   checkSession,
   validator('lease'),
   asyncHandler(Lease.getLeasesByTenant)
 );
 app.get(
-  '/api/leases/property/:propertyid',
+  '/api/leases/property/:propertyId',
   checkSession,
   validator('lease'),
   asyncHandler(Lease.getLeasesByProperty)
 );
 // Ticket routes
 app.post(
-  '/api/ticket/create/:tenantid/:propertyid',
+  '/api/ticket/create/:tenantId/:propertyId',
   checkSession,
   validator('ticket'),
   asyncHandler(Ticket.createNewTicket)
@@ -324,13 +324,13 @@ app.get(
   asyncHandler(Ticket.getTicketsByUser)
 );
 app.get(
-  '/api/tickets/property/:propertyid',
+  '/api/tickets/property/:propertyId',
   checkSession,
   validator('ticket'),
   asyncHandler(Ticket.getTicketsByProperty)
 );
 app.get(
-  '/api/tickets/tenant/:tenantid',
+  '/api/tickets/tenant/:tenantId',
   checkSession,
   validator('ticket'),
   asyncHandler(Ticket.getTicketsByTenant)

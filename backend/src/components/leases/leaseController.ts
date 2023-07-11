@@ -10,8 +10,8 @@ const createNewLease = async (req: CustomRequest<LeaseCreateContext>, res: Respo
     endDate: new Date(req.body.endDate),
     months: +req.body.months,
     monthlyRent: +req.body.monthlyRent,
-    tenantId: +req.params.tenantid,
-    propertyId: +req.params.propertyid,
+    tenantId: +req.body.tenantId,
+    propertyId: +req.body.propertyId,
   };
   const leaseData = await LeaseServices.createNewLeaseService(leaseContext);
   if (leaseData.status === 200 && leaseData.data !== undefined) {
@@ -121,8 +121,8 @@ const getLeasesByUser = async (req: CustomRequest<LeaseContext>, res: Response) 
     ownerId: req.session.user,
   };
   const leaseData = await LeaseServices.getLeasesByUserService(leaseContext);
-  if (leaseData.status === 200 && leaseData.data !== undefined) {
-    res.status(leaseData.status).send(leaseData.data);
+  if (leaseData.status === 200 && leaseData.tenantData !== undefined) {
+    res.status(leaseData.status).send(leaseData.tenantData);
   } else {
     res.status(leaseData.status).send(leaseData.message);
   }
@@ -131,7 +131,7 @@ const getLeasesByUser = async (req: CustomRequest<LeaseContext>, res: Response) 
 const getLeasesByTenant = async (req: CustomRequest<LeaseContext>, res: Response) => {
   const leaseContext: LeaseContext = {
     ownerId: req.session.user,
-    tenantId: +req.params.tenantid,
+    tenantId: +req.params.tenantId,
   };
   const leaseData = await LeaseServices.getLeasesByTenantService(leaseContext);
   if (leaseData.status === 200 && leaseData.data !== undefined) {
@@ -144,7 +144,7 @@ const getLeasesByTenant = async (req: CustomRequest<LeaseContext>, res: Response
 const getLeasesByProperty = async (req: CustomRequest<LeaseContext>, res: Response) => {
   const leaseContext: LeaseContext = {
     ownerId: req.session.user,
-    propertyId: +req.params.propertyid,
+    propertyId: +req.params.propertyId,
   };
   const leaseData = await LeaseServices.getLeasesByPropertyService(leaseContext);
   if (leaseData.status === 200 && leaseData.tenantData !== undefined) {

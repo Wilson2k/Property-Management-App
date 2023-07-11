@@ -98,7 +98,7 @@ const getTenantByPhone = async (req: CustomRequest<TenantContext>, res: Response
 // Get tenants by property
 const getTenantsByProperty = async (req: CustomRequest<TenantContext>, res: Response) => {
   const tenantContext: TenantContext = {
-    propertyId: +req.params.propertyid,
+    propertyId: +req.params.propertyId,
     userId: req.session.user,
   };
   const tenantData = await TenantServices.getTenantsByProperty(tenantContext);
@@ -112,7 +112,7 @@ const getTenantsByProperty = async (req: CustomRequest<TenantContext>, res: Resp
 // Get tenants that are not associated with property
 const getTenantsByNotProperty = async (req: CustomRequest<TenantContext>, res: Response) => {
   const tenantContext: TenantContext = {
-    propertyId: +req.params.propertyid,
+    propertyId: +req.params.propertyId,
     userId: req.session.user,
   };
   const tenantData = await TenantServices.getTenantsByNotProperty(tenantContext);

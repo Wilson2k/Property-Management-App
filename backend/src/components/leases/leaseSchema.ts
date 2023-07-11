@@ -9,9 +9,9 @@ const leaseSchema = Joi.object({
 
   monthlyRent: Joi.number(),
 
-  tenantid: Joi.number(),
+  tenantId: Joi.number(),
 
-  propertyid: Joi.number(),
+  propertyId: Joi.number(),
 
   id: Joi.number(),
 });

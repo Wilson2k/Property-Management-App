@@ -127,8 +127,8 @@ const getLeases = async () => {
   });
 }
 
-const createLease = async (propertyId: number,  tenantId: number, newLease: LeaseTypes.LeaseCreateContext) => {
-  return await apiClient.post(`lease/create/${tenantId}/${propertyId}`, newLease).catch((error: AxiosError) => {
+const createLease = async (newLease: LeaseTypes.LeaseCreateContext) => {
+  return await apiClient.post(`lease/create`, newLease).catch((error: AxiosError) => {
     return error.response;
   });
 }

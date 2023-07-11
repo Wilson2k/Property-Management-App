@@ -20,6 +20,7 @@ export default function LeaseTable(props: LeaseTableProps) {
     if (data?.status !== 200) {
         return <div>{data?.data}</div>;
     }
+    console.log(data)
     
     return (
         <Container fluid>
@@ -36,11 +37,13 @@ export default function LeaseTable(props: LeaseTableProps) {
                         </thead>
                         <tbody>
                             {data?.data.map((lease: LeaseContext) => {
+                                const startDate = new Date(lease.startDate).toLocaleDateString();
+                                const endDate = new Date(lease.endDate).toLocaleDateString();
                                 return (
                                     <tr key={lease.id} onClick={() => navigate(`/lease/${lease.id}`)}>
                                         <td>{lease.tenant?.firstName} {lease.tenant?.lastName}</td>
-                                        <td>{lease.startDate?.toDateString()}</td>
-                                        <td>{lease.endDate?.toDateString()}</td>
+                                        <td>{startDate}</td>
+                                        <td>{endDate}</td>
                                         <td>{lease.monthlyRent}</td>
                                     </tr>
                                 );

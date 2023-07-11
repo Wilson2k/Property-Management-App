@@ -4,6 +4,7 @@ import PageFilter from "../../components/PageFilter";
 import SideNav from "../../components/SideNav";
 import { useNavigate } from "react-router-dom";
 import { useLeases } from "../../components/Hooks/Leases/useLeases";
+import { LeaseContext } from "../../types/Lease";
 
 export default function LeasePage() {
     const navigate = useNavigate();
@@ -45,7 +46,7 @@ export default function LeasePage() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data?.data.map((lease: any) => {
+                                        {data?.data.map((lease: LeaseContext) => {
                                             return (
                                                 <tr key={lease.tenantId+lease.propertyId} onClick={() => navigate(`/lease/${lease.id}`)}>
                                                     <td>{lease.tenant.firstName}</td>

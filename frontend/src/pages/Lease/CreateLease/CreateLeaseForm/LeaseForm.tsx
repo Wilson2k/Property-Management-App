@@ -1,7 +1,7 @@
 import Form from 'react-bootstrap/Form';
 
 type LeaseData = {
-    startData: string,
+    startDate: string,
     endDate: string,
     months: string,
     monthlyRent: string,
@@ -12,7 +12,7 @@ type LeaseFormProps = LeaseData & {
 };
 
 export default function LeaseForm({
-    startData,
+    startDate,
     endDate,
     months,
     monthlyRent,
@@ -23,17 +23,17 @@ export default function LeaseForm({
             <h2 className="fw-bold my-4 text-uppercase">Lease Info</h2>
             <div className="form-outline form-white mb-4">
                 <Form.Label>Start Date</Form.Label>
-                <Form.Control type="address" id="startDateX" className="form-control form-control-lg" placeholder={"Enter Lease Start Date"} />
+                <Form.Control type="address" id="startDateX" value={startDate} onChange={e => updateFields({ startDate: e.target.value })} className="form-control form-control-lg" placeholder={"Enter Lease Start Date"} />
             </div>
 
             <div className="form-outline form-white mb-4">
                 <Form.Label>End Date</Form.Label>
-                <Form.Control type="city" id="endDateX" className="form-control form-control-lg" placeholder={"Enter Lease End Date"} />
+                <Form.Control type="city" id="endDateX" value={endDate} onChange={e => updateFields({ endDate: e.target.value })} className="form-control form-control-lg" placeholder={"Enter Lease End Date"} />
             </div>
 
             <div className="form-outline form-white mb-4">
                 <Form.Label>Monthly Rent</Form.Label>
-                <Form.Control type="state" id="monthlyRent" className="form-control form-control-lg" placeholder={"Enter Monthly Rent"} />
+                <Form.Control type="state" id="monthlyRent" value={monthlyRent} onChange={e => updateFields({ monthlyRent: e.target.value })} className="form-control form-control-lg" placeholder={"Enter Monthly Rent"} />
             </div>
         </div>
     );

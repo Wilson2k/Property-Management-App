@@ -56,6 +56,11 @@ const createNewLeaseService = async (leaseContext: LeaseContexts.LeaseCreateCont
     leaseReturn.status = 422;
     return leaseReturn;
   }
+  if (leaseContext.months == 0){
+    leaseReturn.message = 'Lease must be at least one month long';
+    leaseReturn.status = 422;
+    return leaseReturn;
+  }
   const findLease = await LeaseDAL.getLeaseByPropertyTenant(tenantId, propertyId);
   if (findLease === null) {
     const newTenant = await LeaseDAL.createNewLease(userIdInput, leaseInput);
@@ -138,6 +143,11 @@ const updateLeaseService = async (leaseContext: LeaseContexts.LeaseContext) => {
           updateInput.endDate.getMonth() -
           leaseRecord.startDate.getMonth() +
           12 * (updateInput.endDate.getFullYear() - leaseRecord.startDate.getFullYear());
+      }
+      if (updateInput.months == 0){
+        leaseReturn.message = 'Lease must be at least one month long';
+        leaseReturn.status = 422;
+        return leaseReturn;
       }
       const updatedLease = await LeaseDAL.updateLease(leaseId, updateInput);
       if (updatedLease != null) {
@@ -341,7 +351,7 @@ const getLeasesByUserService = async (leaseContext: LeaseContexts.LeaseContext) 
     const findLeases = await LeaseDAL.getLeasesByUser(ownerId);
     if (findLeases !== null) {
       leaseReturn.message = 'Owner leases found';
-      leaseReturn.data = findLeases;
+      leaseReturn.tenantData = findLeases;
       leaseReturn.status = 200;
     }
   }

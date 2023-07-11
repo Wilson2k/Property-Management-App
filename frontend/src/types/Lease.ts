@@ -11,15 +11,15 @@ interface LeaseCreateContext {
 }
 
 interface LeaseContext {
-    id?: number;
-    startDate?: Date;
-    endDate?: Date;
-    months?: number;
-    monthlyRent?: number;
-    tenantId?: number;
-    tenant?: TenantContext;
-    propertyId?: number;
-    ownerId?: string;
+    id: number;
+    startDate: Date;
+    endDate: Date;
+    months: number;
+    monthlyRent: number;
+    tenantId: number;
+    tenant: TenantContext;
+    propertyId: number;
+    ownerId: string;
 }
 
 interface LeaseUpdateInput {

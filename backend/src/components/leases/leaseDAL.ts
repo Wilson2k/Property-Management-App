@@ -115,6 +115,9 @@ const getLeasesByUser = async (userId: number) => {
     orderBy: {
       months: 'asc',
     },
+    include: {
+      tenant: true
+    }
   });
   return query;
 };
