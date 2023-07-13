@@ -11,12 +11,12 @@ type LeaseData = {
 
 type LeaseFormProps = LeaseData & {
     updateFields: (fields: Partial<LeaseData>) => void;
+    prevStep: () => void;
 };
 
 export default function LeaseForm({
     startDate,
     endDate,
-    months,
     monthlyRent,
     updateFields,
 }: LeaseFormProps) {

@@ -43,45 +43,37 @@ export default function CreateLeaseForm() {
             return { ...prev, ...fields };
         });
     }
-    const { steps, currentStepIndex, step, isFirstStep, isLastStep, nextStep, prevStep } =
+    function goToNextStep() {
+        nextStep();
+    }
+    function goToPrevStep() {
+        prevStep();
+    }
+    const { steps, currentStepIndex, step, isLastStep, nextStep, prevStep } =
         useMultistepForm([
-            <PropertyForm {...data} updateFields={updateFields} />,
-            <TenantForm {...data} updateFields={updateFields} />,
-            <LeaseForm {...data} updateFields={updateFields} />,
+            <PropertyForm {...data} updateFields={updateFields} nextStep={goToNextStep} />,
+            <TenantForm {...data} updateFields={updateFields} nextStep={goToNextStep} prevStep={goToPrevStep} />,
+            <LeaseForm {...data} updateFields={updateFields} prevStep={goToPrevStep} />,
         ]);
-
     const onSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        switch (currentStepIndex) {
-            case 0: {
-                if (data.propertyId) {
-                    nextStep();
+        if (isLastStep) {
+            // Calculate length of lease in months
+            if (data.startDate && data.endDate && data.monthlyRent) {
+                const start = new Date(data.startDate);
+                const end = new Date(data.endDate);
+                const months = end.getMonth() - start.getMonth() + (12 * (end.getFullYear() - start.getFullYear()));
+                const rent = +data.monthlyRent;
+                // Call api here
+                setLoading(true);
+                const leaseInput: LeaseCreateContext = { ...data, startDate: start, endDate: end, months: months, monthlyRent: rent, propertyId: +data.propertyId, tenantId: +data.tenantId };
+                const response = await mutateAsync(leaseInput);
+                setResponse(response?.status || 500);
+                if (response?.status === 200) {
+                    navigate(`/leases`);
                 }
-                break;
-            }
-            case 1: {
-                if (data.tenantId) {
-                    nextStep();
-                }
-                break;
-            }
-            case 2: {
-                // Calculate length of lease in months
-                if (data.startDate && data.endDate && data.monthlyRent) {
-                    const start = new Date(data.startDate);
-                    const end = new Date(data.endDate);
-                    const months = end.getMonth() - start.getMonth() + (12 * (end.getFullYear() - start.getFullYear()));
-                    const rent = +data.monthlyRent;
-                    // Call api here
-                    setLoading(true);
-                    const leaseInput: LeaseCreateContext = { ...data, startDate: start, endDate: end, months: months, monthlyRent: rent, propertyId: +data.propertyId, tenantId: +data.tenantId };
-                    const response = await mutateAsync(leaseInput);
-                    setResponse(response?.status || 500);
-                    if (response?.status === 200) {
-                        navigate(`/leases`);
-                    }
-                }
-                break;
+            } else {
+                setResponse(422);
             }
         }
     };
@@ -98,12 +90,12 @@ export default function CreateLeaseForm() {
                         fontFamily: "Arial",
                     }}
                 >
-                    <form onSubmit={onSubmit}>
+                    <div onSubmit={onSubmit}>
                         <div className="progress">
                             <div className="progress-bar" role="progressbar" style={{ width: `${100 / steps.length * (currentStepIndex)}%` }} aria-valuenow={currentStepIndex + 1 / steps.length} aria-valuemin={0} aria-valuemax={100}></div>
                         </div>
                         {step}
-                        <div
+                        {isLastStep && <div
                             style={{
                                 marginTop: "1rem",
                                 marginBottom: "1rem",
@@ -112,21 +104,18 @@ export default function CreateLeaseForm() {
                                 justifyContent: "flex-end",
                             }}
                         >
-                            {!isFirstStep && (
-                                <button className="btn btn-outline-dark btn-lg px-5 mt-4" type="button" onClick={prevStep}>
-                                    Back
-                                </button>
-                            )}
-                            {!isLoading && (<button className="btn btn-outline-success btn-lg px-5 mt-4" type="submit">{isLastStep ? "Finish" : "Next"}</button>
-                            )}
-                        </div>
+                            <button className="btn btn-outline-dark btn-lg px-5 mt-4" type="button" onClick={prevStep}>
+                                Back
+                            </button>
+                            {!isLoading && <button className="btn btn-outline-success btn-lg px-5 mt-4" onClick={onSubmit}>Finish</button>}
+                        </div>}
                         {isLastStep && (
                             response === 422 ? <div className="card bg-danger">Invalid input</div> : <></> &&
                                 response === 409 ? <div className="card bg-danger">Lease already exists</div> : <></> &&
                                     response === 500 ? <div className="card bg-danger">Error creating lease</div> : <></> &&
                                         response === 200 ? <div className="card bg-success">Successfully created lease</div> : <></>
                         )}
-                    </form>
+                    </div>
                 </div>
             </Container>
         </Col>
