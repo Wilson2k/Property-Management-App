@@ -1,5 +1,4 @@
 import { Card } from 'react-bootstrap';
-import { useTenants } from '../../../../components/Hooks/Tenants/useTenants';
 import { TenantContext } from '../../../../types/Tenant';
 import { usePropertyTenants } from '../../../../components/Hooks/Property/usePropertyTenants';
 
@@ -46,7 +45,6 @@ export default function TenantForm({ propertyId, tenantId, updateFields }: Tenan
                                                 value={tenant.id}
                                                 checked={`${tenant.id}` === tenantId} />
                                         </td>
-
                                         <td>{tenant.firstName}</td>
                                         <td>{tenant.lastName}</td>
                                         <td>{tenant.email}</td>

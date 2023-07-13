@@ -1,4 +1,4 @@
-import { Card, FormControl } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { useProperties } from '../../../../components/Hooks/Property/useProperties';
 import { PropertyContext } from '../../../../types/Property';
 

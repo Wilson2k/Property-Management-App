@@ -1,8 +1,10 @@
 import Form from 'react-bootstrap/Form';
+import ReactDatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 type LeaseData = {
-    startDate: string,
-    endDate: string,
+    startDate: Date,
+    endDate: Date,
     months: string,
     monthlyRent: string,
 };
@@ -21,14 +23,13 @@ export default function LeaseForm({
     return (
         <div className="mb-md-2">
             <h2 className="fw-bold my-4 text-uppercase">Lease Info</h2>
+            <Form.Label>Start Date</Form.Label>
             <div className="form-outline form-white mb-4">
-                <Form.Label>Start Date</Form.Label>
-                <Form.Control type="address" id="startDateX" value={startDate} onChange={e => updateFields({ startDate: e.target.value })} className="form-control form-control-lg" placeholder={"Enter Lease Start Date"} />
+                <ReactDatePicker selected={startDate} onChange={e => e && updateFields({ startDate: e })} className="form-control form-control-lg" />
             </div>
-
+            <Form.Label>End Date</Form.Label>
             <div className="form-outline form-white mb-4">
-                <Form.Label>End Date</Form.Label>
-                <Form.Control type="city" id="endDateX" value={endDate} onChange={e => updateFields({ endDate: e.target.value })} className="form-control form-control-lg" placeholder={"Enter Lease End Date"} />
+                <ReactDatePicker selected={endDate} onChange={e => e && updateFields({ endDate: e })} className="form-control form-control-lg" />
             </div>
 
             <div className="form-outline form-white mb-4">

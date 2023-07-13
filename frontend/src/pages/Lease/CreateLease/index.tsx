@@ -4,7 +4,7 @@ import { useProfile } from '../../../components/Hooks/User/useProfile';
 import CreateLeaseForm from './CreateLeaseForm';
 
 export default function CreateTenantPage() {
-    const { status, data } = useProfile();
+    const { status } = useProfile();
     if (status === 'loading') {
         return <span>Loading...</span>;
     }

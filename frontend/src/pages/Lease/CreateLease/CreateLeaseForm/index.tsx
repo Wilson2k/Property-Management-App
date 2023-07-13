@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom";
 type CreateLeaseFormData = {
     tenantId: string;
     propertyId: string;
-    startDate: string,
-    endDate: string,
+    startDate: Date,
+    endDate: Date,
     months: string,
     monthlyRent: string,
 };
@@ -21,8 +21,8 @@ type CreateLeaseFormData = {
 const INITIAL_DATA: CreateLeaseFormData = {
     tenantId: '',
     propertyId: '',
-    startDate: '',
-    endDate: '',
+    startDate: new Date(),
+    endDate: new Date(),
     months: '',
     monthlyRent: '',
 };
@@ -67,7 +67,7 @@ export default function CreateLeaseForm() {
             }
             case 2: {
                 // Calculate length of lease in months
-                if (data.startDate && data.endDate) {
+                if (data.startDate && data.endDate && data.monthlyRent) {
                     const start = new Date(data.startDate);
                     const end = new Date(data.endDate);
                     const months = end.getMonth() - start.getMonth() + (12 * (end.getFullYear() - start.getFullYear()));
