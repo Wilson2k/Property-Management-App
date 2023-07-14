@@ -30,7 +30,7 @@ export default function PropertyPage() {
                         </PageFilter>
                         <hr style={{ border: '1px solid black' }} />
                         <Card>
-                            <div className="table-responsive" style={{ maxHeight: '90vh'}}>
+                            <div className="table-responsive" style={{ maxHeight: '90vh' }}>
                                 <table className="table table-striped table-hover my-0">
                                     <thead>
                                         <tr>

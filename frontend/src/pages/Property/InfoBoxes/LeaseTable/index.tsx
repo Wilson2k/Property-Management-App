@@ -20,7 +20,6 @@ export default function LeaseTable(props: LeaseTableProps) {
     if (data?.status !== 200) {
         return <div>{data?.data}</div>;
     }
-    console.log(data)
     
     return (
         <Container fluid>

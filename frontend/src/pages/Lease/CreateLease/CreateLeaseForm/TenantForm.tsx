@@ -1,8 +1,10 @@
 import Form from 'react-bootstrap/Form';
+import { useNavigate } from "react-router-dom";
 import { Card } from 'react-bootstrap';
 import { useState } from 'react';
 import { TenantContext } from '../../../../types/Tenant';
 import { usePropertyTenants } from '../../../../components/Hooks/Property/usePropertyTenants';
+import { Button } from "react-bootstrap";
 
 type TenantData = {
     tenantId: string,
@@ -17,6 +19,7 @@ type TenantFormProps = TenantData & {
 
 
 export default function TenantForm({ propertyId, tenantId, updateFields, nextStep, prevStep }: TenantFormProps) {
+    const navigate = useNavigate();
     const { status, data } = usePropertyTenants(+propertyId);
     const [response, setResponse] = useState(0);
     if (status === 'loading') {
@@ -67,9 +70,21 @@ export default function TenantForm({ propertyId, tenantId, updateFields, nextSte
                                         </tr>
                                     );
                                 })}
+                                {data?.data.length === 0 &&
+                                    <tr>
+                                        <td colSpan={5}>
+                                            No tenants associated with property.
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    {data?.data.length === 0 &&
+                                        <td colSpan={5}>
+                                            <Button onClick={() => navigate(`/property/${propertyId}/add_tenants`)}>Add a tenant</Button>
+                                        </td>
+                                    }
                                 </tr>
                             </tfoot>
                         </table>
@@ -85,9 +100,9 @@ export default function TenantForm({ propertyId, tenantId, updateFields, nextSte
                     }}
                 >
                     <button className="btn btn-outline-dark btn-lg px-5 mt-4" type="button" onClick={prevStep}>
-                    Back
-                </button>
-                <button className="btn btn-outline-success btn-lg px-5 mt-4" type="submit">Next</button>
+                        Back
+                    </button>
+                    <button className="btn btn-outline-success btn-lg px-5 mt-4" type="submit">Next</button>
                 </div>
             </Form>
             {response === 422 ? <div className="card bg-danger">Invalid input</div> : <></>}

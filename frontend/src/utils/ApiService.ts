@@ -89,6 +89,12 @@ const getPropertyLeases = async(propertyId: number) => {
   });
 }
 
+const deleteProperty = async(propertyId: number) => {
+  return await apiClient.delete(`/property/${propertyId}/delete`).catch((error: AxiosError) => {
+    return error.response;
+  });
+}
+
 // Tenant routes
 const getTenants = async () => {
   return await apiClient.get('/tenants').catch((error: AxiosError) => {
@@ -162,6 +168,7 @@ export {
   getProperty,
   getPropertyIncome,
   getPropertyLeases,
+  deleteProperty,
   updateProperty,
   addPropertyTenant,
   addPropertyMultTenants,

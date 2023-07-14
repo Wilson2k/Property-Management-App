@@ -3,6 +3,8 @@ import { Card } from 'react-bootstrap';
 import { useState } from 'react';
 import { useProperties } from '../../../../components/Hooks/Property/useProperties';
 import { PropertyContext } from '../../../../types/Property';
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 type PropertyData = {
     propertyId: string,
@@ -14,6 +16,7 @@ type PropertyFormProps = PropertyData & {
 };
 
 export default function PropertyForm({ propertyId, updateFields, nextStep }: PropertyFormProps) {
+    const navigate = useNavigate();
     const [response, setResponse] = useState(0);
     const { status, data } = useProperties();
     if (status === 'loading') {
@@ -62,9 +65,21 @@ export default function PropertyForm({ propertyId, updateFields, nextStep }: Pro
                                         </tr>
                                     );
                                 })}
+                                {data?.data.length === 0 &&
+                                    <tr>
+                                        <td colSpan={5}>
+                                            No properties created.
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    {data?.data.length === 0 &&
+                                        <td colSpan={5}>
+                                            <Button onClick={() => navigate(`/property/create`)}>Create a property</Button>
+                                        </td>
+                                    }
                                 </tr>
                             </tfoot>
                         </table>
