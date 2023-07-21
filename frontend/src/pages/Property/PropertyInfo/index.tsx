@@ -3,6 +3,7 @@ import { Row, Col, Container } from "react-bootstrap";
 import { Card } from "react-bootstrap";
 import TenantTable from "../InfoBoxes/TenantTable";
 import LeaseTable from "../InfoBoxes/LeaseTable";
+import IncomeChart from "../InfoBoxes/IncomeChart";
 import { useProperty } from "../../../components/Hooks/Property/useProperty";
 import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
@@ -83,7 +84,7 @@ export default function PropertyInfoPage() {
                                         <h6 style={{ marginTop: 16, marginBottom: 0 }}>Monthly Revenue</h6>
                                         <hr style={{ border: '1px solid black' }} />
                                         <div>
-                                            Graph
+                                            <IncomeChart id={data.data.id}/>
                                         </div>
                                     </Card>
                                 </Col>
