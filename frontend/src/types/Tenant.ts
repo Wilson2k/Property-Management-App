@@ -7,7 +7,7 @@ interface TenantCreateContext {
 }
 
 interface TenantContext {
-  id?: number;
+  id: number;
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -23,9 +23,4 @@ interface TenantUpdateInput {
   phone?: string;
 }
 
-
-export type {
-  TenantContext,
-  TenantCreateContext,
-  TenantUpdateInput,
-};
+export type { TenantContext, TenantCreateContext, TenantUpdateInput };

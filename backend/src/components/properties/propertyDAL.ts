@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, Property } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PropertyCreateContext, PropertyUpdateInput } from './property';
 const prisma = new PrismaClient();

@@ -1,4 +1,4 @@
-import Joi, { number } from 'joi';
+import Joi from 'joi';
 
 const propertySchema = Joi.object({
   id: Joi.number(),

@@ -20,13 +20,10 @@ import EditPropertyPage from './pages/Property/EditProperty';
 import PropertyAddTenantPage from './pages/Property/AddTenant';
 import CreateLeasePage from './pages/Lease/CreateLease';
 import RequireAuth from './components/RequireAuth';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Create a client
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 function App() {
   return (
@@ -38,19 +35,122 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/dashboard" element={<RequireAuth> <DashBoardPage /> </RequireAuth>} />
-          <Route path="/profile" element={<RequireAuth> <ProfilePage /></RequireAuth>} />
-          <Route path="/properties" element={<RequireAuth> <PropertyPage /></RequireAuth>} />
-          <Route path="/leases" element={<RequireAuth> <LeasePage /></RequireAuth>} />
-          <Route path="/tickets" element={<RequireAuth> <TicketPage /> </RequireAuth>} />
-          <Route path="/tenants" element={<RequireAuth> <TenantPage /></RequireAuth>} />
-          <Route path="/tenant/create" element={<RequireAuth> <CreateTenantPage /></RequireAuth>} />
-          <Route path="/tenant/:id" element={<RequireAuth> <TenantInfoPage /></RequireAuth>} />
-          <Route path="/property/create" element={<RequireAuth><CreatePropertyPage /></RequireAuth>} />
-          <Route path="/property/:id" element={<RequireAuth> <PropertyInfoPage /></RequireAuth>} />
-          <Route path="/property/edit/:id" element={<RequireAuth> <EditPropertyPage /></RequireAuth>} />
-          <Route path="/property/:id/add_tenants" element={<RequireAuth> <PropertyAddTenantPage /></RequireAuth>} />
-          <Route path="/lease/create" element={<RequireAuth> <CreateLeasePage /></RequireAuth>} />
+          <Route
+            path="/dashboard"
+            element={
+              <RequireAuth>
+                {' '}
+                <DashBoardPage />{' '}
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                {' '}
+                <ProfilePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/properties"
+            element={
+              <RequireAuth>
+                {' '}
+                <PropertyPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/leases"
+            element={
+              <RequireAuth>
+                {' '}
+                <LeasePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/tickets"
+            element={
+              <RequireAuth>
+                {' '}
+                <TicketPage />{' '}
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/tenants"
+            element={
+              <RequireAuth>
+                {' '}
+                <TenantPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/tenant/create"
+            element={
+              <RequireAuth>
+                {' '}
+                <CreateTenantPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/tenant/:id"
+            element={
+              <RequireAuth>
+                {' '}
+                <TenantInfoPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/property/create"
+            element={
+              <RequireAuth>
+                <CreatePropertyPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/property/:id"
+            element={
+              <RequireAuth>
+                {' '}
+                <PropertyInfoPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/property/edit/:id"
+            element={
+              <RequireAuth>
+                {' '}
+                <EditPropertyPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/property/:id/add_tenants"
+            element={
+              <RequireAuth>
+                {' '}
+                <PropertyAddTenantPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/lease/create"
+            element={
+              <RequireAuth>
+                {' '}
+                <CreateLeasePage />
+              </RequireAuth>
+            }
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </QueryClientProvider>

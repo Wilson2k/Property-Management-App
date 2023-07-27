@@ -1,10 +1,10 @@
-import HomeNav from "../../../components/HomeNav";
+import HomeNav from '../../../components/HomeNav';
 
 export default function ContactPage() {
-    return (
-        <div>
-            <HomeNav link={'/contact'} />
-            CONTACT
-        </div>
-    );
+  return (
+    <div>
+      <HomeNav link={'/contact'} />
+      CONTACT
+    </div>
+  );
 }

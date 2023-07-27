@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 interface PageFilter {
-    title: String,
-    children: ReactNode
+  title: string;
+  children: ReactNode;
 }
 
-export type { PageFilter }
+export type { PageFilter };

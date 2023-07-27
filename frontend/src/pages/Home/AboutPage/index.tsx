@@ -1,10 +1,10 @@
-import HomeNav from "../../../components/HomeNav";
+import HomeNav from '../../../components/HomeNav';
 
 export default function AboutPage() {
-    return (
-        <div>
-            <HomeNav link={'/about'} />
-            ABOUT
-        </div>
-    );
+  return (
+    <div>
+      <HomeNav link={'/about'} />
+      ABOUT
+    </div>
+  );
 }
